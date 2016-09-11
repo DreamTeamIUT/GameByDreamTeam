@@ -1,21 +1,25 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class GameByDreamTeam extends ApplicationAdapter {
+public class GameByDreamTeam extends Game {
 	SpriteBatch batch;
 	Texture img;
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("assets/badlogic.jpg");
+		//batch = new SpriteBatch();
+		//img = new Texture("assets/badlogic.jpg");
+
+		setScreen(new MainMenu());
 	}
 
+	/*
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -30,4 +34,5 @@ public class GameByDreamTeam extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 	}
+	*/
 }
