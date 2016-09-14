@@ -10,18 +10,18 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public abstract class AbstractScreen extends Stage implements Screen {
 
-    protected AssetManager assetManager;
+    protected AssetManager assetManager; //gestionnaire de ressources
 
     protected AbstractScreen() {
-        super(new StretchViewport(320.0f, 240.0f, new OrthographicCamera()));
+        super(new StretchViewport(320.0f, 240.0f, new OrthographicCamera())); //Création de "l'écran".
         assetManager = new AssetManager();
     }
 
-    public abstract void buildStage();
+    public abstract void buildStage(); //appelé au moment où le screen est chargé.
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+    public void render(float delta) { //Gère toutes les images.
+        Gdx.gl.glClearColor(0, 0, 0, 1); //gl: moteur 3d, fonction qui vide...
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         super.act(delta);
@@ -31,12 +31,12 @@ public abstract class AbstractScreen extends Stage implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
-    }
+    } //Screen affiché, attribution de tous les êvenements.
 
     @Override
     public void resize(int width, int height) {
         getViewport().update(width, height);
-    }
+    }//mise à jour taille.
 
     @Override
     public void hide() {
@@ -51,7 +51,7 @@ public abstract class AbstractScreen extends Stage implements Screen {
     }
 
     @Override
-    public void dispose(){
+    public void dispose(){ //vidage de mémoire
         super.dispose();
         assetManager.clear();
         assetManager.dispose();

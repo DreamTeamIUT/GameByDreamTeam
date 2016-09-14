@@ -13,8 +13,8 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-       super.render(delta);
-    }
+       super.render(delta); //Fait appel à la fonction de abstractScreen
+    } //fonction appellé toutes les frames, pour actualiser l'affichage.
 
     @Override
     public void dispose() {

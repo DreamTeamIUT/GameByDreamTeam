@@ -14,12 +14,13 @@ public class MainMenuScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-    }
+    } //delta:espace de temps
 
 
     @Override
-    public void dispose() {
+    public void dispose() { //Appelle le dispose de abstract, stage ...
         super.dispose();
         //Ici on vide !
     }
 }
+//tous les screens du jeu => ce format

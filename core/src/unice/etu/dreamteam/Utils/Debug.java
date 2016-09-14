@@ -2,9 +2,9 @@ package unice.etu.dreamteam.Utils;
 
 import com.badlogic.gdx.Gdx;
 
-public class Debug {
+public class Debug { //que du statique, raccourci debug.
     public static void log(String tag, String message) {
-        Gdx.app.log(tag, message);
+        Gdx.app.log(tag, message); //syntaxe pour debug libgdx
     }
 
     public static void log(String message) {

@@ -5,7 +5,8 @@ import com.badlogic.gdx.Screen;
 import unice.etu.dreamteam.Screens.AbstractScreen;
 
 
-public class ScreenManager {
+public class ScreenManager { //S'autocrée, se garde en mémore toute seule : variable de classe de ce type avec l'instance screen manager
+        //Variable de classe déjà statique => permet de récupérer l'instance déjà donné.
 
     private static ScreenManager instance;
     private Game game;
@@ -15,7 +16,7 @@ public class ScreenManager {
     }
 
     public static ScreenManager getInstance() {
-        if (instance == null)
+        if (instance == null) //Verifie que la variable de classe est bien crée.
             instance = new ScreenManager();
 
         return instance;
@@ -25,17 +26,17 @@ public class ScreenManager {
         this.game = game;
     }
 
-    public void showScreen(ScreenList screenList, Object... params) {
+    public void showScreen(ScreenList screenList, Object... params) { //afficher un autre screen, infinité de paramètre, object : classe la plus basse possible
 
-        Screen currentScreen = game.getScreen();
+        Screen currentScreen = game.getScreen(); //récupère le screen actuel,
 
-        AbstractScreen newScreen = screenList.getScreen(params);
+        AbstractScreen newScreen = screenList.getScreen(params); //création d'un screen temporaire.
 
-        newScreen.buildStage();
-        game.setScreen(newScreen);
+        newScreen.buildStage(); //première fonction appellé du screen, pour quelque chose de statique, pas mobile ..
+        game.setScreen(newScreen); //définit le nouveau screen chargé
 
         if (currentScreen != null)
-            currentScreen.dispose();
+            currentScreen.dispose(); //vider l'ancien screen de la mémoire
     }
 
 }

@@ -27,21 +27,21 @@ public class Main extends Game {
 
         new Thread(new Runnable() {
 
-            @Override
+            @Override   //Sous processus java démarré
             public void run() {
 
-                Gdx.app.postRunnable(new Runnable() {
+                Gdx.app.postRunnable(new Runnable() { //avoir le droit de dessiner dans l'écran, rattache sous le process
 
                     @Override
-                    public void run() {
+                    public void run() {//calcule le temps qui s'écoule: 2 sec
 
-                        long elaspedTime = System.currentTimeMillis() - startTime;
+                        long elaspedTime = System.currentTimeMillis() - startTime; //Temps OS (ms) - temps (ms) depuis 1970
 
-                        if (elaspedTime < Main.SPLASH_SCREEN_DURATION) {
-                            Timer.schedule(
+                        if (elaspedTime < Main.SPLASH_SCREEN_DURATION) { //Récupérer le temps (ms)
+                            Timer.schedule( //Gestion du temps
                                     new Timer.Task() {
                                         @Override
-                                        public void run() {
+                                        public void run() { //ScreenManager: affichage différents screens à n'importe quel moment.
                                             ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
                                         }
 

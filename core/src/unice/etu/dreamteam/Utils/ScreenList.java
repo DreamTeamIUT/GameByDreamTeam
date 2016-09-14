@@ -6,7 +6,7 @@ import unice.etu.dreamteam.Screens.MainMenuScreen;
 import unice.etu.dreamteam.Screens.SplashScreen;
 
 
-public enum ScreenList {
+public enum ScreenList { //prédéfinition des screens dune liste
     MAIN_MENU {
         public AbstractScreen getScreen(Object... params) {
             return new MainMenuScreen();
@@ -14,13 +14,13 @@ public enum ScreenList {
     },
 
     GAME {
-        public AbstractScreen getScreen(Object... params) {
+        public AbstractScreen getScreen(Object... params) { //retourne une nouvelle instance avec les paramètres du screen
             return new GameScreen();
         }
     },
 
     SLASH_SCREEN {
-        public AbstractScreen getScreen(Object... params) {
+        public AbstractScreen getScreen(Object... params) { //Première écran
             return new SplashScreen();
         }
     };
