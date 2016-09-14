@@ -1,2 +1,3 @@
-# GameByDreamTeam
-It's a game.
+# ProjetTut
+
+Game in Java and LibGDX
