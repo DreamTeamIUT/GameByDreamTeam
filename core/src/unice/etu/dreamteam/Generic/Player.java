@@ -48,7 +48,7 @@ public class Player extends ObjectGameAnimation {
         this.evadeRate = 0;
         this.damage = DAMAGE;
         this.takeDamage=0;
-        equipments = new ArrayList<>();
+        equipments = new ArrayList<Equipment>();
 
     }
 
