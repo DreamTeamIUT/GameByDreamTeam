@@ -42,7 +42,7 @@ public class Main extends Game {
                                     new Timer.Task() {
                                         @Override
                                         public void run() { //ScreenManager: affichage différents screens à n'importe quel moment.
-                                            ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
+                                            ScreenManager.getInstance().showScreen(ScreenList.GAME);
                                         }
 
                                     }, (float) (Main.SPLASH_SCREEN_DURATION - elaspedTime) / 1000f);
