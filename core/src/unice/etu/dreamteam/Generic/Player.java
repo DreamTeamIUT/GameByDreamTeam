@@ -19,9 +19,6 @@ public class Player extends ObjectGameAnimation {
 
     private int nextLevel = 500;
 
-    private int posX;
-    private int posY;
-
 
     private String name;
 
@@ -34,7 +31,7 @@ public class Player extends ObjectGameAnimation {
     ArrayList<Equipment> equipments;
 
     public Player(String path, String name) {
-        super(path, 5, 5, 50, 50);
+        super(path, 6, 5, 50, 50);
 
         this.name = name;
         this.level = LEVEL1;
