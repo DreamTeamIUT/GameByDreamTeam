@@ -18,7 +18,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import unice.etu.dreamteam.Utils.Debug;
 
-public class GameScreen extends AbstractScreen implements InputProcessor{
+public class GameScreen extends AbstractScreen implements InputProcessor {
 
     private ModelBatch modelBatch;
     private Environment environment;
@@ -26,7 +26,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor{
     private CameraInputController camController;
     private AnimationController animationController;
 
-    public GameScreen(){
+    public GameScreen() {
         super(new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Debug.log("Constructor");
     }
@@ -36,13 +36,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor{
 
         modelBatch = new ModelBatch();
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight,1f,1f,1f,1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
         environment.add(new DirectionalLight().set(0.2f, 0.2f, 0.2f, -1f, -0.8f, -0.2f));
         Gdx.input.setInputProcessor(this);
 
         Camera cam = getCamera();
         cam.position.set(50f, 100f, 100f);
-        cam.lookAt(0,0,0);
+        cam.lookAt(0, 0, 0);
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
@@ -55,27 +55,12 @@ public class GameScreen extends AbstractScreen implements InputProcessor{
         assetManager.load("assets/models/Demon/Demon@Run.g3db", Model.class);
         assetManager.finishLoading();
 
-        final Model Demon = assetManager.get("assets/models/Demon/Demon@Run.g3db", Model.class);
-        final ModelInstance DemonInstance = new ModelInstance(Demon);
+        Model Demon = assetManager.get("assets/models/Demon/Demon@Run.g3db", Model.class);
+        ModelInstance DemonInstance = new ModelInstance(Demon);
         instances.add(DemonInstance);
+
         animationController = new AnimationController(DemonInstance);
-        animationController.setAnimation("Take 001", 5, new AnimationController.AnimationListener() {
-            @Override
-            public void onEnd(AnimationController.AnimationDesc animation) {
-                Demon.dispose();
-                instances.removeIndex(0);
-                Model Demon = assetManager.get("assets/models/Demon/Demon@Attack(1).g3db", Model.class);
-                ModelInstance DemonInstance = new ModelInstance(Demon);
-                instances.add(DemonInstance);
-                animationController = new AnimationController(DemonInstance);
-                animationController.setAnimation("Take 001", 1);
-            }
-
-            @Override
-            public void onLoop(AnimationController.AnimationDesc animation) {
-
-            }
-        });
+        animationController.setAnimation("Take 001", -1);
 
 
     }
@@ -89,7 +74,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor{
 
         camController.update();
         animationController.update(delta);
-
 
 
         modelBatch.begin(getCamera());
@@ -111,10 +95,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor{
     public boolean keyDown(int keycode) {
         // In the real world, do not create NEW variables over and over, create
         // a temporary static member instead
-        if(keycode == Input.Keys.LEFT)
+        if (keycode == Input.Keys.LEFT)
             getCamera().rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), 1f);
-        if(keycode == Input.Keys.RIGHT)
-            getCamera().rotateAround(new Vector3(0f,0f,0f),new Vector3(0f,1f,0f), -1f);
+        if (keycode == Input.Keys.RIGHT)
+            getCamera().rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), -1f);
         return true;
     }
 
