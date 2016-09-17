@@ -22,7 +22,7 @@ public class Player extends ObjectGameAnimation {
 
     private String name;
 
-    private int level, strength, agility, hp, mana, cleverness, experience, takeDamage;
+    private int level, strength, agility, hp, mana, cleverness, experience, takeDamage, caracteristicPointStorage, spellPoint ;
 
     private float damage;
 
@@ -45,29 +45,41 @@ public class Player extends ObjectGameAnimation {
         this.evadeRate = 0;
         this.damage = DAMAGE;
         this.takeDamage=0;
+        this.caracteristicPointStorage=DEFAULT;
         equipments = new ArrayList<Equipment>();
 
     }
 
     public void addEquipment(Equipment equipment) {
+
         equipments.add(equipment);
     }
 
     public void calculEvadeRate() {
-
         this.evadeRate = this.evadeRate + this.agility * 0.4;
-
     }
 
     public void calculCriticalRate() {
         this.criticalRate = (this.agility + this.strength + this.cleverness) / 12;
     }
 
-    public void addExp() {
+    public void levelUp(int agility, int strength, int cleverness, int hp, int mana) {
         if (this.experience >= nextLevel) {
             this.level++;
             this.experience = this.experience - nextLevel;
             nextLevel = 2 * nextLevel - (1 / 2) * nextLevel;
+            this.agility = this.agility + agility;
+            this.strength = this.strength + strength;
+            this.cleverness = this.cleverness + cleverness;
+            this.hp = this.hp + hp;
+            this.mana = this.mana + mana;
+            calculHp();
+            calculMana();
+            calculCriticalRate();
+            calculEvadeRate();
+            calculDamage();
+            this.caracteristicPointStorage = this.caracteristicPointStorage + 10;
+            this.spellPoint++;
         }
     }
 
@@ -92,4 +104,6 @@ public class Player extends ObjectGameAnimation {
     public void drawPlayer(SpriteBatch batch, float delta) {
         super.drawAnimation(batch, delta);
     }
+
+
 }
