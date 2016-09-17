@@ -41,9 +41,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private float oldX = 0, oldY = 0;
     private int mouseX;
     private int mouseY;
-    private float mapCoefX = -1f;
-    private float mapCoefY = -0.5f;
+    private float mapCoefX = -3f;
+    private float mapCoefY = -1f;
     private int anglePerso = 0;
+
+    private boolean touchedDown = false;
 
     public GameScreen() {
         super(new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -82,7 +84,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
         animationController = new AnimationController(demonInstance);
-        animationController.setAnimation("Take 001", -1).speed = 1.5f;
+        animationController.setAnimation("Take 001", -1).speed = 0;
+        //animationController.setAnimation("Take 001", -1).speed = 1.5f;
 
         map = new TmxMapLoader().load("assets/map/test.tmx"); //permet de charger la map depuis le fichier fournis en paramètre et réaliser sur tiled.
         int mapHeight = map.getProperties().get("height", Integer.class);
@@ -111,7 +114,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
        // instances.get(0).transform.translate(0.5f,0f,0.5f);
        // getCamera().translate(-0.5f,0f,-0.5f);
 
-        camera.translate(mapCoefX,mapCoefY);
+        //camera.translate(mapCoefX,mapCoefY);
+
+        if(touchedDown) {
+            double radian = (Math.PI * anglePerso) / 180;
+            camera.translate(-((float)Math.sin(radian) * mapCoefX), ((float)Math.cos(radian) * mapCoefY));
+            Debug.log(radian + " " + Math.cos(radian) + " " + Math.sin(radian));
+        }
 
         camController.update();
         camera.update();
@@ -125,6 +134,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
     } //fonction appellé toutes les frames, pour actualiser l'affichage.
+
+    public void walk() {
+
+    }
 
     @Override
     public void dispose() {
@@ -188,18 +201,59 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        camera.translate(1,0);
+        Debug.log("touch down");
+        touchedDown = true;
+        animationController.setAnimation("Take 001", -1).speed = 1.5f;
+        //camera.translate(1,0);
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Debug.log("touch up");
+        touchedDown = false;
+        animationController.setAnimation("Take 001", -1).speed = 0;
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
+        if(touchedDown) {
+            float playerX = 319;
+            float playerY = 230;
+
+            screenY = 500 - screenY;
+
+            //Debug.log(screenX + " " + screenY + " " + playerX + " " + playerY);
+
+            double OPDistance = Math.sqrt(Math.pow(playerX, 2) + Math.pow(playerY, 2));
+            double CPDistance = Math.sqrt(Math.pow((playerY - screenY), 2) + Math.pow((playerX - screenX), 2));
+
+            double OCDistance = Math.sqrt(Math.pow(OPDistance, 2) - Math.pow(CPDistance, 2));
+
+            double CB = 2 * CPDistance;
+
+            //double xb = Math.sqrt((Math.pow(CPDistance, 2) - Math.pow(playerX, 2)) / (1 + 2*playerX));
+
+            double angle = Math.asin(OCDistance/OPDistance);
+
+            Vector2 stickRelativePlayer = new Vector2(screenX - playerX, screenY - playerY);
+            float angleStick = stickRelativePlayer.angle() + 90;
+
+            instances.get(0).transform.rotate(Vector3.Y, getRelativeAngle((int)angleStick));
+            anglePerso = (int)angleStick;
+
+            Debug.log(String.valueOf(angleStick));
+        }
+
+        /*
+        if(touchedDown) {
+            Debug.log(screenX + " " + screenY + " " + pointer);
+        }
+        */
+
+        /*
         Debug.log("old x:" + oldX + " oldY : " + oldY);
         if (oldX == 0 && oldY == 0)
         {
@@ -213,6 +267,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         camera.update();
         oldX = screenX;
         oldY = screenY;
+        */
         return false;
     }
 
@@ -223,6 +278,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         float rot = MathUtils.radiansToDegrees * MathUtils.atan2(mouseY, mouseX);
         instances.get(0).transform.rotate(Vector3.Y, rot);*/
 
+        /*
         int middelX = getViewport().getScreenHeight() / 2;
         int middleY = getViewport().getScreenWidth() / 2;
 
@@ -231,6 +287,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         float rot = MathUtils.radiansToDegrees * MathUtils.atan2(mouseY, mouseX);
 
         Debug.debug(String.valueOf(screenX) + " " + screenY + " " + rot);
+        */
 
         return false;
     }
