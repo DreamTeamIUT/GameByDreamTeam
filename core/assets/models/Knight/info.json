@@ -1,0 +1,17 @@
+{
+  "name": "Knight",
+  "animation": [
+    {
+      "name": "Take 001",
+      "call_name": "Run",
+      "file": "Run",
+      "load": true
+    },
+    {
+      "name": "Take 001",
+      "call_name": "idle",
+      "file": "Run",
+      "load": true
+    }
+  ]
+}

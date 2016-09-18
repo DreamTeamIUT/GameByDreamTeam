@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="100" height="100" tilewidth="64" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="isometric" renderorder="right-down" width="100" height="100" tilewidth="64" tileheight="32" nextobjectid="12">
  <tileset firstgid="1" name="Images" tilewidth="64" tileheight="64" tilecount="7" columns="0">
   <tile id="0">
    <image width="64" height="64" source="../../../../individual_tiles/tile__01.png"/>
@@ -23,7 +23,7 @@
    <image width="64" height="43" source="../../../../individual_tiles/tile__07.png"/>
   </tile>
  </tileset>
- <layer name="Calque de Tile 1" width="100" height="100">
+ <layer name="tile" width="100" height="100">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -127,4 +127,10 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
+ <objectgroup name="col">
+  <object id="9" x="112" y="80" width="2888" height="2904"/>
+  <object id="11" x="766" y="1098">
+   <ellipse/>
+  </object>
+ </objectgroup>
 </map>

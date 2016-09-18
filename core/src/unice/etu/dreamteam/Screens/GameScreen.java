@@ -3,17 +3,16 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
@@ -37,8 +36,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private int mouseX;
     private int mouseY;
     private float mapCoefX = -3f;
-    private float mapCoefY = -1f;
-    private int anglePerso = 0;
+    private float mapCoefY = -1.5f;
+    private float anglePerso = 0;
+    private float totalTranslateX, totalTranslateY;
 
     private boolean touchedDown = false;
     private ModelAnimationManager demonCharacter;
@@ -84,13 +84,15 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         animationController.setAnimation("Take 001", -1).speed = 0;
         //animationController.setAnimation("Take 001", -1).speed = 1.5f;*/
 
-        demonCharacter = new ModelAnimationManager(CharacterList.DEAMON);
-        demonCharacter.setAnimationScale(0.2f, 0.2f, 0.2f);
-        //demonCharacter.setAnimation("Run");
-        demonCharacter.setAnimation("Walk", 1).setAnimation("Run", 1).setAnimation("idle", 1);
+        demonCharacter = new ModelAnimationManager(CharacterList.KNIGHT);
+        demonCharacter.setAnimationScale(0.5f, 0.5f, 0.5f);
+        demonCharacter.setAnimation("Run");
+        //demonCharacter.setAnimation("Walk", 1).setAnimation("Run", 1).setAnimation("idle", 1);
         demonCharacter.getAnimation().speed = 1f;
 
         map = new TmxMapLoader().load("assets/map/test.tmx"); //permet de charger la map depuis le fichier fournis en paramètre et réaliser sur tiled.
+
+
         int mapHeight = map.getProperties().get("height", Integer.class);
         int mapWidth = map.getProperties().get("width", Integer.class);
         int tileWidth = map.getProperties().get("tilewidth", Integer.class);
@@ -121,14 +123,19 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         if (touchedDown) {
             double radian = (Math.PI * anglePerso) / 180;
+            totalTranslateX += -((float) Math.sin(radian) * mapCoefX);
+            totalTranslateY += ((float) Math.cos(radian) * mapCoefY);
             camera.translate(-((float) Math.sin(radian) * mapCoefX), ((float) Math.cos(radian) * mapCoefY));
-            Debug.log(radian + " " + Math.cos(radian) + " " + Math.sin(radian));
+            //Debug.log(radian + " " + Math.cos(radian) + " " + Math.sin(radian));
+            Debug.log(totalTranslateX + " " + totalTranslateY);
         }
 
         camController.update();
         camera.update();
         renderer.setView(camera);
         renderer.render();
+
+        checkCollisions();
 
         demonCharacter.getAnimationController().update(delta);
 
@@ -139,10 +146,30 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     } //fonction appellé toutes les frames, pour actualiser l'affichage.
 
+    private void checkCollisions() {
+
+        MapLayer collisionObjectLayer = map.getLayers().get(map.getLayers().getIndex("col"));
+        collisionObjectLayer.setOpacity(1);
+        collisionObjectLayer.setVisible(true);
+        MapObjects objects = collisionObjectLayer.getObjects();
+
+
+        for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
+
+            Rectangle rectangle = rectangleObject.getRectangle();
+
+            //Debug.log(rectangle.getWidth() + " " + rectangle.getHeight()+ "  " + rectangle.getX() + " " + rectangle.getY());
+            Circle c = new Circle(totalTranslateX, totalTranslateY, 100);
+            if (Intersector.overlaps(c, rectangle)) {
+                Debug.log("COLLISION !!!!!");
+            }
+        }
+    }
 
     @Override
     public void dispose() {
         super.dispose();
+        renderer.dispose();
         modelBatch.dispose();
         instances.clear();
         //Ici on vide !
@@ -197,7 +224,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         return false;
     }
 
-    private int getRelativeAngle(int anglesDest) {
+    private float getRelativeAngle(float anglesDest) {
         return anglesDest - anglePerso;
     }
 
@@ -217,40 +244,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         touchedDown = false;
         // animationController.setAnimation("Take 001", -1).speed = 0;
         demonCharacter.setAnimation("idle");
-        demonCharacter.getAnimation().speed = 1.5f;
+        demonCharacter.getAnimation().speed = 1f;
 
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (touchedDown) {
-            float playerX = 319;
-            float playerY = 230;
 
-            screenY = 500 - screenY;
-
-            //Debug.log(screenX + " " + screenY + " " + playerX + " " + playerY);
-
-          /*  double OPDistance = Math.sqrt(Math.pow(playerX, 2) + Math.pow(playerY, 2));
-            double CPDistance = Math.sqrt(Math.pow((playerY - screenY), 2) + Math.pow((playerX - screenX), 2));
-
-            double OCDistance = Math.sqrt(Math.pow(OPDistance, 2) - Math.pow(CPDistance, 2));
-
-            double CB = 2 * CPDistance;
-
-            //double xb = Math.sqrt((Math.pow(CPDistance, 2) - Math.pow(playerX, 2)) / (1 + 2*playerX));
-
-            double angle = Math.asin(OCDistance/OPDistance);*/
-
-            Vector2 stickRelativePlayer = new Vector2(screenX - playerX, screenY - playerY);
-            float angleStick = stickRelativePlayer.angle() + 90;
-
-            demonCharacter.setAnimationRotation(getRelativeAngle((int) angleStick));
-            anglePerso = (int) angleStick;
-
-            Debug.log(String.valueOf(angleStick));
-        }
 
         /*
         if(touchedDown) {
@@ -278,6 +279,41 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+
+
+        if (touchedDown) {
+            float playerX = getViewport().getScreenWidth() / 2;
+            float playerY = getViewport().getScreenHeight() / 2;
+
+            screenY = getViewport().getScreenHeight() - screenY;
+
+            //Debug.log(screenX + " " + screenY + " " + playerX + " " + playerY);
+
+          /*  double OPDistance = Math.sqrt(Math.pow(playerX, 2) + Math.pow(playerY, 2));
+            double CPDistance = Math.sqrt(Math.pow((playerY - screenY), 2) + Math.pow((playerX - screenX), 2));
+
+            double OCDistance = Math.sqrt(Math.pow(OPDistance, 2) - Math.pow(CPDistance, 2));
+
+            double CB = 2 * CPDistance;
+
+            //double xb = Math.sqrt((Math.pow(CPDistance, 2) - Math.pow(playerX, 2)) / (1 + 2*playerX));
+
+            double angle = Math.asin(OCDistance/OPDistance);*/
+
+            Vector2 stickRelativePlayer = new Vector2(screenX - playerX, screenY - playerY);
+            float angleStick = stickRelativePlayer.angle() + 90;
+
+            if (angleStick > 360) {
+                angleStick = angleStick - 360;
+            }
+
+            demonCharacter.setAnimationRotation(getRelativeAngle(angleStick));
+            anglePerso = angleStick;
+
+            Debug.log(String.valueOf(angleStick));
+        }
+
+
       /*  mouseX = screenX;
         mouseY = getViewport().getScreenHeight() - screenY;
         float rot = MathUtils.radiansToDegrees * MathUtils.atan2(mouseY, mouseX);
