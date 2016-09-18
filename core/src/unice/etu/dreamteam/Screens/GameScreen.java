@@ -1,6 +1,5 @@
 package unice.etu.dreamteam.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -13,20 +12,16 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
+import unice.etu.dreamteam.Characters.CharacterList;
+import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
-
-import static sun.audio.AudioPlayer.player;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
 
@@ -46,6 +41,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private int anglePerso = 0;
 
     private boolean touchedDown = false;
+    private ModelAnimationManager demonCharacter;
 
     public GameScreen() {
         super(new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -58,7 +54,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         modelBatch = new ModelBatch();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
-       // environment.add(new DirectionalLight().set(0.2f, 0.2f, 0.2f, -1f, -0.8f, -0.2f));
+        // environment.add(new DirectionalLight().set(0.2f, 0.2f, 0.2f, -1f, -0.8f, -0.2f));
         Gdx.input.setInputProcessor(this);
 
         Camera cam = getCamera();
@@ -72,11 +68,12 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Gdx.input.setInputProcessor(camController);
 
         Debug.log("Loading Model");
-        assetManager.load("assets/models/Demon/Demon@Attack(1).g3db", Model.class);
-        assetManager.load("assets/models/Demon/Demon@Run.g3db", Model.class);
-        assetManager.finishLoading();
 
-        Model demon = assetManager.get("assets/models/Demon/Demon@Run.g3db", Model.class);
+      /*assetManager.load("assets/models/Demon/Demon@Attack(1).g3db", Model.class);
+        assetManager.load("assets/models/Demon/Demon@Run.g3db", Model.class);
+        assetManager.finishLoading();*/
+
+        /*Model demon = assetManager.get("assets/models/ModelAnimationManager/ModelAnimationManager@Run.g3db", Model.class);
         ModelInstance demonInstance = new ModelInstance(demon);
         demonInstance.transform.scale(0.2f,0.2f,0.2f);
 
@@ -85,7 +82,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         animationController = new AnimationController(demonInstance);
         animationController.setAnimation("Take 001", -1).speed = 0;
-        //animationController.setAnimation("Take 001", -1).speed = 1.5f;
+        //animationController.setAnimation("Take 001", -1).speed = 1.5f;*/
+
+        demonCharacter = new ModelAnimationManager(CharacterList.DEAMON);
+        demonCharacter.setAnimationScale(0.2f, 0.2f, 0.2f);
+        //demonCharacter.setAnimation("Run");
+        demonCharacter.setAnimation("Walk", 1).setAnimation("Run", 1).setAnimation("idle", 1);
+        demonCharacter.getAnimation().speed = 1f;
 
         map = new TmxMapLoader().load("assets/map/test.tmx"); //permet de charger la map depuis le fichier fournis en paramètre et réaliser sur tiled.
         int mapHeight = map.getProperties().get("height", Integer.class);
@@ -95,7 +98,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         camera = new OrthographicCamera();
         Debug.log(String.valueOf(getViewport().getWorldWidth()));
 
-        camera.setToOrtho(false, mapWidth*tileWidth, mapHeight*tileHeight);
+        camera.setToOrtho(false, mapWidth * tileWidth, mapHeight * tileHeight);
         camera.zoom = 0.2f;
 
         Debug.log(String.valueOf(camera.zoom));
@@ -111,14 +114,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-       // instances.get(0).transform.translate(0.5f,0f,0.5f);
-       // getCamera().translate(-0.5f,0f,-0.5f);
+        // instances.get(0).transform.translate(0.5f,0f,0.5f);
+        // getCamera().translate(-0.5f,0f,-0.5f);
 
         //camera.translate(mapCoefX,mapCoefY);
 
-        if(touchedDown) {
+        if (touchedDown) {
             double radian = (Math.PI * anglePerso) / 180;
-            camera.translate(-((float)Math.sin(radian) * mapCoefX), ((float)Math.cos(radian) * mapCoefY));
+            camera.translate(-((float) Math.sin(radian) * mapCoefX), ((float) Math.cos(radian) * mapCoefY));
             Debug.log(radian + " " + Math.cos(radian) + " " + Math.sin(radian));
         }
 
@@ -126,18 +129,16 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         camera.update();
         renderer.setView(camera);
         renderer.render();
-        animationController.update(delta);
+
+        demonCharacter.getAnimationController().update(delta);
 
         modelBatch.begin(getCamera());
-        modelBatch.render(instances, environment);
+        modelBatch.render(demonCharacter.getModelInstance(), environment);
         modelBatch.end();
 
 
     } //fonction appellé toutes les frames, pour actualiser l'affichage.
 
-    public void walk() {
-
-    }
 
     @Override
     public void dispose() {
@@ -166,7 +167,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        switch (character){
+        demonCharacter.setAnimation("idle");
+       /* switch (character){
             case 'z':
                 instances.get(0).transform.rotate(Vector3.Y, getRelativeAngle(180));
                 mapCoefX = 1f;
@@ -191,19 +193,20 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 mapCoefX = -1f;
                 mapCoefY = -0.5f;
                 break;
-        }
+        }*/
         return false;
     }
 
-    private int getRelativeAngle(int anglesDest){
-        return anglesDest-anglePerso;
+    private int getRelativeAngle(int anglesDest) {
+        return anglesDest - anglePerso;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Debug.log("touch down");
         touchedDown = true;
-        animationController.setAnimation("Take 001", -1).speed = 1.5f;
+        //animationController.setAnimation("Take 001", -1).speed = 1.5f;
+        demonCharacter.setAnimation("Run");
         //camera.translate(1,0);
         return false;
     }
@@ -212,14 +215,16 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Debug.log("touch up");
         touchedDown = false;
-        animationController.setAnimation("Take 001", -1).speed = 0;
+        // animationController.setAnimation("Take 001", -1).speed = 0;
+        demonCharacter.setAnimation("idle");
+        demonCharacter.getAnimation().speed = 1.5f;
+
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer)
-    {
-        if(touchedDown) {
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (touchedDown) {
             float playerX = 319;
             float playerY = 230;
 
@@ -227,7 +232,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
             //Debug.log(screenX + " " + screenY + " " + playerX + " " + playerY);
 
-            double OPDistance = Math.sqrt(Math.pow(playerX, 2) + Math.pow(playerY, 2));
+          /*  double OPDistance = Math.sqrt(Math.pow(playerX, 2) + Math.pow(playerY, 2));
             double CPDistance = Math.sqrt(Math.pow((playerY - screenY), 2) + Math.pow((playerX - screenX), 2));
 
             double OCDistance = Math.sqrt(Math.pow(OPDistance, 2) - Math.pow(CPDistance, 2));
@@ -236,13 +241,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
             //double xb = Math.sqrt((Math.pow(CPDistance, 2) - Math.pow(playerX, 2)) / (1 + 2*playerX));
 
-            double angle = Math.asin(OCDistance/OPDistance);
+            double angle = Math.asin(OCDistance/OPDistance);*/
 
             Vector2 stickRelativePlayer = new Vector2(screenX - playerX, screenY - playerY);
             float angleStick = stickRelativePlayer.angle() + 90;
 
-            instances.get(0).transform.rotate(Vector3.Y, getRelativeAngle((int)angleStick));
-            anglePerso = (int)angleStick;
+            demonCharacter.setAnimationRotation(getRelativeAngle((int) angleStick));
+            anglePerso = (int) angleStick;
 
             Debug.log(String.valueOf(angleStick));
         }

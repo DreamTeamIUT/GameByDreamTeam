@@ -1,0 +1,75 @@
+{
+  "name": "Demon",
+  "animation": [
+    {
+      "name": "Take 001",
+      "call_name": "Attack1",
+      "file": "Attack(1)"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Attack2",
+      "file": "Attack(2)"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Attack3",
+      "file": "Attack(3)",
+      "load": true
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Attack4",
+      "file": "Attack(4)"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "BlockBreakout",
+      "file": "Block_Breakout"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "BlockBreakout",
+      "file": "Block_Get_Hit"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Dead",
+      "file": "Dead"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "GetHit",
+      "file": "Get_Hit"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "idle",
+      "file": "idle",
+      "load": true
+    },
+    {
+      "name": "Take 001",
+      "call_name": "idleBlock",
+      "file": "idle_Block"
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Jump",
+      "file": "Jump",
+      "load": true
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Run",
+      "file": "Run",
+      "load": true
+    },
+    {
+      "name": "Take 001",
+      "call_name": "Walk",
+      "file": "Walk",
+      "load": true
+    }
+  ]
+}
