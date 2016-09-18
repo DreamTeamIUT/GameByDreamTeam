@@ -105,5 +105,9 @@ public class Player extends ObjectGameAnimation {
         super.drawAnimation(batch, delta);
     }
 
+    public int getLevel() {
+        return this.level;
+    }
+
 
 }
