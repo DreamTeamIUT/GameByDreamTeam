@@ -128,7 +128,7 @@
 </data>
  </layer>
  <objectgroup name="col">
-  <object id="9" x="112" y="80" width="2888" height="2904"/>
+  <object id="9" x="264" y="310" width="2212" height="2904"/>
   <object id="11" x="766" y="1098">
    <ellipse/>
   </object>

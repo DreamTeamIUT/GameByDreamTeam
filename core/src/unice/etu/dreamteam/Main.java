@@ -20,7 +20,7 @@ public class Main extends Game {
         Debug.log("Create");
 
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenList.GAME);
+        ScreenManager.getInstance().showScreen(ScreenList.Game2);
 
     }
 
