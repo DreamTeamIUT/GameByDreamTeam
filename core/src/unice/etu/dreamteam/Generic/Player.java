@@ -20,7 +20,7 @@ public class Player extends ObjectGameAnimation {
     private int nextLevel = 500;
 
 
-    private String name;
+    private String name,categorie;
 
     private int level, strength, agility, hp, mana, cleverness, experience, takeDamage, caracteristicPointStorage, spellPoint ;
 
@@ -29,6 +29,12 @@ public class Player extends ObjectGameAnimation {
     private double evadeRate, criticalRate;
 
     ArrayList<Equipment> equipments;
+
+    public Player(String path,String name, String categorie){
+        super(path,6,5,50,50);
+        this.name=name;
+        this.categorie=categorie;
+    }
 
     public Player(String path, String name) {
         super(path, 6, 5, 50, 50);
@@ -46,7 +52,9 @@ public class Player extends ObjectGameAnimation {
         this.damage = DAMAGE;
         this.takeDamage=0;
         this.caracteristicPointStorage=DEFAULT;
+        this.spellPoint=DEFAULT;
         equipments = new ArrayList<Equipment>();
+        this.categorie="Player";
 
     }
 
@@ -108,6 +116,14 @@ public class Player extends ObjectGameAnimation {
     public int getLevel() {
         return this.level;
     }
-
+    public int getStrength() { return this.strength;}
+    public int getAgility() { return this.agility; }
+    public int getCleverness() {return this.cleverness;}
+    public int getHP() {return this.hp;}
+    public int getMana() {return this.mana;}
+    public double criticalRate() {return this.criticalRate;}
+    public double EvadeRate() {return this.evadeRate;}
+    public double getDamage() {return this.damage;}
+    public String getCategorie() {return this.categorie;}
 
 }
