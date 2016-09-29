@@ -19,7 +19,7 @@ public enum ScreenList { //prédéfinition des screens dune liste
         }
     },
 
-    SLASH_SCREEN {
+    SPLASH_SCREEN {
         public AbstractScreen getScreen(Object... params) { //Première écran
             return new SplashScreen();
         }

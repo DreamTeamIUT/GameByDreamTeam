@@ -23,7 +23,7 @@ public class Main extends Game {
         Debug.log("Create");
 
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenList.SLASH_SCREEN);
+        ScreenManager.getInstance().showScreen(ScreenList.SPLASH_SCREEN);
 
         final long startTime = System.currentTimeMillis();
 
