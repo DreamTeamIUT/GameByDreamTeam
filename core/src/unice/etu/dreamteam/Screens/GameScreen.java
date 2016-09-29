@@ -37,7 +37,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private int mouseX;
     private int mouseY;
     private float mapCoefX = -3f;
-    private float mapCoefY = -1f;
+    private float mapCoefY = -2.5f;
     private int anglePerso = 0;
 
     private boolean touchedDown = false;
