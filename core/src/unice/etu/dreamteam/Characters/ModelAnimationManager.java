@@ -51,6 +51,7 @@ public class ModelAnimationManager implements Disposable {
         }
 
         Debug.log(callList.toString());
+        setAnimation(callList.get(0));
     }
 
     private String getFilePath(String file) {
