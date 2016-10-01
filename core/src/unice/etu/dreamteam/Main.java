@@ -7,8 +7,6 @@ import com.badlogic.gdx.utils.Timer;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ScreenList;
 import unice.etu.dreamteam.Utils.ScreenManager;
-import unice.etu.dreamteam.audio.MusicSample;
-import unice.etu.dreamteam.preferences.GamePreferences;
 
 public class Main extends Game {
     private static long SPLASH_SCREEN_DURATION = 2000L;

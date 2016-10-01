@@ -1,7 +1,6 @@
 package unice.etu.dreamteam.Screens;
 
 import unice.etu.dreamteam.Maps.TiledMapSample;
-import unice.etu.dreamteam.audio.MusicSample;
 
 public class GameScreen extends AbstractScreen {
 
@@ -11,18 +10,18 @@ public class GameScreen extends AbstractScreen {
         //Ici on load les assets
 
 
-        new MusicSample();
+        //new MusicListener();
     }
 
     @Override
     public void buildStage() {
-         map = new TiledMapSample();
+         //map = new TiledMapSample();
     }
 
     @Override
     public void render(float delta) {
        super.render(delta); //Fait appel à la fonction de abstractScreen
-        map.render();
+        //map.render();
         //Fait appel à la fonction render de map.
     } //fonction appellé toutes les frames, pour actualiser l'affichage.
 
