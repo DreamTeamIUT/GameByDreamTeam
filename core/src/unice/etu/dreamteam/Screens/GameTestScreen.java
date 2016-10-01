@@ -15,8 +15,12 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -26,6 +30,8 @@ import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.awt.geom.AffineTransform;
+
+import static com.badlogic.gdx.Gdx.input;
 
 /**
  * Created by Guillaume on 26/09/2016.
@@ -49,6 +55,10 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
     private float totalTranslateX, totalTranslateY;
     private boolean touchedDown = false;
     private ShapeRenderer shapeRenderer;
+    private Matrix4 isoTransform;
+    private Matrix4 invIsotransform;
+    private Vector3 pos = new Vector3(0, 0,0);
+    private boolean run;
 
 
     public GameTestScreen() {
@@ -57,6 +67,17 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public void buildStage() {
+
+        isoTransform = new Matrix4();
+        isoTransform.idt();
+
+        // isoTransform.translate(0, 32, 0);
+        isoTransform.scale((float) (Math.sqrt(2.0) / 2.0), (float) (Math.sqrt(2.0) / 4.0), 1.0f);
+        isoTransform.rotate(0.0f, 0.0f, 1.0f, -45);
+
+        // ... and the inverse matrix
+        invIsotransform = new Matrix4(isoTransform);
+        invIsotransform.inv();
 
         globCam = (OrthographicCamera) getCamera();
 
@@ -71,7 +92,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
         camera.update();
 
         camController = new CameraInputController(camera);
-        Gdx.input.setInputProcessor(camController);
+        input.setInputProcessor(camController);
 
 
         demonCharacter = new ModelAnimationManager(CharacterList.KNIGHT);
@@ -84,20 +105,21 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
         map = new TmxMapLoader().load("assets/map/test.tmx"); //permet de charger la map depuis le fichier fournis en paramètre et réaliser sur tiled.
 
 
-       /* int mapHeight = map.getProperties().get("height", Integer.class);
+        int mapHeight = map.getProperties().get("height", Integer.class);
         int mapWidth = map.getProperties().get("width", Integer.class);
         int tileWidth = map.getProperties().get("tilewidth", Integer.class);
-        int tileHeight = map.getProperties().get("tileheight", Integer.class);*/
+        int tileHeight = map.getProperties().get("tileheight", Integer.class);
 
-        //globCam.setToOrtho(false, mapWidth * tileWidth, mapHeight * tileHeight);
-        globCam.zoom = 1f;
-        globCam.update();
 
         spriteBatch = new SpriteBatch();
 
 
         renderer = new IsometricTiledMapRenderer(map, spriteBatch);
 
+       // globCam.setToOrtho(false, mapWidth, mapHeight);
+        globCam.zoom = 1f;
+        globCam.update();
+        renderer.setView(globCam);
 
         modelBatch = new ModelBatch();
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, this.getViewport().getScreenWidth(), this.getViewport().getScreenHeight(), false);
@@ -105,7 +127,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
         shapeRenderer = new ShapeRenderer();
 
-        Gdx.input.setInputProcessor(this);
+        input.setInputProcessor(this);
     }
 
     @Override
@@ -113,14 +135,14 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
         super.render(delta);
 
 
-        if (touchedDown) {
+      /*  if (touchedDown) {
             double radian = (Math.PI * anglePerso) / 180;
             totalTranslateX += -((float) Math.sin(radian) * mapCoefX);
             totalTranslateY += ((float) Math.cos(radian) * mapCoefY);
             globCam.translate(-((float) Math.sin(radian) * mapCoefX), ((float) Math.cos(radian) * mapCoefY));
             //Debug.log(radian + " " + Math.cos(radian) + " " + Math.sin(radian));
             // Debug.log(totalTranslateX + " " + totalTranslateY);
-        }
+        }*/
 
 
         globCam.update();
@@ -147,34 +169,77 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
         if (texture != null) {
 
-            textureRegion = new TextureRegion(texture);
+            textureRegion = new TextureRegion(texture, frameBuffer.getWidth() / 2 - 80, frameBuffer.getHeight() / 2 - 15, frameBuffer.getWidth() / 2 - 160, frameBuffer.getHeight() / 2 - 140);
             textureRegion.flip(false, true);
 
+
             //spriteBatch.setTransformMatrix(matrix);
-            //Debug.log("w : "+ textureRegion.getRegionWidth() + " h :" + textureRegion.getRegionHeight());
+            //Debug.log("TextureRegion", "w : "+ textureRegion.getRegionWidth() + " h :" + textureRegion.getRegionHeight() + " x: "+ textureRegion.getRegionX() + " y: "+ textureRegion.getRegionY());
             //  getBatch().setProjectionMatrix(globCam.combined);
             //   getBatch().setTransformMatrix(matrix);
 
 
-            //  shapeRenderer.setTransformMatrix(matrix);
-            //shapeRenderer.setProjectionMatrix(globCam.combined);
-/*
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(80 / 255.0f, 80 / 255.0f, 50 / 255.0f, 1);
-            shapeRenderer.rect(0, 0, 160, 160);
-            shapeRenderer.end();*/
+          /*  shapeRenderer.setTransformMatrix(isoTransform);
+            shapeRenderer.setProjectionMatrix(globCam.combined);
 
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(80 / 255.0f, 80 / 255.0f, 50 / 255.0f, 0.5f);
+            shapeRenderer.rect(0, 0, 64, 64);
+            shapeRenderer.end();
+*/
             //Debug.log("X: "+renderer.getViewBounds().getX() + " Y: "+ renderer.getViewBounds().getY() +" Unit: "+ renderer.getUnitScale());
 
-            //TODO : Matrix Change axis !
+
+            TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("tile");
+            TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
+            c.setTile(map.getTileSets().getTileSet("Images").getTile(6));
+
+            layer.setCell(0, 0, c);
+            layer.setCell(5, 5, c);
+            layer.setCell(2, 7, c);
+            layer.setCell(3, 0, c);
+
+
+            if (input.isKeyPressed(Input.Keys.S)) {
+                totalTranslateX += 64*delta*1.5;
+                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+                //pos.rotate(-40);
+                pos.rot(isoTransform);
+
+            } else if (input.isKeyPressed(Input.Keys.Z)) {
+                totalTranslateX -= 64*delta*1.5;
+                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+                //pos.rotate(-40);
+                pos.rot(isoTransform);
+            }
+            else if (input.isKeyPressed(Input.Keys.Q)) {
+                totalTranslateY -= 64*delta*1.5;
+                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+                //pos.rotate(-40);
+                pos.rot(isoTransform);
+            }
+            else if (input.isKeyPressed(Input.Keys.D)) {
+                totalTranslateY += 64*delta*1.5;
+                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+                //pos.rotate(-40);
+                pos.rot(isoTransform);
+            }
+
 
             spriteBatch.begin();
-            Sprite sprite = new Sprite(new Texture(Gdx.files.internal("individual_tiles/tile__87.png")));
-            sprite.setPosition(0, 0);
-            sprite.setColor(Color.GOLD);
+
+            spriteBatch.draw(textureRegion, pos.x, pos.y);
+            spriteBatch.end();
+
+            //map.getLayers().get("tile");
+          /*  Sprite sprite = new Sprite(new Texture(Gdx.files.internal("individual_tiles/tile__64.png")));
+            Vector2 pos = getIsoPosition(5,5);
+            sprite.setPosition(pos.x, pos.y);
+            sprite.setColor(Color.WHITE);
             sprite.draw(spriteBatch);
             spriteBatch.draw(textureRegion, 0, 0);
-            spriteBatch.end();
+            spriteBatch.end();*/
+
 
             frameBuffer.dispose();
             frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, this.getViewport().getScreenWidth(), this.getViewport().getScreenHeight(), false);
@@ -183,21 +248,57 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
     }
 
+    public Vector2 getIsoPosition(float x, float y) {
+        int tileWidth = map.getProperties().get("tilewidth", Integer.class);
+        int tileHeight = map.getProperties().get("tileheight", Integer.class);
+        return new Vector2(x * tileWidth, y * tileHeight);
+    }
 
     @Override
     public boolean keyDown(int keycode) {
+        Debug.log("down" + keycode);
+        switch (keycode){
+            case Input.Keys.D:
+                demonCharacter.setAnimation("walk");
+                demonCharacter.setAnimationRotation(getRelativeAngle(180));
+                anglePerso = 180;
+                break;
+            case Input.Keys.Z:
+                demonCharacter.setAnimation("walk");
+                demonCharacter.setAnimationRotation(getRelativeAngle(270));
+                anglePerso = 270;
+                break;
+            case Input.Keys.S:
+                demonCharacter.setAnimation("walk");
+                demonCharacter.setAnimationRotation(getRelativeAngle(90));
+                anglePerso = 90;
+                break;
+            case Input.Keys.Q:
+                demonCharacter.setAnimation("walk");
+                demonCharacter.setAnimationRotation(getRelativeAngle(360));
+                anglePerso = 0;
+                break;
+
+        }
+        demonCharacter.getAnimation().speed = 1f;
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        Debug.log("up");
+        switch (keycode){
+            default:
+                demonCharacter.setAnimation("idle");
+                demonCharacter.getAnimation().speed = 1f;
+        }
+
         return false;
     }
 
     @Override
     public boolean keyTyped(char character) {
-        demonCharacter.setAnimation("idle");
-       /* switch (character){
+        /* switch (character){
             case 'z':
                 instances.get(0).transform.rotate(Vector3.Y, getRelativeAngle(180));
                 mapCoefX = 1f;
@@ -229,21 +330,21 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Debug.log("touch down");
+        /*Debug.log("touch down");
         touchedDown = true;
         //animationController.setAnimation("Take 001", -1).speed = 1.5f;
         demonCharacter.setAnimation("Run");
-        //camera.translate(1,0);
+        //camera.translate(1,0);*/
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Debug.log("touch up");
+     /*   Debug.log("touch up");
         touchedDown = false;
         // animationController.setAnimation("Take 001", -1).speed = 0;
         demonCharacter.setAnimation("idle");
-        demonCharacter.getAnimation().speed = 1f;
+        demonCharacter.getAnimation().speed = 1f;*/
 
         return false;
     }
@@ -278,7 +379,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        float playerX = getViewport().getScreenWidth() / 2;
+       /* float playerX = getViewport().getScreenWidth() / 2;
         float playerY = getViewport().getScreenHeight() / 2;
 
         screenY = getViewport().getScreenHeight() - screenY;
@@ -293,7 +394,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
         demonCharacter.setAnimationRotation(getRelativeAngle(angleStick));
         anglePerso = angleStick;
 
-        Debug.log(String.valueOf(angleStick));
+        Debug.log(String.valueOf(angleStick));*/
         return false;
     }
 
