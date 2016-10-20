@@ -57,7 +57,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
     private ShapeRenderer shapeRenderer;
     private Matrix4 isoTransform;
     private Matrix4 invIsotransform;
-    private Vector3 pos = new Vector3(0, 0,0);
+    private Vector3 pos = new Vector3(0, 0, 0);
     private boolean run;
 
 
@@ -116,7 +116,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
 
         renderer = new IsometricTiledMapRenderer(map, spriteBatch);
 
-       // globCam.setToOrtho(false, mapWidth, mapHeight);
+        // globCam.setToOrtho(false, mapWidth, mapHeight);
         globCam.zoom = 1f;
         globCam.update();
         renderer.setView(globCam);
@@ -190,45 +190,45 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
             //Debug.log("X: "+renderer.getViewBounds().getX() + " Y: "+ renderer.getViewBounds().getY() +" Unit: "+ renderer.getUnitScale());
 
 
-            TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("tile");
-            TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
-            c.setTile(map.getTileSets().getTileSet("Images").getTile(6));
-
-            layer.setCell(0, 0, c);
-            layer.setCell(5, 5, c);
-            layer.setCell(2, 7, c);
-            layer.setCell(3, 0, c);
-
-
             if (input.isKeyPressed(Input.Keys.S)) {
-                totalTranslateX += 64*delta*1.5;
-                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+                //totalTranslateX += 64 * delta * 1.5;
+                totalTranslateX += 32;
+                pos = new Vector3(totalTranslateX, totalTranslateY, 0);
                 //pos.rotate(-40);
                 pos.rot(isoTransform);
 
             } else if (input.isKeyPressed(Input.Keys.Z)) {
-                totalTranslateX -= 64*delta*1.5;
-                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+                //totalTranslateX -= 64 * delta * 1.5;
+                totalTranslateX -= 32;
+                pos = new Vector3(totalTranslateX, totalTranslateY, 0);
                 //pos.rotate(-40);
                 pos.rot(isoTransform);
-            }
-            else if (input.isKeyPressed(Input.Keys.Q)) {
-                totalTranslateY -= 64*delta*1.5;
-                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+            } else if (input.isKeyPressed(Input.Keys.Q)) {
+                //totalTranslateY -= 64 * delta * 1.5;
+                totalTranslateY -= 64;
+                pos = new Vector3(totalTranslateX, totalTranslateY, 0);
                 //pos.rotate(-40);
                 pos.rot(isoTransform);
-            }
-            else if (input.isKeyPressed(Input.Keys.D)) {
-                totalTranslateY += 64*delta*1.5;
-                pos = new Vector3(totalTranslateX, totalTranslateY,0);
+            } else if (input.isKeyPressed(Input.Keys.D)) {
+                //totalTranslateY += 64 * delta * 1.5;
+                totalTranslateY += 64;
+                pos = new Vector3(totalTranslateX, totalTranslateY, 0);
                 //pos.rotate(-40);
                 pos.rot(isoTransform);
             }
 
+            //Debug.log("pos x:"+pos.x+" "+ totalTranslateX +" y:"+pos.y +" "+totalTranslateY);
+            getCurrentCell();
 
             spriteBatch.begin();
 
-            spriteBatch.draw(textureRegion, pos.x, pos.y);
+            Sprite sprite = new Sprite(new Texture(Gdx.files.internal("individual_tiles/tile__64.png")));
+            sprite.setPosition(pos.x, pos.y);
+            sprite.setColor(Color.WHITE);
+            sprite.draw(spriteBatch);
+            //spriteBatch.draw(textureRegion, pos.x - 64, pos.y);
+
+
             spriteBatch.end();
 
             //map.getLayers().get("tile");
@@ -254,10 +254,28 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
         return new Vector2(x * tileWidth, y * tileHeight);
     }
 
+    public void getCurrentCell() {
+        int x = (int) Math.abs(Math.floor(totalTranslateX / 32)), y = (int) Math.abs(Math.floor(totalTranslateY / 64));
+        // Debug.log("x:" + x + " y:" + y);
+        Debug.log(pos.x + " " + pos.y + " " + getViewport().getScreenHeight() + " " + getViewport().getScreenWidth());
+        TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(0);
+        TiledMapTileLayer.Cell c = l.getCell(x, y);
+        TiledMapTile tile = map.getTileSets().getTileSet(0).getTile(2);
+
+        if (c != null) {
+            c.setTile(tile);
+        } else {
+            c = new TiledMapTileLayer.Cell();
+            c.setTile(tile);
+        }
+        l.setCell(x, y, c);
+
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         Debug.log("down" + keycode);
-        switch (keycode){
+        switch (keycode) {
             case Input.Keys.D:
                 demonCharacter.setAnimation("walk");
                 demonCharacter.setAnimationRotation(getRelativeAngle(180));
@@ -287,7 +305,7 @@ public class GameTestScreen extends AbstractScreen implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         Debug.log("up");
-        switch (keycode){
+        switch (keycode) {
             default:
                 demonCharacter.setAnimation("idle");
                 demonCharacter.getAnimation().speed = 1f;
