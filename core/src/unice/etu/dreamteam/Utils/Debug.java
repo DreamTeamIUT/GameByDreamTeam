@@ -1,6 +1,8 @@
 package unice.etu.dreamteam.Utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class Debug { //que du statique, raccourci debug.
     public static void log(String tag, String message) {
@@ -38,5 +40,13 @@ public class Debug { //que du statique, raccourci debug.
 
     public static void position(float... pos) {
         position("Logger-Position", pos);
+    }
+
+    public static void vector(Vector3 v) {
+        log("Logger-Vector3", "x:" + v.x + " y:" + v.y + " z:" + v.z);
+    }
+
+    public static void vector(Vector2 v) {
+        log("Logger-Vector2", "x:" + v.x + " y:" + v.y);
     }
 }
