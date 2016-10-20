@@ -26,4 +26,17 @@ public class Debug { //que du statique, raccourci debug.
     public static void debug(String message) {
         Gdx.app.debug("Debug", message);
     }
+
+
+    public static void position(String tag, float... positions) {
+        String message = "";
+        for (float pos : positions) {
+            message += " " + pos;
+        }
+        log(tag, message);
+    }
+
+    public static void position(float... pos) {
+        position("Logger-Position", pos);
+    }
 }
