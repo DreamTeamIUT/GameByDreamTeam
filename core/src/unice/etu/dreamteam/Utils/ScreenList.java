@@ -22,6 +22,12 @@ public enum ScreenList { //prédéfinition des screens dune liste
         }
     },
 
+    Game3 {
+        public AbstractScreen getScreen(Object... params) { //retourne une nouvelle instance avec les paramètres du screen
+            return new IsometricCalc();
+        }
+    },
+
     SLASH_SCREEN {
         public AbstractScreen getScreen(Object... params) { //Première écran
             return new SplashScreen();
