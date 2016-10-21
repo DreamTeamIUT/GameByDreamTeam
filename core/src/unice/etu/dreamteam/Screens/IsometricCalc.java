@@ -6,28 +6,20 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.sun.javafx.scene.paint.GradientUtils;
-import unice.etu.dreamteam.Characters.CharacterList;
-import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
 
 import static com.badlogic.gdx.Gdx.input;
-import static com.badlogic.gdx.graphics.g2d.ParticleEmitter.SpawnShape.point;
 
 /**
  * Created by Guillaume on 26/09/2016.
@@ -58,7 +50,8 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         isoTransform.idt();
 
         // isoTransform.translate(0, 32, 0);
-        isoTransform.scale((float) (Math.sqrt(2.0) / 2.0), (float) (Math.sqrt(2.0) / 4.0), 1.0f);
+        isoTransform.scale((float) (Math.sqrt(2.0)), (float) (Math.sqrt(2.0) / 2), 1.0f);
+        //isoTransform.scale((float) (Math.sqrt(2.0)/2), (float) (Math.sqrt(2.0) / 4.0), 1.0f);
         isoTransform.rotate(0.0f, 0.0f, 1.0f, -45);
 
         // ... and the inverse matrix
@@ -88,7 +81,29 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
         shapeRenderer = new ShapeRenderer();
 
+
+     /*   RectangleMapObject obj = (RectangleMapObject) map.getLayers().get("obj").getObjects().get(0);
+        Rectangle r = obj.getRectangle();
+        Debug.position(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        convertPos(r);*/
+
+
         input.setInputProcessor(this);
+    }
+
+    private Vector3 convertPos(Rectangle r) {
+
+
+        Vector3 cell = new Vector3();
+        cell.x = (float) Math.floor((32 + r.getX()) / 32);
+        cell.y = (float) Math.floor((32 + r.getY()) / 32);
+
+        Debug.vector(cell);
+
+        Vector3 dest = getPosAtCell(cell.x, cell.y);
+
+        Debug.vector(dest);
+        return dest;
     }
 
     @Override
@@ -98,26 +113,46 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
         globCam.update();
 
+
         spriteBatch.begin();
 
         Sprite sprite = new Sprite(new Texture(Gdx.files.internal("individual_tiles/tile__64.png")));
+
         sprite.setPosition(pos.x, pos.y);
         sprite.setColor(Color.WHITE);
         sprite.draw(spriteBatch);
 
         spriteBatch.end();
 
+        shapeRenderer.setProjectionMatrix(globCam.combined);
+        shapeRenderer.setTransformMatrix(isoTransform);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0, 1, 0, 1);
+
+        MapObjects obj = (MapObjects) map.getLayers().get("obj").getObjects();
+
+        for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
+
+            //TODO : If scal isoTransform sqrt 2 sqrt 2/2 1 dim ok Else dim = 2x small but manual tile missplaced !
+            Rectangle r = rectangleObject.getRectangle();
+            //Debug.position(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+
+
+            shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        }
+        shapeRenderer.end();
+
+
         renderer.setView(globCam);
         renderer.render();
 
 
-        getCurrentCell();
-
-
     }
 
-    public void getCurrentCell() {
-
+    public Vector3 getPosAtCell(float x, float y) {
+        Vector3 dest = new Vector3(32 * x, 32 * y, 0);
+        dest.rot(isoTransform);
+        return dest;
     }
 
     @Override
@@ -127,7 +162,11 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.D:
+                Debug.log("D");
 
+        }
         return false;
     }
 
@@ -139,13 +178,25 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        Debug.vector(pos);
+
         Vector3 point = new Vector3(screenX + 16, screenY + 32, 0);
 
         globCam.unproject(point);
+
         point.x /= tileWidth;
         point.y = (point.y - tileHeight / 2) / tileHeight + point.x;
         point.x -= point.y - point.x;
-        Debug.log(" x:" + point.x + " y:" + point.y);
+
+        point.x = (float) Math.floor(point.x);
+        point.y = (float) Math.floor(point.y);
+
+        Debug.vector(point);
+
+        pos = getPosAtCell(point.x, point.y);
+
+
 
         TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(0);
         TiledMapTileLayer.Cell cell = l.getCell((int) Math.floor(point.x), (int) Math.floor(point.y));
@@ -183,10 +234,6 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         return false;
     }
 
-/*    private float getRelativeAngle(float anglesDest) {
-        return anglesDest - anglePerso;
-    }
-*/
 
     @Override
     public void dispose() {
