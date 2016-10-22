@@ -3,14 +3,17 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
@@ -18,10 +21,12 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import unice.etu.dreamteam.Map.LayerManager;
 import unice.etu.dreamteam.Player;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.badlogic.gdx.Gdx.input;
 
@@ -42,6 +47,8 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
     private Integer mapWidth;
     private Player player;
     private Integer mapHeight;
+    private java.util.List<Integer> listLayers;
+    private LayerManager layerManager;
 
 
     public IsometricCalc() {
@@ -79,6 +86,8 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
         spriteBatch = new SpriteBatch();
 
+        layerManager = new LayerManager(map);
+        layerManager.setLayersOpacity(0.3f);
 
         renderer = new IsometricTiledMapRenderer(map, spriteBatch);
 
@@ -88,12 +97,6 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         renderer.setView(globCam);
 
         shapeRenderer = new ShapeRenderer();
-
-
-     /*   RectangleMapObject obj = (RectangleMapObject) map.getLayers().get("obj").getObjects().get(0);
-        Rectangle r = obj.getRectangle();
-        Debug.position(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-        convertPos(r);*/
 
 
         input.setInputProcessor(this);
@@ -118,9 +121,10 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
     public void render(float delta) {
         super.render(delta);
 
-
         globCam.update();
 
+        shapeRenderer.setProjectionMatrix(globCam.combined);
+        shapeRenderer.setTransformMatrix(isoTransform);
 
         spriteBatch.begin();
 
@@ -129,38 +133,25 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         sprite.setPosition(pos.x, pos.y);
         sprite.setColor(Color.WHITE);
         sprite.draw(spriteBatch);
-
         spriteBatch.end();
 
-        shapeRenderer.setProjectionMatrix(globCam.combined);
-        shapeRenderer.setTransformMatrix(isoTransform);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0, 1, 0, 1);
-
-        MapObjects obj = (MapObjects) map.getLayers().get("obj").getObjects();
-
-        for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
-
-            Rectangle r = rectangleObject.getRectangle();
-            //Debug.position(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-            shapeRenderer.rect(r.getX() - 16, r.getY() + 16, r.getWidth(), r.getHeight());
-        }
-
-        shapeRenderer.end();
-
-
         renderer.setView(globCam);
-        renderer.render();
+
+        layerManager.debugObjectLayer(shapeRenderer);
+        renderer.render(layerManager.getBeforeLayers());
+        drawPlayer();
+
+        renderer.render(layerManager.getAfterLayers());
+    }
 
 
+    private void drawPlayer() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 1f, 1);
         shapeRenderer.rect(player.getRectangle().x - 16, player.getRectangle().y + 16, player.getRectangle().getWidth(), player.getRectangle().getHeight());
         shapeRenderer.setColor(0, 0, 1f, 1);
         shapeRenderer.rect(player.getRectangle().x - 16 - 2 * 16, player.getRectangle().y + 16 + 2 * 16, player.getRectangle().getWidth(), player.getRectangle().getHeight());
         shapeRenderer.end();
-
-
     }
 
     public Vector3 getPosAtCell(float x, float y) {
@@ -207,11 +198,24 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
     private boolean detectSimpleColision(Player player) {
 
-        //return Intersector.overlaps(r1, r2);
+
+        if (player.getCurentCells().x >= 10 || player.getCurentCells().y >= 10 || player.getCurentCells().x < 0 || player.getCurentCells().y < 0)
+            return true;
 
         ArrayList<Boolean> listIntersect = new ArrayList<Boolean>();
 
-        MapObjects obj = map.getLayers().get("obj").getObjects();
+        TiledMapTileLayer layer = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
+        TiledMapTileLayer.Cell currentCell = layer.getCell((int) player.getCurentCells().x, (int) player.getCurentCells().y);
+        if (currentCell != null) {
+            Integer type = currentCell.getTile().getProperties().get("type", Integer.class);
+            if (type != null) {
+                if (type == 1)
+                    Debug.log("Special celll");
+            }
+        }
+
+
+        MapObjects obj = layerManager.getCurrentObjectLayer().getObjects();
         for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
 
             Rectangle r = rectangleObject.getRectangle();

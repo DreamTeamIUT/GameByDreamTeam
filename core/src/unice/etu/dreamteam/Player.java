@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Player {
     private Vector2 curentCells;
     private Rectangle playerZone;
+    private int currentLayerId = 0;
 
     public Player() {
         curentCells = new Vector2(0, 0);
@@ -23,6 +24,7 @@ public class Player {
         playerZone.x = 32 * getCurentCells().x;
         playerZone.y = 32 * getCurentCells().y;
     }
+
 
     public void moveToLeft() {
         curentCells.x--;
