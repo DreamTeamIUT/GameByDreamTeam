@@ -182,28 +182,24 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
                 if (detectSimpleColision(player)) {
                     player.moveToLeft();
                 }
-                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
             case Input.Keys.Q:
                 player.moveToLeft();
                 if (detectSimpleColision(player)) {
                     player.moveToRight();
                 }
-                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
             case Input.Keys.Z:
                 player.moveToUp();
                 if (detectSimpleColision(player)) {
                     player.moveToDown();
                 }
-                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
             case Input.Keys.S:
                 player.moveToDown();
                 if (detectSimpleColision(player)) {
                     player.moveToUp();
                 }
-                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
         }
         return false;
@@ -256,7 +252,7 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         player.setCell((int) point.x, (int) point.y);
 
 
-        TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(1);
+        /*TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(1);
         TiledMapTileLayer.Cell cell = l.getCell((int) Math.floor(point.x), (int) Math.floor(point.y));
         TiledMapTile tile = map.getTileSets().getTileSet(0).getTile(2);
         if (cell != null)
@@ -265,7 +261,7 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
             cell = new TiledMapTileLayer.Cell();
             cell.setTile(tile);
             l.setCell((int) Math.floor(point.x), (int) Math.floor(point.y), cell);
-        }
+        }*/
 
         return false;
     }
