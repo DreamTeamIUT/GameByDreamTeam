@@ -1,9 +1,6 @@
 package unice.etu.dreamteam.Utils;
 
-import unice.etu.dreamteam.Screens.AbstractScreen;
-import unice.etu.dreamteam.Screens.GameScreen;
-import unice.etu.dreamteam.Screens.MainMenuScreen;
-import unice.etu.dreamteam.Screens.SplashScreen;
+import unice.etu.dreamteam.Screens.*;
 
 
 public enum ScreenList { //prédéfinition des screens dune liste
@@ -16,6 +13,18 @@ public enum ScreenList { //prédéfinition des screens dune liste
     GAME {
         public AbstractScreen getScreen(Object... params) { //retourne une nouvelle instance avec les paramètres du screen
             return new GameScreen();
+        }
+    },
+
+    Game2 {
+        public AbstractScreen getScreen(Object... params) { //retourne une nouvelle instance avec les paramètres du screen
+            return new GameTestScreen();
+        }
+    },
+
+    Game3 {
+        public AbstractScreen getScreen(Object... params) { //retourne une nouvelle instance avec les paramètres du screen
+            return new IsometricCalc();
         }
     },
 

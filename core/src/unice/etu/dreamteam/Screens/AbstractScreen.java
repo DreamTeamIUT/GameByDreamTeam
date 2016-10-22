@@ -43,7 +43,10 @@ public abstract class AbstractScreen extends Stage implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        getViewport().update(width, height);
+        getCamera().viewportHeight = height;
+        getCamera().viewportWidth = width;
+        // getViewport().update(width,height);
+        getCamera().update();
     }//mise à jour taille.
 
     @Override

@@ -10,7 +10,13 @@
     {
       "name": "Take 001",
       "call_name": "idle",
-      "file": "Run",
+      "file": "Idle",
+      "load": true
+    },
+    {
+      "name": "Take 001",
+      "call_name": "walk",
+      "file": "Walk",
       "load": true
     }
   ]
