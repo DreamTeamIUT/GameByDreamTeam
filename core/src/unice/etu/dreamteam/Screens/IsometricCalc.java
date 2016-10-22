@@ -143,16 +143,22 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
             Rectangle r = rectangleObject.getRectangle();
             //Debug.position(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-            shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+            shapeRenderer.rect(r.getX() - 16, r.getY() + 16, r.getWidth(), r.getHeight());
         }
 
-        shapeRenderer.setColor(0, 0, 1, 1);
-        shapeRenderer.rect(player.getRectangle().x, player.getRectangle().y, player.getRectangle().getWidth(), player.getRectangle().getHeight());
         shapeRenderer.end();
 
 
         renderer.setView(globCam);
         renderer.render();
+
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 1f, 1);
+        shapeRenderer.rect(player.getRectangle().x - 16, player.getRectangle().y + 16, player.getRectangle().getWidth(), player.getRectangle().getHeight());
+        shapeRenderer.setColor(0, 0, 1f, 1);
+        shapeRenderer.rect(player.getRectangle().x - 16 - 2 * 16, player.getRectangle().y + 16 + 2 * 16, player.getRectangle().getWidth(), player.getRectangle().getHeight());
+        shapeRenderer.end();
 
 
     }
@@ -176,28 +182,28 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
                 if (detectSimpleColision(player)) {
                     player.moveToLeft();
                 }
-                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
             case Input.Keys.Q:
                 player.moveToLeft();
                 if (detectSimpleColision(player)) {
                     player.moveToRight();
                 }
-                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
             case Input.Keys.Z:
                 player.moveToUp();
                 if (detectSimpleColision(player)) {
                     player.moveToDown();
                 }
-                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
             case Input.Keys.S:
                 player.moveToDown();
                 if (detectSimpleColision(player)) {
                     player.moveToUp();
                 }
-                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                pos = getPosAtCell(player.getCurentCells().x - 16 - 2 * 16, player.getCurentCells().y + 16 + 2 * 16);
                 break;
         }
         return false;
@@ -250,7 +256,7 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         player.setCell((int) point.x, (int) point.y);
 
 
-        TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(0);
+        TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(1);
         TiledMapTileLayer.Cell cell = l.getCell((int) Math.floor(point.x), (int) Math.floor(point.y));
         TiledMapTile tile = map.getTileSets().getTileSet(0).getTile(2);
         if (cell != null)
