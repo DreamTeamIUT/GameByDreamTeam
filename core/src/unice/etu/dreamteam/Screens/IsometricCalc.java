@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import unice.etu.dreamteam.Player;
 import unice.etu.dreamteam.Utils.Debug;
 
 import static com.badlogic.gdx.Gdx.input;
@@ -36,6 +37,7 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
     private Integer tileWidth;
     private Integer tileHeight;
     private Integer mapWidth;
+    private Player player;
     private Integer mapHeight;
 
 
@@ -67,6 +69,9 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         mapWidth = map.getProperties().get("width", Integer.class);
         tileWidth = map.getProperties().get("tilewidth", Integer.class);
         tileHeight = map.getProperties().get("tileheight", Integer.class);
+
+        player = new Player();
+        player.setCell(0, 0);
 
 
         spriteBatch = new SpriteBatch();
@@ -133,13 +138,12 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
 
         for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
 
-            //TODO : If scal isoTransform sqrt 2 sqrt 2/2 1 dim ok Else dim = 2x small but manual tile missplaced !
             Rectangle r = rectangleObject.getRectangle();
             //Debug.position(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-
-
             shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
+
+
         shapeRenderer.end();
 
 
@@ -164,8 +168,21 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.D:
-                Debug.log("D");
-
+                player.moveToRight();
+                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                break;
+            case Input.Keys.Q:
+                player.moveToLeft();
+                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                break;
+            case Input.Keys.Z:
+                player.moveToUp();
+                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                break;
+            case Input.Keys.S:
+                player.moveToDown();
+                pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
+                break;
         }
         return false;
     }
@@ -195,7 +212,6 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         Debug.vector(point);
 
         pos = getPosAtCell(point.x, point.y);
-
 
 
         TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(0);
