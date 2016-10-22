@@ -20,6 +20,7 @@ public class StoryLoader {
     private ArrayList<SoundEffect> sounds;
     private ArrayList<Mob> mobs;
 
+    private ArrayList<JsonValue> zones;
     private ArrayList<JsonValue> gates;
 
     public StoryLoader(String src) {
