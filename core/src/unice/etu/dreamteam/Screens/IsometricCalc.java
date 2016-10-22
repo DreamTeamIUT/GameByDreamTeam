@@ -14,11 +14,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import unice.etu.dreamteam.Player;
 import unice.etu.dreamteam.Utils.Debug;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.Gdx.input;
 
@@ -143,7 +146,8 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
             shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
 
-
+        shapeRenderer.setColor(0, 0, 1, 1);
+        shapeRenderer.rect(player.getRectangle().x, player.getRectangle().y, player.getRectangle().getWidth(), player.getRectangle().getHeight());
         shapeRenderer.end();
 
 
@@ -169,22 +173,53 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         switch (keycode) {
             case Input.Keys.D:
                 player.moveToRight();
+                if (detectSimpleColision(player)) {
+                    player.moveToLeft();
+                }
                 pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
                 break;
             case Input.Keys.Q:
                 player.moveToLeft();
+                if (detectSimpleColision(player)) {
+                    player.moveToRight();
+                }
                 pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
                 break;
             case Input.Keys.Z:
                 player.moveToUp();
+                if (detectSimpleColision(player)) {
+                    player.moveToDown();
+                }
                 pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
                 break;
             case Input.Keys.S:
                 player.moveToDown();
+                if (detectSimpleColision(player)) {
+                    player.moveToUp();
+                }
                 pos = getPosAtCell(player.getCurentCells().x, player.getCurentCells().y);
                 break;
         }
         return false;
+    }
+
+    private boolean detectSimpleColision(Player player) {
+
+        //return Intersector.overlaps(r1, r2);
+
+        ArrayList<Boolean> listIntersect = new ArrayList<Boolean>();
+
+        MapObjects obj = map.getLayers().get("obj").getObjects();
+        for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
+
+            Rectangle r = rectangleObject.getRectangle();
+            listIntersect.add(Intersector.overlaps(r, player.getRectangle()));
+            Debug.log("Intersector", rectangleObject.getName() + ": " + listIntersect.get(listIntersect.size() - 1));
+        }
+
+        Debug.log("Intersector", "contain = " + listIntersect.contains(Boolean.TRUE));
+
+        return listIntersect.contains(Boolean.TRUE);
     }
 
     @Override
@@ -212,6 +247,7 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         Debug.vector(point);
 
         pos = getPosAtCell(point.x, point.y);
+        player.setCell((int) point.x, (int) point.y);
 
 
         TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(0);

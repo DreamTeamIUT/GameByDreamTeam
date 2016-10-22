@@ -20,7 +20,7 @@
    <image width="64" height="43" source="../../../../individual_tiles/tile__07.png"/>
   </tile>
  </tileset>
- <layer name="Calque de Tile 1" width="10" height="10" opacity="0.36">
+ <layer name="Calque de Tile 1" width="10" height="10" opacity="0.65">
   <data encoding="csv">
 4,4,0,0,0,0,0,0,0,0,
 4,4,0,0,0,0,0,0,0,0,
@@ -28,16 +28,16 @@
 4,4,0,0,0,0,0,0,0,0,
 4,4,0,0,0,0,0,0,0,0,
 4,4,4,0,0,0,0,0,0,0,
-4,4,0,0,0,0,0,0,0,0,
-4,4,0,0,0,0,0,0,0,0,
-4,4,0,0,0,0,0,0,0,0,
+4,4,0,0,0,0,0,0,0,4,
+4,4,0,0,0,0,0,0,0,4,
+4,4,0,0,0,0,0,0,0,4,
 4,4,4,4,4,4,4,4,4,4
 </data>
  </layer>
  <objectgroup name="obj">
-  <object id="1" x="32" y="159.909" width="96" height="96"/>
-  <object id="3" x="32" y="32" width="96" height="64"/>
-  <object id="4" x="192" y="96" width="64" height="128"/>
-  <object id="5" x="126.849" y="96.796" width="63.204" height="61.5833"/>
+  <object id="1" name="Rect1" x="32" y="160" width="96" height="96"/>
+  <object id="3" name="Rect2" x="32" y="32" width="96" height="64"/>
+  <object id="4" name="Rect3" x="192" y="96" width="64" height="128"/>
+  <object id="5" name="Rect4" x="128" y="96" width="63.204" height="61.5833"/>
  </objectgroup>
 </map>
