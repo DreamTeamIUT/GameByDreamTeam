@@ -33,6 +33,10 @@ import static com.badlogic.gdx.Gdx.input;
 /**
  * Created by Guillaume on 26/09/2016.
  */
+
+
+//TODO : Layer offset ? In libgdx ? Tiled ok but not libgdx...
+//TODO : May be should I rewrite the IsometricTiledMapRenderer class...
 public class IsometricCalc extends AbstractScreen implements InputProcessor {
     private TiledMap map;
     private OrthographicCamera globCam;

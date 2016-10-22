@@ -23,7 +23,7 @@
    <image width="64" height="43" source="../../../../individual_tiles/tile__07.png"/>
   </tile>
  </tileset>
- <objectgroup name="1_O">
+ <objectgroup name="1_O" visible="0">
   <object id="1" name="Rect1" x="64" y="192" width="96" height="96"/>
   <object id="3" name="Rect2" x="32" y="0" width="96" height="64"/>
   <object id="4" name="Rect3" x="192" y="96" width="64" height="128"/>
@@ -44,21 +44,21 @@
 4,4,2,2,1,1,1,4,4,6
 </data>
  </layer>
- <layer name="2_T" width="10" height="10">
+ <layer name="2_T" width="10" height="10" offsetx="0" offsety="-32">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,2,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,2,2,2,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,2,2,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,2,0,0,2,
+0,0,0,2,0,0,0,0,0,2
 </data>
  </layer>
- <layer name="3_T" width="10" height="10" opacity="0.15">
+ <layer name="3_T" width="10" height="10" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -72,7 +72,7 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="4_T" width="10" height="10" opacity="0.12">
+ <layer name="4_T" width="10" height="10" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -86,7 +86,7 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="5_T" width="10" height="10" opacity="0.13">
+ <layer name="5_T" width="10" height="10" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -100,7 +100,7 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="6_T" width="10" height="10" opacity="0.11">
+ <layer name="6_T" width="10" height="10" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,2,2,0,0,0,0,0,
@@ -114,7 +114,7 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="7_T" width="10" height="10" opacity="0.19">
+ <layer name="7_T" width="10" height="10" visible="0">
   <data encoding="csv">
 0,0,2,2,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
