@@ -23,6 +23,7 @@ public class LayerManager {
     private int afterLayers[];
     private int objectLayerIndex;
     private int maxTiledLayer;
+    private float opacity = 1;
 
     public LayerManager(TiledMap map) {
         this.map = map;
@@ -36,6 +37,8 @@ public class LayerManager {
             realLayer = 1;
 
         tiledLayerIndex = map.getLayers().getIndex(map.getLayers().get(realLayer + "_T"));
+        if (map.getLayers().get(realLayer + "_O") == null)
+            addEmptyObjectLayer();
         objectLayerIndex = map.getLayers().getIndex(map.getLayers().get(realLayer + "_O"));
 
         ArrayList<String> orderedLayers = getOrderedLayersList(map.getLayers());
@@ -85,11 +88,14 @@ public class LayerManager {
     public void jumptToNext() {
         realLayer = (realLayer == maxTiledLayer) ? maxTiledLayer : realLayer + 1;
         updateData();
+        setLayersOpacity(opacity);
+
     }
 
     public void jumpToPrevious() {
         realLayer = (realLayer == 1) ? realLayer : realLayer - 1;
         updateData();
+        setLayersOpacity(opacity);
     }
 
     private int[] convertLayerNameToId(List<String> names) {
@@ -122,8 +128,9 @@ public class LayerManager {
     }
 
     public void setLayersOpacity(float opacity) {
-        opacity = (opacity > 1) ? 1 : opacity;
-        opacity = (opacity < 0) ? 0 : opacity;
+
+        this.opacity = (opacity > 1) ? 1 : opacity;
+        this.opacity = (opacity < 0) ? 0 : opacity;
 
         for (TiledMapTileLayer l : map.getLayers().getByType(TiledMapTileLayer.class)) {
             l.setOpacity(opacity);
@@ -155,5 +162,13 @@ public class LayerManager {
 
     public int[] getAfterLayers() {
         return afterLayers;
+    }
+
+    private void addEmptyObjectLayer() {
+        MapLayer layer = new MapLayer();
+        layer.setOpacity(1);
+        layer.setName(realLayer + "_O");
+        layer.setVisible(true);
+        map.getLayers().add(layer);
     }
 }

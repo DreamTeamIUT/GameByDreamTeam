@@ -192,6 +192,12 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
                     player.moveToUp();
                 }
                 break;
+            case Input.Keys.E:
+                layerManager.jumptToNext();
+                break;
+            case Input.Keys.R:
+                layerManager.jumpToPrevious();
+                break;
         }
         return false;
     }
