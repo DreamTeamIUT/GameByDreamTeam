@@ -19,7 +19,7 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<Item> itemList;
     private Map map;
 
-    public GameScreen(){
+    public GameScreen() {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
@@ -30,7 +30,6 @@ public class GameScreen extends AbstractScreen {
         Debug.log(s.getName());
         Debug.log(s.getGates().all().toString());
         Debug.log(s.getZones().all().toString());
-        Debug.log(s.getPlayers().all().toString());
         Debug.log(s.getMobs().all().toString());
         Debug.log(s.getSounds().all().toString());
 
@@ -39,6 +38,7 @@ public class GameScreen extends AbstractScreen {
         Debug.log(String.valueOf(map.getMapWidth()));
         Debug.log(String.valueOf(map.getTileHeight()));
         Debug.log(String.valueOf(map.getTileWidth()));
+
     }
 
     @Override

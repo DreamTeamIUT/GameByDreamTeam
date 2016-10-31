@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Entities {
 
-    private ArrayList<JsonValue> entities;
+    protected ArrayList<JsonValue> entities;
 
     public Entities() {
         entities = new ArrayList<JsonValue>();

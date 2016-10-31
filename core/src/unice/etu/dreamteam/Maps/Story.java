@@ -94,11 +94,11 @@ public class Story {
         story.setPackageName(packageName);
         story.setName(jsonStory.getString("name", ""));
         story.setMapPath(jsonStory.getString("map", null));
-        story.setMobs(new Mobs(jsonStory.get("mobs").iterator()));
+        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), packageName));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
-        story.setPlayers(new Players(jsonStory.get("players").iterator()));
+        story.setPlayers(new Players(jsonStory.get("players").iterator(), packageName));
 
         return story;
     }
