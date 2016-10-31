@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelAnimation;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.*;
+import unice.etu.dreamteam.Exceptions.ParameterException;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.security.InvalidParameterException;
@@ -81,28 +82,38 @@ public class ModelAnimationManager implements Disposable {
     }
 
     public void setAnimation(String animation) {
-        animations.get(getAnimationPos(animation)).listener = new EmptyAnimationListener();
-        animations.get(getAnimationPos(animation)).speed = 1f;
-        animations.get(getAnimationPos(animation)).loopCount = -1;
-        if (currentInstance.size() == 0)
-            currentInstance.add(getAnimationPos(animation));
-        else
-            currentInstance.set(0, getAnimationPos(animation));
-        clearArray(currentInstance);
+        try {
+            animations.get(getAnimationPos(animation)).listener = new EmptyAnimationListener();
+            animations.get(getAnimationPos(animation)).speed = 1f;
+            animations.get(getAnimationPos(animation)).loopCount = -1;
+            if (currentInstance.size() == 0)
+                currentInstance.add(getAnimationPos(animation));
+            else
+                currentInstance.set(0, getAnimationPos(animation));
+            clearArray(currentInstance);
+        } catch (ParameterException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public ModelAnimationManager setAnimation(String animation, int repeat) {
-        currentInstance.add(getAnimationPos(animation));
-        animations.get(getAnimationPos(animation)).loopCount = repeat;
-        animations.get(getAnimationPos(animation)).listener = new ChainedAnimationListener();
+        try {
+            currentInstance.add(getAnimationPos(animation));
+            animations.get(getAnimationPos(animation)).loopCount = repeat;
+            animations.get(getAnimationPos(animation)).listener = new ChainedAnimationListener();
+        } catch (ParameterException e) {
+            e.printStackTrace();
+        }
+
         return this;
     }
 
-    private int getAnimationPos(String animation) {
+    private int getAnimationPos(String animation) throws ParameterException {
         if (callList.contains(animation))
             return callList.indexOf(animation);
         else
-            throw new InvalidParameterException("Animation name not found : " + animation);
+            throw new ParameterException("Animation name not found : " + animation);
     }
 
     public String getAnimationsList() {
