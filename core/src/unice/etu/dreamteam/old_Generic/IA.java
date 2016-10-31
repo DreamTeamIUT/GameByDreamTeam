@@ -1,6 +1,4 @@
-package unice.etu.dreamteam.Generic;
-
-import unice.etu.dreamteam.Objects.ObjectGameAnimation;
+package unice.etu.dreamteam.old_Generic;
 
 /**
  * Created by Romain on 18/09/2016.

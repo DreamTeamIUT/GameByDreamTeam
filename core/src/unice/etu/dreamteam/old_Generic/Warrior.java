@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.Generic;
+package unice.etu.dreamteam.old_Generic;
 
 /**
  * Created by Romain on 17/09/2016.

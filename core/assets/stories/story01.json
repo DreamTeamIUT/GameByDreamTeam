@@ -1,6 +1,6 @@
 {
   "name": "Story 01",
-  "map": "map01",
+  "map": "map01.tmx",
   "mobs": ["mob01.json"],
   "sounds": {
     "RUN": {
@@ -13,7 +13,8 @@
   "zones": {
     "ZONE1": {
       "attack": [{"modId": "mob01", "force": "1", "count": "10"}],
-      "sound": "ENTER_ZONE"
+      "sound": "ENTER_ZONE",
+      "onetime": true
     }
   },
   "gates": {
