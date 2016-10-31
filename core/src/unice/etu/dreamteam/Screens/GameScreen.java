@@ -2,13 +2,14 @@ package unice.etu.dreamteam.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
-import unice.etu.dreamteam.Maps.Map;
-import unice.etu.dreamteam.Maps.Story;
-import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Map.Map;
+import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Utils.IsoTransform;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,9 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<Player> playerList;
     private ArrayList<Item> itemList;
     private Map map;
+    private OrthographicCamera othoCamera;
+    private SpriteBatch spriteBatch;
+    private ShapeRenderer shapeRenderer;
 
     public GameScreen() {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -25,25 +29,41 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void buildStage() {
-        Story s = Story.load("story01.json", "default");
-        Debug.log(s.getMapPath());
-        Debug.log(s.getName());
-        Debug.log(s.getGates().all().toString());
-        Debug.log(s.getZones().all().toString());
-        Debug.log(s.getMobs().all().toString());
-        Debug.log(s.getSounds().all().toString());
 
+        othoCamera = (OrthographicCamera) getCamera();
+        spriteBatch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+
+
+        Story s = Story.load("story01.json", "default");
         map = Map.load(s.getMapPath());
-        Debug.log(String.valueOf(map.getMapHeight()));
-        Debug.log(String.valueOf(map.getMapWidth()));
-        Debug.log(String.valueOf(map.getTileHeight()));
-        Debug.log(String.valueOf(map.getTileWidth()));
+
+        map.getLayerManager().setLayersOpacity(0.3f);
+        map.setSpriteBatch(spriteBatch);
+
+
+        othoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
+        othoCamera.zoom = 1f;
+        othoCamera.update();
+
 
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        othoCamera.update();
+
+        shapeRenderer.setProjectionMatrix(othoCamera.combined);
+        shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
+
+        map.getRenderer().setView(othoCamera);
+        map.render(delta);
+
+        map.getLayerManager().debugObjectLayer(shapeRenderer);
+        map.getRenderer().render(map.getLayerManager().getBeforeLayers());
+
+        map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
     }
 
@@ -51,5 +71,7 @@ public class GameScreen extends AbstractScreen {
     public void dispose() {
         super.dispose();
         map.dispose();
+        spriteBatch.dispose();
+        shapeRenderer.dispose();
     }
 }

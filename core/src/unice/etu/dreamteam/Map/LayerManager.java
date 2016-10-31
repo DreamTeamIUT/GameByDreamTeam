@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.Maps;
+package unice.etu.dreamteam.Map;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;

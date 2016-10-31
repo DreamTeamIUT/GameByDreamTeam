@@ -1,7 +1,9 @@
-package unice.etu.dreamteam.Maps;
+package unice.etu.dreamteam.Map;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 
 /**
  * Created by Guillaume on 31/10/2016.
@@ -14,6 +16,8 @@ public class Map {
     private Integer mapWidth;
     private Integer tileHeight;
     private Integer tileWidth;
+    private SpriteBatch spriteBatch;
+    private IsometricTiledMapRenderer renderer;
 
 
     public static Map load(String path) {
@@ -55,7 +59,29 @@ public class Map {
         return tileWidth;
     }
 
+    public LayerManager getLayerManager() {
+        return layerManager;
+    }
+
+    public void render(float delta) {
+
+    }
+
     public void dispose() {
         mapData.dispose();
+    }
+
+    public void setSpriteBatch(SpriteBatch spriteBatch) {
+        this.spriteBatch = spriteBatch;
+        this.renderer = new IsometricTiledMapRenderer(getData(), getSpriteBatch());
+
+    }
+
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public IsometricTiledMapRenderer getRenderer() {
+        return renderer;
     }
 }

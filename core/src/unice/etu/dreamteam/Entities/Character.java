@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Characters.ModelAnimationManager;
@@ -49,5 +50,9 @@ public class Character {
     public void setCellPos(int x, int y) {
         this.cellPos.x = x;
         this.cellPos.y = y;
+    }
+
+    public Texture get2DModel() throws Exception {
+        throw new Exception("Please define the function befor using it !");
     }
 }

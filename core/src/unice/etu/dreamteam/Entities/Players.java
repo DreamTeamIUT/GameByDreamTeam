@@ -5,7 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Characters.Entities;
-import unice.etu.dreamteam.Utils.Debug;
 
 /**
  * Created by Guillaume on 31/10/2016.
@@ -43,6 +42,5 @@ public class Players extends Entities {
         }
         return null;
     }
-
 
 }
