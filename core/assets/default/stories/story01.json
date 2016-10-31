@@ -1,0 +1,29 @@
+{
+  "name": "Story 01",
+  "map": "map01.tmx",
+  "players": [
+    "player01.json",
+    "player02.json"
+  ],
+  "mobs": ["mob01.json"],
+  "sounds": {
+    "RUN": {
+      "src": "sound01.mp3"
+    },
+    "ENTER_ZONE": {
+      "src": "sound02.mp3"
+    }
+  },
+  "zones": {
+    "ZONE1": {
+      "attack": [{"modId": "mob01", "force": "1", "count": "10"}],
+      "sound": "ENTER_ZONE",
+      "onetime": true
+    }
+  },
+  "gates": {
+    "GATE01": {
+      "goto": "GATE02"
+    }
+  }
+}

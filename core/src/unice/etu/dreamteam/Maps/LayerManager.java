@@ -60,6 +60,10 @@ public class LayerManager {
 
     }
 
+    public void update() {
+        updateData();
+    }
+
 
     private int getMaxLayer() {
         int max = 0;

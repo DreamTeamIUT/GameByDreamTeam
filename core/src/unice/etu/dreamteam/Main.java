@@ -21,9 +21,9 @@ public class Main extends Game {
         Debug.log("Create");
 
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenList.SPLASH_SCREEN);
+        ScreenManager.getInstance().showScreen(ScreenList.GAME);
 
-        final long startTime = System.currentTimeMillis();
+       /* final long startTime = System.currentTimeMillis();
 
         new Thread(new Runnable() {
 
@@ -53,7 +53,7 @@ public class Main extends Game {
                     }
                 });
             }
-        }).start();
+        }).start();*/
     }
 
     @Override

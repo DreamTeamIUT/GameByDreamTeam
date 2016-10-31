@@ -15,19 +15,27 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 public class ModelAnimationManager implements Disposable {
-    private final CharacterList character;
     private ArrayList<ModelInstance> instances;
     private ArrayList<AnimationController> controllers;
     private ArrayList<Integer> currentInstance;
     private ArrayList<String> callList;
     private ArrayList<AnimationController.AnimationDesc> animations;
-    private final AssetManager assetManager;
+    private AssetManager assetManager;
+    private String modelName;
 
     public ModelAnimationManager(CharacterList character) {
-        this.character = character;
+        init(character.getName());
+    }
 
+
+    public ModelAnimationManager(String modelName) {
+        init(modelName);
+    }
+
+    private void init(String modelName) {
+        this.modelName = modelName;
         assetManager = new AssetManager();
-        FileHandle file = Gdx.files.internal("assets/models/" + character.getName() + "/info.json");
+        FileHandle file = Gdx.files.internal("assets/models/" + modelName + "/info.json");
         JsonValue dat = new JsonReader().parse(file.readString());
 
         controllers = new ArrayList<AnimationController>();
@@ -42,7 +50,7 @@ public class ModelAnimationManager implements Disposable {
                 if (v.getBoolean("load")) {
                     assetManager.load(getFilePath(v.getString("file")), Model.class);
                     assetManager.finishLoading();
-                    callList.add(v.getString("call_name"));
+                    callList.add(v.name());
                     instances.add(new ModelInstance(assetManager.get(getFilePath(v.getString("file")), Model.class)));
                     controllers.add(new AnimationController(instances.get(instances.size() - 1)));
                     animations.add(controllers.get(controllers.size() - 1).setAnimation(v.getString("name"), -1));
@@ -54,8 +62,9 @@ public class ModelAnimationManager implements Disposable {
         setAnimation(callList.get(0));
     }
 
+
     private String getFilePath(String file) {
-        return "assets/models/" + character.getName() + "/" + character.getName() + "@" + file + ".g3db";
+        return "assets/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
     }
 
 

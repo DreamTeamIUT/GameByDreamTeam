@@ -1,0 +1,20 @@
+{
+  "name": "Knight",
+  "textures": {
+    "RUN": {
+      "name": "Take 001",
+      "file": "Run",
+      "load": true
+    },
+    "STOPPED": {
+      "name": "Take 001",
+      "file": "Idle",
+      "load": true
+    },
+    "WALK": {
+      "name": "Take 001",
+      "file": "Walk",
+      "load": true
+    }
+  }
+}

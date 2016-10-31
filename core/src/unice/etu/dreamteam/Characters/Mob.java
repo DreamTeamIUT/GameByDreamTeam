@@ -9,5 +9,6 @@ import unice.etu.dreamteam.Entities.Character;
 public class Mob extends Character {
     public Mob(JsonValue informations) {
         super(informations);
+
     }
 }
