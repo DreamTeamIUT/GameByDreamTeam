@@ -3,8 +3,10 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -13,7 +15,12 @@ public abstract class AbstractScreen extends Stage implements Screen {
     protected AssetManager assetManager; //gestionnaire de ressources
 
     protected AbstractScreen() {
-        super(new StretchViewport(320.0f, 240.0f, new OrthographicCamera())); //Création de "l'écran".
+        super(new StretchViewport(320.0f, 240.0f)); //Création de "l'écran".
+        assetManager = new AssetManager();
+    }
+
+    protected AbstractScreen(Camera camera) {
+        super(new StretchViewport(320.0f, 240.0f, camera));
         assetManager = new AssetManager();
     }
 
@@ -28,6 +35,7 @@ public abstract class AbstractScreen extends Stage implements Screen {
         super.draw();
     }
 
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
@@ -35,7 +43,10 @@ public abstract class AbstractScreen extends Stage implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        getViewport().update(width, height);
+        getCamera().viewportHeight = height;
+        getCamera().viewportWidth = width;
+        // getViewport().update(width,height);
+        getCamera().update();
     }//mise à jour taille.
 
     @Override

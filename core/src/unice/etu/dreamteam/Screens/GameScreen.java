@@ -1,5 +1,7 @@
 package unice.etu.dreamteam.Screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import unice.etu.dreamteam.Maps.TiledMapSample;
 
 public class GameScreen extends AbstractScreen {
@@ -7,27 +9,23 @@ public class GameScreen extends AbstractScreen {
     private TiledMapSample map;
 
     public GameScreen(){
-        //Ici on load les assets
-
-
-        //new MusicListener();
+        super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
     @Override
     public void buildStage() {
-         //map = new TiledMapSample();
+
     }
 
     @Override
     public void render(float delta) {
-       super.render(delta); //Fait appel à la fonction de abstractScreen
-        //map.render();
-        //Fait appel à la fonction render de map.
-    } //fonction appellé toutes les frames, pour actualiser l'affichage.
+        super.render(delta);
+
+    }
 
     @Override
     public void dispose() {
         super.dispose();
-        //Ici on vide !
+
     }
 }
