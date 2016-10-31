@@ -1,9 +1,6 @@
 package unice.etu.dreamteam.Utils;
 
-import unice.etu.dreamteam.Screens.AbstractScreen;
-import unice.etu.dreamteam.Screens.GameScreen;
-import unice.etu.dreamteam.Screens.MainMenuScreen;
-import unice.etu.dreamteam.Screens.SplashScreen;
+import unice.etu.dreamteam.Screens.*;
 
 
 public enum ScreenList { //prédéfinition des screens dune liste
@@ -23,6 +20,10 @@ public enum ScreenList { //prédéfinition des screens dune liste
         public AbstractScreen getScreen(Object... params) { //Première écran
             return new SplashScreen();
         }
+    },
+
+    MENU {
+        public AbstractScreen getScreen(Object... params) { return new MenuScreen(); }
     };
 
     public abstract AbstractScreen getScreen(Object... params);
