@@ -1,9 +1,4 @@
-package unice.etu.dreamteam.preferences;
-
-import com.badlogic.gdx.Gdx;
-
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
+package unice.etu.dreamteam.old_preferences;
 
 /**
  * Created by Romain on 16/09/2016.

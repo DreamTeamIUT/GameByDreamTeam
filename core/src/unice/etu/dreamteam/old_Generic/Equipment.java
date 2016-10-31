@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.Generic;
+package unice.etu.dreamteam.old_Generic;
 
 import unice.etu.dreamteam.Objects.ObjectGameAnimation;
 

@@ -2,7 +2,6 @@ package unice.etu.dreamteam.Maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,8 +12,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import unice.etu.dreamteam.Generic.Player;
-import unice.etu.dreamteam.Screens.AbstractScreen;
+import unice.etu.dreamteam.old_Generic.Player;
 
 /**
  * Created by Romain on 15/09/2016.

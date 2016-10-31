@@ -1,6 +1,4 @@
-package unice.etu.dreamteam.Generic;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+package unice.etu.dreamteam.old_Generic;
 
 import java.util.Random;
 

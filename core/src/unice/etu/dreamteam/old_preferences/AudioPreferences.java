@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.preferences;
+package unice.etu.dreamteam.old_preferences;
 
 /**
  * Created by Romain on 16/09/2016.
