@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,7 +24,6 @@ import unice.etu.dreamteam.Player;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.badlogic.gdx.Gdx.input;
 
@@ -37,6 +34,8 @@ import static com.badlogic.gdx.Gdx.input;
 
 //TODO : Layer offset ? In libgdx ? Tiled ok but not libgdx...
 //TODO : May be should I rewrite the IsometricTiledMapRenderer class...
+
+
 public class IsometricCalc extends AbstractScreen implements InputProcessor {
     private TiledMap map;
     private OrthographicCamera globCam;
@@ -83,6 +82,7 @@ public class IsometricCalc extends AbstractScreen implements InputProcessor {
         mapWidth = map.getProperties().get("width", Integer.class);
         tileWidth = map.getProperties().get("tilewidth", Integer.class);
         tileHeight = map.getProperties().get("tileheight", Integer.class);
+
 
         player = new Player();
         player.setCell(0, 0);

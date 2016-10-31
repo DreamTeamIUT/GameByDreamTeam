@@ -45,6 +45,9 @@
 </data>
  </layer>
  <layer name="2_T" width="10" height="10" offsetx="0" offsety="-32">
+  <properties>
+   <property name="sss" type="int" value="0"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
