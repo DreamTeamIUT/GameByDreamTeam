@@ -1,6 +1,7 @@
 package unice.etu.dreamteam.Screens;
 
 import unice.etu.dreamteam.Maps.TiledMapSample;
+import unice.etu.dreamteam.Utils.Debug;
 
 public class GameScreen extends AbstractScreen {
 
@@ -8,9 +9,7 @@ public class GameScreen extends AbstractScreen {
 
     public GameScreen(){
         //Ici on load les assets
-
-
-        //new MusicListener();
+        Debug.log("Game screen");
     }
 
     @Override
