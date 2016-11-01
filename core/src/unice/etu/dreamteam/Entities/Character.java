@@ -1,28 +1,57 @@
 package unice.etu.dreamteam.Entities;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.ModelConverter;
 
 /**
  * Created by Dylan on 01/10/2016.
  */
-public class Character {
+public class Character implements Disposable {
 
+    private ModelConverter modelConverter;
     private ModelAnimationManager animationManager;
     private Vector2 cellPos;
     private Vector2 realPos;
 
-    public Character(JsonValue informations) {
+    private String modelName;
+    private String name;
+    private SpriteBatch batch;
+
+    public Character(JsonValue informations, SpriteBatch spriteBatch) {
         Debug.log("Load character");
+        loadJson(informations);
         cellPos = new Vector2(0, 0);
-        animationManager = new ModelAnimationManager(informations.getString("modelName", null));
+        animationManager = new ModelAnimationManager(modelName);
+        modelConverter = new ModelConverter(animationManager);
+        this.batch = spriteBatch;
 
     }
 
+    public ModelAnimationManager getAnimationManager() {
+        return animationManager;
+    }
+
+    public ModelConverter getModelConverter() {
+        return modelConverter;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    protected void loadJson(JsonValue informations) {
+        this.modelName = informations.getString("modelName");
+        this.name = informations.getString("name");
+    }
+
+    @Override
     public void dispose() {
+        modelConverter.dispose();
         animationManager.dispose();
     }
 
@@ -52,7 +81,16 @@ public class Character {
         this.cellPos.y = y;
     }
 
-    public Texture get2DModel() throws Exception {
-        throw new Exception("Please define the function befor using it !");
+    private void update(float delta) {
+        modelConverter.update(delta);
+    }
+
+    public void render(float delta) {
+        this.update(delta);
+        modelConverter.render();
+
+        getBatch().begin();
+        getBatch().draw(modelConverter.getCurrentTexture(), 0, 0);
+        getBatch().end();
     }
 }

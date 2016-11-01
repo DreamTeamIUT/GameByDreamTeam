@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.*;
 import unice.etu.dreamteam.Exceptions.ParameterException;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ModelAnimationManager implements Disposable {
     private void init(String modelName) {
         this.modelName = modelName;
         assetManager = new AssetManager();
-        FileHandle file = Gdx.files.internal("assets/models/" + modelName + "/info.json");
+        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackageName() + "/models/" + modelName + "/info.json");
         JsonValue dat = new JsonReader().parse(file.readString());
 
         controllers = new ArrayList<AnimationController>();
@@ -45,7 +46,7 @@ public class ModelAnimationManager implements Disposable {
         instances = new ArrayList<ModelInstance>();
         currentInstance = new ArrayList<Integer>();
 
-        for (JsonValue v : dat.get("animation").iterator()) {
+        for (JsonValue v : dat.get("textures").iterator()) {
 
             if (v.has("load")) {
                 if (v.getBoolean("load")) {
@@ -65,7 +66,7 @@ public class ModelAnimationManager implements Disposable {
 
 
     private String getFilePath(String file) {
-        return "assets/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
+        return "assets/" + GameInformation.getPackageName() + "/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
     }
 
 
@@ -134,7 +135,6 @@ public class ModelAnimationManager implements Disposable {
 
     @Override
     public void dispose() {
-
         assetManager.dispose();
     }
 

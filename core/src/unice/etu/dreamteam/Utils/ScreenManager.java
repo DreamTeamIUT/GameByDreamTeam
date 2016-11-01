@@ -39,4 +39,7 @@ public class ScreenManager { //S'autocrée, se garde en mémore toute seule : va
             currentScreen.dispose(); //vider l'ancien screen de la mémoire
     }
 
+    public Game getGame() {
+        return game;
+    }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import unice.etu.dreamteam.Utils.GameInformation;
 
 public abstract class AbstractScreen extends Stage implements Screen {
 
@@ -43,10 +44,16 @@ public abstract class AbstractScreen extends Stage implements Screen {
 
     @Override
     public void resize(int width, int height) {
+
+        GameInformation.setViewportHeight(height);
+        GameInformation.setViewportWidth(width);
+
         getCamera().viewportHeight = height;
         getCamera().viewportWidth = width;
         // getViewport().update(width,height);
         getCamera().update();
+
+
     }//mise à jour taille.
 
     @Override

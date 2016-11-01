@@ -9,6 +9,7 @@ import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.IsoTransform;
 
 import java.util.ArrayList;
@@ -33,9 +34,13 @@ public class GameScreen extends AbstractScreen {
         othoCamera = (OrthographicCamera) getCamera();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        spriteBatch = new SpriteBatch();
 
+        playerList = new ArrayList<Player>();
 
-        Story s = Story.load("story01.json", "default");
+        GameInformation.setPackageName("default");
+
+        Story s = Story.load("story01.json", GameInformation.getPackageName());
         map = Map.load(s.getMapPath());
 
         map.getLayerManager().setLayersOpacity(0.3f);
@@ -45,6 +50,8 @@ public class GameScreen extends AbstractScreen {
         othoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
         othoCamera.zoom = 1f;
         othoCamera.update();
+
+        playerList.add(new Player(s.getPlayers().get("player01"), spriteBatch));
 
 
     }
@@ -63,9 +70,21 @@ public class GameScreen extends AbstractScreen {
         map.getLayerManager().debugObjectLayer(shapeRenderer);
         map.getRenderer().render(map.getLayerManager().getBeforeLayers());
 
+        for (Player p : playerList)
+            p.render(delta);
+
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
     }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        for (Player p : playerList)
+            p.getModelConverter().resize();
+
+    }
+
 
     @Override
     public void dispose() {
@@ -73,5 +92,7 @@ public class GameScreen extends AbstractScreen {
         map.dispose();
         spriteBatch.dispose();
         shapeRenderer.dispose();
+        for (Player p : playerList)
+            p.dispose();
     }
 }
