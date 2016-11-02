@@ -22,6 +22,18 @@ public enum ScreenList { //prédéfinition des screens dune liste
         }
     },
 
+    PLAYER_SELECT_SCREEN {
+        public AbstractScreen getScreen(Object... params) {
+            return new PlayerSelectionScreen();
+        }
+    },
+
+    PLAYER_CREATION_SCREEN {
+        public AbstractScreen getScreen(Object... params) {
+            return new PlayerCreationScreen();
+        }
+    },
+
     SPLASH_SCREEN {
         public AbstractScreen getScreen(Object... params) { //Première écran
             return new SplashScreen();

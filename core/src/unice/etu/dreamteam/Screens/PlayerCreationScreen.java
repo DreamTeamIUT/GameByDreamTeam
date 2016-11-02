@@ -3,27 +3,23 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.gargoylesoftware.htmlunit.javascript.host.Event;
-import unice.etu.dreamteam.Map.Story;
+import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.Packages;
-import unice.etu.dreamteam.Utils.ScreenManager;
+import unice.etu.dreamteam.Utils.SaveManager;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class StoryMenuScreen extends AbstractScreen {
+public class PlayerCreationScreen extends AbstractScreen {
 
     private Table table2;
 
-    public StoryMenuScreen() {
+    public PlayerCreationScreen() {
         super();
     }
 
@@ -31,7 +27,7 @@ public class StoryMenuScreen extends AbstractScreen {
     public void buildStage() {
         final ArrayList<Packages> packages = Packages.getPackages();
 
-        Skin skin = new Skin(Gdx.files.internal("assets/ui/default/uiskin.json"));
+        final Skin skin = new Skin(Gdx.files.internal("assets/ui/default/uiskin.json"));
 
         TextureAtlas buttonsAtlas = new TextureAtlas("assets/ui/button/button.pack"); //**button atlas image **//
         Skin buttonSkin = new Skin();
@@ -45,12 +41,13 @@ public class StoryMenuScreen extends AbstractScreen {
         style.font = font;
 
 
+        final TextField field = new TextField("aaa", skin.get(TextField.TextFieldStyle.class));
+
         SelectBox.SelectBoxStyle styleb = new SelectBox.SelectBoxStyle(skin.get(SelectBox.SelectBoxStyle.class));
 
         ArrayList<String> packagesStrings = new ArrayList<String>();
         for (Packages p : packages) {
             packagesStrings.add(p.getName());
-            Debug.log(p.getPlayers().all().toString());
         }
 
 
@@ -60,15 +57,11 @@ public class StoryMenuScreen extends AbstractScreen {
         ballspeedbox.setItems(packagesStrings.toArray(new String[packagesStrings.size()]));
 
         ballspeedbox.addListener(new ChangeListener() {
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 int i = ballspeedbox.getSelectedIndex();
                 table2.clear();
                 Debug.log("i:" + i);
                 GameInformation.setPackageName(packages.get(i).getFolderName());
-                for (Story s : packages.get(i).getStories()){
-                    table2.add();
-
-                }
             }
         });
 
@@ -77,7 +70,9 @@ public class StoryMenuScreen extends AbstractScreen {
         table.setFillParent(true);
         //table.debugAll();
         table.defaults().pad(10);
-        table.add(ballspeedbox);
+        table.add(ballspeedbox).spaceRight(20);
+        table.row();
+        table.add(field);
         table.row();
         table.add(table2);
         table.top();

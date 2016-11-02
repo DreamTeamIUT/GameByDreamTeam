@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Entities.Players;
 import unice.etu.dreamteam.Map.Story;
 
 import java.io.File;
@@ -19,6 +20,7 @@ public class Packages {
     private final String name;
     private final String creator;
     private final String version;
+    private final Players players;
 
     public Packages(String name) {
         this.folderName = name;
@@ -31,7 +33,7 @@ public class Packages {
         this.creator = jsonPackage.getString("creator", "NC");
         this.version = jsonPackage.getString("version", "NC");
         this.lastEdit = jsonPackage.getString("last-edit", "NC");
-
+        this.players = new Players(jsonPackage.get("players").iterator(), this.folderName);
 
     }
 
@@ -85,5 +87,9 @@ public class Packages {
 
     public String getName() {
         return name;
+    }
+
+    public Players getPlayers() {
+        return players;
     }
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Characters.Entities;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
@@ -19,7 +18,8 @@ public class Players extends Entities {
 
     public Players(JsonValue.JsonIterator jsonIterator, String packageName) {
         super();
-        this.packageName = packageName;
+        //this.packageName = packageName;
+        GameInformation.setPackageName(packageName);
         add(jsonIterator);
     }
 

@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.Characters;
+package unice.etu.dreamteam.Entities;
 
 import com.badlogic.gdx.utils.JsonValue;
 

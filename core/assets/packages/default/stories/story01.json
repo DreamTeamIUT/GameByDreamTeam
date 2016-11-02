@@ -2,10 +2,6 @@
   "name": "Story 01",
   "minimum-level": 10,
   "map": "map01.tmx",
-  "players": [
-    "player01.json",
-    "player02.json"
-  ],
   "mobs": [
     "mob01.json"
   ],

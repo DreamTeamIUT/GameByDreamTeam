@@ -1,8 +1,6 @@
 package unice.etu.dreamteam.Entities;
 
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Characters.Entities;
 import unice.etu.dreamteam.Characters.OnMobKillListenner;
 
 /**

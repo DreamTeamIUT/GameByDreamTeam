@@ -21,7 +21,7 @@ public class Main extends Game {
         Debug.log("Create");
 
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenList.STORY_NENU);
+        ScreenManager.getInstance().showScreen(ScreenList.PLAYER_SELECT_SCREEN);
 
        /* final long startTime = System.currentTimeMillis();
 

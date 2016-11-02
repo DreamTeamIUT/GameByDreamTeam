@@ -25,11 +25,6 @@ public class ModelAnimationManager implements Disposable {
     private AssetManager assetManager;
     private String modelName;
 
-    public ModelAnimationManager(CharacterList character) {
-        init(character.getName());
-    }
-
-
     public ModelAnimationManager(String modelName) {
         init(modelName);
     }
