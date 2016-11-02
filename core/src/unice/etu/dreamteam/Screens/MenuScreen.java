@@ -98,24 +98,24 @@ public class MenuScreen extends AbstractScreen {
         TextButton playButton = new TextButton("JOUER", style);
         TextButton exitButton = new TextButton("QUITTER", style);
         //** Button text and style **//
-        //button.setHeight(75); //** Button Height **//
-        //button.setWidth(110); //** Button Width **//
+        playButton.setHeight(75); //** Button Height **//
+        playButton.setWidth(110); //** Button Width **//
 
         //button.setPosition(Gdx.graphics.getWidth()/2-button.getWidth()/2, Gdx.graphics.getHeight());
 
-        mainTable.defaults().width(115).height(75);
-        mainTable.add(playButton);
-        mainTable.row();
-        mainTable.add(exitButton);
+        //mainTable.defaults().width(115).height(75);
+        //mainTable.add(playButton);
+        //mainTable.row();
+        //mainTable.add(exitButton);
 
 
 
         //MoveToAction moveAction = new MoveToAction();//Add dynamic movement effects to button
-        //moveAction.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        //moveAction.setPosition(50, 50);
         //moveAction.setDuration(.5f);
-        //button.addAction(moveAction);
+        //playButton.addAction(moveAction);
 
-        this.addActor(mainTable);
+        this.addActor(playButton);
     }
 
     @Override
