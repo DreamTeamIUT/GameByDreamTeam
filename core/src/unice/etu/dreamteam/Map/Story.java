@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Characters.Entities;
 import unice.etu.dreamteam.Entities.*;
+import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
  * Created by Guillaume on 31/10/2016.
@@ -20,6 +21,7 @@ public class Story {
     private String mapPath;
     private String name;
     private String packageName;
+    private int minimumLevel;
 
 
     public Story() {
@@ -82,23 +84,24 @@ public class Story {
         this.name = name;
     }
 
-    public static Story load(String storyFile, String packageName) {
+    public static Story load(String storyFile) {
 
         Story story = new Story();
 
-        FileHandle file = Gdx.files.internal("assets/" + packageName + "/stories/" + storyFile);
+        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/stories/" + storyFile);
 
         JsonValue jsonStory = new JsonReader().parse(file.readString());
 
         //TODO : Add item
-        story.setPackageName(packageName);
+        story.setPackageName(GameInformation.getPackageName());
         story.setName(jsonStory.getString("name", ""));
         story.setMapPath(jsonStory.getString("map", null));
-        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), packageName));
+        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getPackageName()));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
-        story.setPlayers(new Players(jsonStory.get("players").iterator(), packageName));
+        story.setPlayers(new Players(jsonStory.get("players").iterator(), GameInformation.getPackageName()));
+        story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
 
         return story;
     }
@@ -109,5 +112,13 @@ public class Story {
 
     public String getPackageName() {
         return packageName;
+    }
+
+    public void setMinimumLevel(int minimumLevel) {
+        this.minimumLevel = minimumLevel;
+    }
+
+    public int getMinimumLevel() {
+        return minimumLevel;
     }
 }

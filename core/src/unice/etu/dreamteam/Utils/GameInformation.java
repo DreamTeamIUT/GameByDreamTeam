@@ -16,6 +16,10 @@ public class GameInformation {
         return packageName;
     }
 
+    public static String getPackagePath() {
+        return "packages/" + packageName;
+    }
+
     public static void setPackageName(String packageName) {
         GameInformation.packageName = packageName;
     }

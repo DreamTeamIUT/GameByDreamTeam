@@ -37,7 +37,7 @@ public class ModelAnimationManager implements Disposable {
     private void init(String modelName) {
         this.modelName = modelName;
         assetManager = new AssetManager();
-        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackageName() + "/models/" + modelName + "/info.json");
+        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/models/" + modelName + "/info.json");
         JsonValue dat = new JsonReader().parse(file.readString());
 
         controllers = new ArrayList<AnimationController>();
@@ -66,7 +66,7 @@ public class ModelAnimationManager implements Disposable {
 
 
     private String getFilePath(String file) {
-        return "assets/" + GameInformation.getPackageName() + "/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
+        return "assets/" + GameInformation.getPackagePath() + "/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
     }
 
 

@@ -1,15 +1,18 @@
 package unice.etu.dreamteam.Utils;
 
-import unice.etu.dreamteam.Screens.AbstractScreen;
-import unice.etu.dreamteam.Screens.GameScreen;
-import unice.etu.dreamteam.Screens.MainMenuScreen;
-import unice.etu.dreamteam.Screens.SplashScreen;
+import unice.etu.dreamteam.Screens.*;
 
 
 public enum ScreenList { //prédéfinition des screens dune liste
     MAIN_MENU {
         public AbstractScreen getScreen(Object... params) {
             return new MainMenuScreen();
+        }
+    },
+
+    STORY_NENU {
+        public AbstractScreen getScreen(Object... params) {
+            return new StoryMenuScreen();
         }
     },
 

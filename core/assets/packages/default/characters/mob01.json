@@ -6,7 +6,12 @@
       "speed": 1,
       "weapon": "weaponId01",
       "onkill": {
-        "pops": [{"itemId": "itemId01", "luck": 5}]
+        "pops": [
+          {
+            "itemId": "itemId01",
+            "luck": 5
+          }
+        ]
       }
     }
   }

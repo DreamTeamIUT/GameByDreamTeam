@@ -40,7 +40,7 @@ public class GameScreen extends AbstractScreen {
 
         GameInformation.setPackageName("default");
 
-        Story s = Story.load("story01.json", GameInformation.getPackageName());
+        Story s = Story.load("story01.json");
         map = Map.load(s.getMapPath());
 
         map.getLayerManager().setLayersOpacity(0.3f);

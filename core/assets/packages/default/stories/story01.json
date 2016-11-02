@@ -1,11 +1,14 @@
 {
   "name": "Story 01",
+  "minimum-level": 10,
   "map": "map01.tmx",
   "players": [
     "player01.json",
     "player02.json"
   ],
-  "mobs": ["mob01.json"],
+  "mobs": [
+    "mob01.json"
+  ],
   "sounds": {
     "RUN": {
       "src": "sound01.mp3"
@@ -16,7 +19,13 @@
   },
   "zones": {
     "ZONE1": {
-      "attack": [{"modId": "mob01", "force": "1", "count": "10"}],
+      "attack": [
+        {
+          "modId": "mob01",
+          "force": "1",
+          "count": "10"
+        }
+      ],
       "sound": "ENTER_ZONE",
       "onetime": true
     }
