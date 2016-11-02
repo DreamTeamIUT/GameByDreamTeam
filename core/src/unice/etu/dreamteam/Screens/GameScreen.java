@@ -51,7 +51,14 @@ public class GameScreen extends AbstractScreen {
         othoCamera.zoom = 1f;
         othoCamera.update();
 
-        playerList.add(new Player(s.getPlayers().get("player01"), spriteBatch));
+        playerList.add(Player.create(s.getPlayers().get("player01"), spriteBatch, shapeRenderer));
+        playerList.add(Player.create(s.getPlayers().get("player02"), spriteBatch, shapeRenderer));
+        playerList.add(Player.create(s.getPlayers().get("player01"), spriteBatch, shapeRenderer));
+        playerList.add(Player.create(s.getPlayers().get("player02"), spriteBatch, shapeRenderer));
+
+        playerList.get(1).setCellPos(4, 6);
+        playerList.get(2).setCellPos(7, 6);
+        playerList.get(3).setCellPos(5, 9);
 
 
     }

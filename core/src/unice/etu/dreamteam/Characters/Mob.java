@@ -13,7 +13,7 @@ public class Mob extends Character {
     private JsonValue informations;
 
     public Mob(JsonValue informations, SpriteBatch spriteBatch) {
-        super(informations, spriteBatch);
+        super(informations);
         this.informations = informations;
     }
 

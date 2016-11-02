@@ -7,9 +7,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class GameInformation {
     private static String packageName;
-    private static Viewport viewport;
     private static int viewportWidth;
     private static int viewportHeight;
+    private static final Boolean debugMode = true;
 
     //TODO : Add other variable if necessary.
     public static String getPackageName() {
@@ -18,10 +18,6 @@ public class GameInformation {
 
     public static void setPackageName(String packageName) {
         GameInformation.packageName = packageName;
-    }
-
-    public static void setViewport(Viewport viewport) {
-        GameInformation.viewport = viewport;
     }
 
     public static void setViewportWidth(int viewportWidth) {
@@ -38,5 +34,9 @@ public class GameInformation {
 
     public static int getViewportWidth() {
         return viewportWidth;
+    }
+
+    public static Boolean getDebugMode() {
+        return debugMode;
     }
 }
