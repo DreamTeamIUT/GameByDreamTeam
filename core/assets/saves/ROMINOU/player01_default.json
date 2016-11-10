@@ -1,6 +1,7 @@
 {
-"levzl": {
+"level": {
 	"class": "java.lang.Integer",
-	"value": 5
+	"value": 5,
+	"t" : "dd"
 }
 }

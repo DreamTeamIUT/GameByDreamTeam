@@ -1,6 +1,7 @@
 package unice.etu.dreamteam.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
@@ -9,9 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
 import unice.etu.dreamteam.Utils.*;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -55,18 +59,54 @@ public class PlayerCreationScreen extends AbstractScreen {
         createCharacterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                try {
-                    SaveManager.createSaves(field.getText());
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                ArrayList<String> saveName = new ArrayList<String>();
+
+                boolean booleen = false;
+
+                for (JsonValue v : SaveManager.getSaves()) {
+                    Debug.log(v.name());
+                    if (v.name().toLowerCase().equals(field.getText().toLowerCase())) {
+                        booleen = true;
+                        Debug.log("True");
+                        break;
+                    }
                 }
-                ScreenManager.getInstance().showScreen(ScreenList.PLAYER_SELECT_SCREEN);
+
+                Debug.log(String.valueOf(booleen));
+                if (!booleen) {
+                    try {
+                         SaveManager.createSaves(field.getText());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    ScreenManager.getInstance().showScreen(ScreenList.PLAYER_SELECT_SCREEN);
+                }
+                else {
+                    Dialog dialog = new Dialog("Erreur", skin, "dialog") {
+                        public void result(Object obj) {
+                            System.out.println("result "+obj);
+                        }
+                    };
+                    dialog.setSize(300,75 );
+                    dialog.setMovable(false);
+                    dialog.text("username deja utilise").setPosition(getWidth()/2-dialog.getWidth()/2, getHeight()/2-dialog.getHeight()/2);
+                    dialog.button("Ok", true); //sends "true" as the result
+                    dialog.key(Input.Keys.ENTER, true); //sends "true" when the ENTER key is pressed
+                    addActor(dialog);
+                }
+            }
+        });
+
+        TextButton comeBackButton = new TextButton(("RETOUR"), style);
+
+        comeBackButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
             }
 
         });
-
-
-
 
 
         Table table = new Table();
@@ -78,6 +118,9 @@ public class PlayerCreationScreen extends AbstractScreen {
         table.row();
         table.add(createCharacterButton);
         table.top();
+        table.row();
+        table.add(comeBackButton);
+        table.center();
 
         addActor(table);
 

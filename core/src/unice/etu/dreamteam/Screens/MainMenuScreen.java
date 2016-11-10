@@ -106,5 +106,6 @@ public class MainMenuScreen extends AbstractScreen {
         buttonsAtlas.dispose();
         font.dispose();
     }
+
 }
 //tous les screens du jeu => ce format

@@ -80,6 +80,15 @@ public class PlayerSelectionScreen extends AbstractScreen {
             }
         });
 
+        TextButton ReturnButton = new TextButton(("RETOUR"), style);
+
+        ReturnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
+            }
+
+        });
 
         Table table = new Table();
         table.setFillParent(true);
@@ -91,7 +100,9 @@ public class PlayerSelectionScreen extends AbstractScreen {
         table.row();
         table.add(table2);
         table.top();
-
+        table.row();
+        table.add(ReturnButton);
+        table.center();
         addActor(table);
 
         userSelectionBox.fire(new ChangeListener.ChangeEvent());
@@ -116,7 +127,8 @@ public class PlayerSelectionScreen extends AbstractScreen {
                 public void clicked(InputEvent event, float x, float y) {
                     Debug.log("coucou tu veux voir mon gland");
                     ScreenManager.getInstance().showScreen(ScreenList.STORY_NENU, v.getString("name"), username);
-                };
+
+                }
             });
         }
 
