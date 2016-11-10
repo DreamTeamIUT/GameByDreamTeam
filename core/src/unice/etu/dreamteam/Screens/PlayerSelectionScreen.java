@@ -4,15 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Map.Story;
-import unice.etu.dreamteam.Utils.Debug;
-import unice.etu.dreamteam.Utils.GameInformation;
-import unice.etu.dreamteam.Utils.Packages;
-import unice.etu.dreamteam.Utils.SaveManager;
+import unice.etu.dreamteam.Utils.*;
 
 import java.util.ArrayList;
 
@@ -106,12 +105,19 @@ public class PlayerSelectionScreen extends AbstractScreen {
         Debug.log("i:" + i);
         GameInformation.setPackageName(packages.get(i).getFolderName());
 
-        String username = userSelectionBox.getSelected();
-        for (JsonValue v : packages.get(i).getPlayers().all()) {
+        final String username = userSelectionBox.getSelected();
+        for (final JsonValue v : packages.get(i).getPlayers().all()) {
             String realName = v.getString("real-name");
             String level = SaveManager.getInfoSave(username, v.getString("name")).getString("level");
             TextButton btn = new TextButton(realName + " " + "(" + level + ")", style);
             table2.add(btn);
+            btn.addListener( new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Debug.log("coucou tu veux voir mon gland");
+                    ScreenManager.getInstance().showScreen(ScreenList.STORY_NENU, v.getString("name"), username);
+                };
+            });
         }
 
     }

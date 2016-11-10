@@ -4,32 +4,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.gargoylesoftware.htmlunit.javascript.host.Event;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import unice.etu.dreamteam.Map.Story;
-import unice.etu.dreamteam.Utils.Debug;
-import unice.etu.dreamteam.Utils.GameInformation;
-import unice.etu.dreamteam.Utils.Packages;
-import unice.etu.dreamteam.Utils.ScreenManager;
+import unice.etu.dreamteam.Utils.*;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class StoryMenuScreen extends AbstractScreen {
 
+    private final String name;
+    private final String playerName;
     private Table table2;
 
-    public StoryMenuScreen() {
+    public StoryMenuScreen(Object[] params) {
         super();
+        name = (String) params[0];
+        playerName = (String) params[1];
     }
 
     @Override
     public void buildStage() {
-        final ArrayList<Packages> packages = Packages.getPackages();
+        final Packages packages = new Packages(GameInformation.getPackageName());
 
         Skin skin = new Skin(Gdx.files.internal("assets/ui/default/uiskin.json"));
 
@@ -44,47 +46,30 @@ public class StoryMenuScreen extends AbstractScreen {
 
         style.font = font;
 
-
-        SelectBox.SelectBoxStyle styleb = new SelectBox.SelectBoxStyle(skin.get(SelectBox.SelectBoxStyle.class));
-
-        ArrayList<String> packagesStrings = new ArrayList<String>();
-        for (Packages p : packages) {
-            packagesStrings.add(p.getName());
-            Debug.log(p.getPlayers().all().toString());
-        }
-
-
-        table2 = new Table();
-
-        final SelectBox<String> ballspeedbox = new SelectBox<String>(styleb);
-        ballspeedbox.setItems(packagesStrings.toArray(new String[packagesStrings.size()]));
-
-        ballspeedbox.addListener(new ChangeListener() {
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                int i = ballspeedbox.getSelectedIndex();
-                table2.clear();
-                Debug.log("i:" + i);
-                GameInformation.setPackageName(packages.get(i).getFolderName());
-                for (Story s : packages.get(i).getStories()){
-                    table2.add();
-
-                }
-            }
-        });
-
+        ArrayList<Story> stories = packages.getStories();
 
         Table table = new Table();
         table.setFillParent(true);
         //table.debugAll();
         table.defaults().pad(10);
-        table.add(ballspeedbox);
-        table.row();
-        table.add(table2);
-        table.top();
+        for (Story story : stories) {
+            //  Debug.log("what's up nigga" + story.getName());
+            TextButton btn = new TextButton(story.getName(), style);
+            btn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    ScreenManager.getInstance().showScreen(ScreenList.GAME);
+                }
 
+            });
+            table.add(btn);
+            table.row();
+        }
+
+
+        table.center();
         addActor(table);
 
-        ballspeedbox.fire(new ChangeListener.ChangeEvent());
 
     }
 

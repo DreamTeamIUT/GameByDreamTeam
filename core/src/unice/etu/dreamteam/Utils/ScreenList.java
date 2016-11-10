@@ -12,7 +12,7 @@ public enum ScreenList { //prédéfinition des screens dune liste
 
     STORY_NENU {
         public AbstractScreen getScreen(Object... params) {
-            return new StoryMenuScreen();
+            return new StoryMenuScreen(params);
         }
     },
 

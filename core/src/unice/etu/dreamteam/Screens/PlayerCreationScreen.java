@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Utils.Debug;
-import unice.etu.dreamteam.Utils.GameInformation;
-import unice.etu.dreamteam.Utils.Packages;
-import unice.etu.dreamteam.Utils.SaveManager;
+import unice.etu.dreamteam.Utils.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlayerCreationScreen extends AbstractScreen {
@@ -50,36 +50,36 @@ public class PlayerCreationScreen extends AbstractScreen {
             packagesStrings.add(p.getName());
         }
 
+        TextButton createCharacterButton = new TextButton("NOUVEAU PERSONNAGE", style);
 
-        table2 = new Table();
-
-        final SelectBox<String> ballspeedbox = new SelectBox<String>(styleb);
-        ballspeedbox.setItems(packagesStrings.toArray(new String[packagesStrings.size()]));
-
-        ballspeedbox.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                int i = ballspeedbox.getSelectedIndex();
-                table2.clear();
-                Debug.log("i:" + i);
-                GameInformation.setPackageName(packages.get(i).getFolderName());
+        createCharacterButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                try {
+                    SaveManager.createSaves(field.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ScreenManager.getInstance().showScreen(ScreenList.PLAYER_SELECT_SCREEN);
             }
+
         });
+
+
+
 
 
         Table table = new Table();
         table.setFillParent(true);
         //table.debugAll();
         table.defaults().pad(10);
-        table.add(ballspeedbox).spaceRight(20);
         table.row();
         table.add(field);
         table.row();
-        table.add(table2);
+        table.add(createCharacterButton);
         table.top();
 
         addActor(table);
-
-        ballspeedbox.fire(new ChangeListener.ChangeEvent());
 
     }
 

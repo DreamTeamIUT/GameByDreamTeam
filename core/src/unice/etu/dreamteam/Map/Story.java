@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Map;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
@@ -69,7 +70,7 @@ public class Story {
     }
 
     public String getMapPath() {
-        return getPackageName() + "/maps/" + mapPath;
+        return GameInformation.getPackagePath() + "/maps/" + mapPath;
     }
 
     public void setMapPath(String mapPath) {

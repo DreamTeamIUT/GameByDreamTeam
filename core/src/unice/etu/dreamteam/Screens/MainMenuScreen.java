@@ -3,10 +3,14 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import unice.etu.dreamteam.Ui.Button;
+import unice.etu.dreamteam.Utils.ScreenList;
+import unice.etu.dreamteam.Utils.ScreenManager;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -33,25 +37,49 @@ public class MainMenuScreen extends AbstractScreen {
 
         style.font = font;
 
-        TextButton playButton = new TextButton("JOUER", style);
-        TextButton exitButton = new TextButton("QUITTER", style);
-        TextButton creditsButton = new TextButton("CREDITS", style);
+        TextButton newGameButton = new TextButton("NOUVELLE PARTIE", style);
+        TextButton replayButton = new TextButton("CONTINUER", style);
+        TextButton exitButton = new TextButton(("QUITTER"), style);
         //** Button text and style **//
         //playButton.setHeight(75); //** Button Height **//
         // playButton.setWidth(300); //** Button Width **//
 
         //button.setPosition(Gdx.graphics.getWidth()/2-button.getWidth()/2, Gdx.graphics.getHeight());
 
+        newGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.getInstance().showScreen(ScreenList.PLAYER_CREATION_SCREEN);
+            }
+
+        });
+
+        replayButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.getInstance().showScreen(ScreenList.PLAYER_SELECT_SCREEN);
+            }
+
+        });
+
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+
+        });
+
         Table table = new Table();
         table.setFillParent(true);
         //table.debugAll();
         table.defaults().pad(10);
-        table.add(playButton);
+        table.add(newGameButton);
         table.row();
-        table.add(creditsButton);
+        table.add(replayButton);
+        table.center();
         table.row();
         table.add(exitButton);
-        table.center();
         //mainTable.defaults().width(115).height(75);
         //mainTable.add(playButton);
         //mainTable.row();

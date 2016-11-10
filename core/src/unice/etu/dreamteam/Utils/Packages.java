@@ -45,6 +45,7 @@ public class Packages {
         // get all the files from a directory
         File[] fList = directory.listFiles();
         for (File file : fList) {
+            Debug.log(file.getName());
             if (file.isFile() && file.getName().endsWith(".json")) {
                 list.add(Story.load(file.getName()));
             }

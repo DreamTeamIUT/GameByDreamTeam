@@ -9,8 +9,10 @@ import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.IsoTransform;
+import unice.etu.dreamteam.Utils.Packages;
 
 import java.util.ArrayList;
 
@@ -34,27 +36,31 @@ public class GameScreen extends AbstractScreen {
         othoCamera = (OrthographicCamera) getCamera();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        spriteBatch = new SpriteBatch();
 
         playerList = new ArrayList<Player>();
 
         GameInformation.setPackageName("default");
 
         Story s = Story.load("story01.json");
+
+
         map = Map.load(s.getMapPath());
 
         map.getLayerManager().setLayersOpacity(0.3f);
         map.setSpriteBatch(spriteBatch);
 
-
+        Debug.log("debug");
         othoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
         othoCamera.zoom = 1f;
         othoCamera.update();
+        Debug.log("debug");
 
-        playerList.add(Player.create(s.getPlayers().get("player01"), spriteBatch, shapeRenderer));
-        playerList.add(Player.create(s.getPlayers().get("player02"), spriteBatch, shapeRenderer));
-        playerList.add(Player.create(s.getPlayers().get("player01"), spriteBatch, shapeRenderer));
-        playerList.add(Player.create(s.getPlayers().get("player02"), spriteBatch, shapeRenderer));
+        Packages p = new Packages(GameInformation.getPackageName());
+
+        playerList.add(Player.create(p.getPlayers().get("player01"), spriteBatch, shapeRenderer));
+        playerList.add(Player.create(p.getPlayers().get("player02"), spriteBatch, shapeRenderer));
+        playerList.add(Player.create(p.getPlayers().get("player01"), spriteBatch, shapeRenderer));
+        playerList.add(Player.create(p.getPlayers().get("player02"), spriteBatch, shapeRenderer));
 
         playerList.get(1).setCellPos(4, 6);
         playerList.get(2).setCellPos(7, 6);
