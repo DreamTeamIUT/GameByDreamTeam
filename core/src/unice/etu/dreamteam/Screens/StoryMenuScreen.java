@@ -58,6 +58,7 @@ public class StoryMenuScreen extends AbstractScreen {
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    AudioManager.getInstance().createSound("assets/audio/sound/clic.mp3");
                     ScreenManager.getInstance().showScreen(ScreenList.GAME);
                 }
 
