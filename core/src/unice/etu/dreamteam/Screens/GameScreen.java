@@ -1,6 +1,8 @@
 package unice.etu.dreamteam.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -9,14 +11,12 @@ import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
-import unice.etu.dreamteam.Utils.Debug;
-import unice.etu.dreamteam.Utils.GameInformation;
-import unice.etu.dreamteam.Utils.IsoTransform;
-import unice.etu.dreamteam.Utils.Packages;
+import unice.etu.dreamteam.Utils.*;
 
 import java.util.ArrayList;
+import java.util.Set;
 
-public class GameScreen extends AbstractScreen {
+public class GameScreen extends AbstractScreen implements InputProcessor {
 
     private ArrayList<Mob> mobList;
     private ArrayList<Player> playerList;
@@ -66,12 +66,16 @@ public class GameScreen extends AbstractScreen {
         playerList.get(2).setCellPos(7, 6);
         playerList.get(3).setCellPos(5, 9);
 
-
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+
+        if (Settings.isOpen)
+            return;
+
         othoCamera.update();
 
         shapeRenderer.setProjectionMatrix(othoCamera.combined);
@@ -87,7 +91,6 @@ public class GameScreen extends AbstractScreen {
             p.render(delta);
 
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
-
     }
 
     @Override
@@ -108,4 +111,18 @@ public class GameScreen extends AbstractScreen {
         for (Player p : playerList)
             p.dispose();
     }
+
+
+    @Override
+    public boolean keyDown(int keycode) {
+        Debug.log("In keyup !");
+        switch (keycode) {
+            case Input.Keys.ESCAPE:
+                if (!Settings.isOpen)
+                    addActor(Settings.createWindow(getViewport()));
+
+        }
+        return false;
+    }
+
 }

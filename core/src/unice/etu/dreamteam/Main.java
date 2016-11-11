@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
+import unice.etu.dreamteam.Utils.AudioManager;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ScreenList;
 import unice.etu.dreamteam.Utils.ScreenManager;
@@ -22,6 +23,7 @@ public class Main extends Game {
 
         ScreenManager.getInstance().initialize(this);
         ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
+        AudioManager.initialize();
 
        /* final long startTime = System.currentTimeMillis();
 

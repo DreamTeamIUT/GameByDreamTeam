@@ -85,6 +85,7 @@ public class PlayerSelectionScreen extends AbstractScreen {
         ReturnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.getInstance().createSound("assets/audio/sound/clic.mp3");
                 ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
             }
 
