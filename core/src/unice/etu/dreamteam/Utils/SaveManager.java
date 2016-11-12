@@ -18,18 +18,18 @@ public class SaveManager {
     public static void addJsonSaves(String path, String name, String lastSave, String folder) throws IOException {
         File file = null;
         String chaine = "";
-        try{
-            InputStream ips=new FileInputStream(path);
-            InputStreamReader ipsr=new InputStreamReader(ips);
-            BufferedReader br=new BufferedReader(ipsr);
+        try {
+            InputStream ips = new FileInputStream(path);
+            InputStreamReader ipsr = new InputStreamReader(ips);
+            BufferedReader br = new BufferedReader(ipsr);
             String ligne;
-            while ((ligne=br.readLine())!=null){
-                chaine+=ligne+"\n";
+            while ((ligne = br.readLine()) != null) {
+                chaine += ligne + "\n";
             }
 
             br.close();
 
-            chaine = chaine.substring(0,chaine.length() - 2) + ",\n\t" + "\"" + name + "\": {" + "\n\t\t" + "\"last-save\": " + "\"" + lastSave + "\"," + "\n\t\t" + "\"folder\": " + "\"" + folder + "\"\n}\n}";
+            chaine = chaine.substring(0, chaine.length() - 2) + ",\n\t" + "\"" + name + "\": {" + "\n\t\t" + "\"last-save\": " + "\"" + lastSave + "\"," + "\n\t\t" + "\"folder\": " + "\"" + folder + "\"\n}\n}";
 
             file = new File(path);
 
@@ -45,13 +45,12 @@ public class SaveManager {
                 System.out.println("Erreur: impossible de créer le fichier '"
                         + path + "'");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
 
-    public static void createJson(File file){
+    public static void createJson(File file) {
         String jsonContent = "{\n\t\"level\": 1\n}";
         try {
             if (!file.exists()) {
@@ -101,16 +100,8 @@ public class SaveManager {
 
         for (Packages p : Packages.getPackages()) {
             for (JsonValue player : p.getPlayers().all()) {
-                String jsonContent = "";
 
-                //ObjectMap<String, Object> obj = new ObjectMap<String, Object>();
-                //obj.put("level", 5);
-
-                //Json json = new Json();
-                //json.setOutputType(JsonWriter.OutputType.json);
-
-                //String jsonStr = json.prettyPrint(obj);
-
+                //TODO : Use JSON !!
                 file = new File(pathFile + "/" + player.getString("name") + "_" + p.getFolderName() + ".json");
                 createJson(file);
             }
@@ -120,11 +111,11 @@ public class SaveManager {
         Date d = new Date(file.lastModified());
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         System.out.println(dateFormat.format(d));
-        SaveManager.addJsonSaves(fichier,username.toLowerCase(), String.valueOf(dateFormat.format(d)), username.toUpperCase());
+        SaveManager.addJsonSaves(fichier, username.toLowerCase(), String.valueOf(dateFormat.format(d)), username.toUpperCase());
 
     }
 
-        //lecture du fichier texte
+    //lecture du fichier texte
         /*try{
             InputStream ips=new FileInputStream(fichier);
             InputStreamReader ipsr=new InputStreamReader(ips);

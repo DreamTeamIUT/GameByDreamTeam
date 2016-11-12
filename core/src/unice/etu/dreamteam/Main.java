@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
+import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.AudioManager;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ScreenList;
@@ -21,6 +22,7 @@ public class Main extends Game {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Debug.log("Create");
 
+        UiManager.initialise();
         ScreenManager.getInstance().initialize(this);
         ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
         AudioManager.initialize();
@@ -61,6 +63,8 @@ public class Main extends Game {
     @Override
     public void dispose() {
         getScreen().dispose();
+        UiManager.getInstance().dispose();
+        AudioManager.getInstance().dispose();
         Gdx.app.exit();
 
     }

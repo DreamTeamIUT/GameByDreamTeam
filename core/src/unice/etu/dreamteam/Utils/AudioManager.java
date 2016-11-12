@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import unice.etu.dreamteam.Screens.AbstractScreen;
+import unice.etu.dreamteam.Ui.Settings;
 
 /**
  * Created by Romain on 11/11/2016.
