@@ -5,10 +5,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Timer;
 import unice.etu.dreamteam.Ui.UiManager;
-import unice.etu.dreamteam.Utils.AudioManager;
-import unice.etu.dreamteam.Utils.Debug;
-import unice.etu.dreamteam.Utils.ScreenList;
-import unice.etu.dreamteam.Utils.ScreenManager;
+import unice.etu.dreamteam.Utils.*;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class Main extends Game {
     private static long SPLASH_SCREEN_DURATION = 2000L;
@@ -26,6 +26,7 @@ public class Main extends Game {
         ScreenManager.getInstance().initialize(this);
         ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
         AudioManager.initialize();
+
 
        /* final long startTime = System.currentTimeMillis();
 

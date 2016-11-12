@@ -1,17 +1,13 @@
 package unice.etu.dreamteam.Screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
-import sun.swing.UIAction;
-import unice.etu.dreamteam.Characters.Player;
-import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.JsonEntities.Saves.Save;
+import unice.etu.dreamteam.JsonEntities.Saves.Saves;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
 
@@ -33,8 +29,8 @@ public class PlayerSelectionScreen extends AbstractScreen {
         packages = Packages.getPackages();
 
         ArrayList<String> saveName = new ArrayList<String>();
-        for (JsonValue v : SaveManager.getSaves()) {
-            saveName.add(v.name());
+        for (Save s : Saves.getSaves().all()) {
+            saveName.add(s.getUsername());
         }
 
         Debug.log(saveName.toString());
@@ -106,7 +102,7 @@ public class PlayerSelectionScreen extends AbstractScreen {
         final String username = userSelectionBox.getSelected();
         for (final JsonValue v : packages.get(i).getPlayers().all()) {
             String realName = v.getString("real-name");
-            String level = SaveManager.getInfoSave(username, v.getString("name")).getString("level");
+            int level = Saves.getSaves().get(username).getPackages().get(packages.get(i).getFolderName()).getPlayers().get(v.getString("name")).getLevel();
 
             TextButton btn = UiManager.getInstance().createCustomButton(realName + " " + "(" + level + ")");
             btn.addListener(new ClickListener() {
