@@ -11,10 +11,10 @@ import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
 

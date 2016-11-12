@@ -33,11 +33,14 @@ public abstract class AbstractScreen extends Stage implements Screen {
 
     @Override
     public void render(float delta) { //Gère toutes les images.
-        Gdx.gl.glClearColor(0, 0, 0, 1); //gl: moteur 3d, fonction qui vide...
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        clearScreen();
         super.act(delta);
         super.draw();
+    }
+
+    protected void clearScreen(){
+        Gdx.gl.glClearColor(0, 0, 0, 1); //gl: moteur 3d, fonction qui vide...
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
 

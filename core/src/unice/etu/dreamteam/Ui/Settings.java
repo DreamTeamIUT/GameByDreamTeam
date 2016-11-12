@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.Utils;
+package unice.etu.dreamteam.Ui;
 
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import unice.etu.dreamteam.Utils.AudioManager;
+import unice.etu.dreamteam.Utils.Debug;
 
 /**
  * Created by Romain on 11/11/2016.
@@ -23,25 +25,19 @@ public class Settings {
 
     public static Actor createWindow(Viewport viewport) {
         isOpen = true;
-        Skin skin = new Skin(Gdx.files.internal("assets/ui/default/uiskin.json"));
 
-        Window dialog = new Window("Settings", skin) {
-            public void result(Object obj) {
-                System.out.println("result " + obj);
-            }
-        };
+        final Window dialog = new Window("Settings", UiManager.getInstance().getSkin());
+
         Debug.log(viewport.getScreenWidth() + " " + viewport.getScreenHeight());
         dialog.debugAll();
         dialog.row().fill().expandX();
         dialog.setSize(viewport.getScreenWidth(), viewport.getScreenHeight());
-        dialog.add(new Label("Audio", skin, "default-font", Color.ORANGE)).colspan(3);
+        dialog.add(new Label("Audio", UiManager.getInstance().getSkin(), "default-font", Color.ORANGE)).colspan(3);
         dialog.row();
-        dialog.columnDefaults(0).padRight(10);
-        dialog.columnDefaults(1).padRight(10);
-        CheckBox chkSound = new CheckBox("", skin);
+        CheckBox chkSound = new CheckBox("", UiManager.getInstance().getSkin());
         dialog.add(chkSound);
-        dialog.add(new Label("Sound", skin));
-        Slider sldEffects = new Slider(0.0f, 1.0f, 0.1f, false, skin);
+        dialog.add(new Label("Sound", UiManager.getInstance().getSkin()));
+        final Slider sldEffects = new Slider(0.0f, 1.0f, 0.1f, false, UiManager.getInstance().getSkin());
         dialog.add(sldEffects);
         sldEffects.addListener(new ChangeListener() {
             @Override
@@ -50,10 +46,10 @@ public class Settings {
             }
         });
         dialog.row();
-        CheckBox chkMusic = new CheckBox("", skin);
+        CheckBox chkMusic = new CheckBox("", UiManager.getInstance().getSkin());
         dialog.add(chkMusic);
-        dialog.add(new Label("Music", skin));
-        Slider sldMusic = new Slider(0.0f, 1.0f, 0.1f, false, skin);
+        dialog.add(new Label("Music", UiManager.getInstance().getSkin()));
+        final Slider sldMusic = new Slider(0.0f, 1.0f, 0.1f, false, UiManager.getInstance().getSkin());
 
         sldMusic.addListener(new ChangeListener() {
             @Override
@@ -63,7 +59,7 @@ public class Settings {
         });
         dialog.add(sldMusic);
         dialog.row().bottom().fillY().expandY().align(Align.bottom);
-        TextButton btn = new TextButton("Save and exit", skin);
+        TextButton btn = new TextButton("Save and exit", UiManager.getInstance().getSkin());
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,7 +71,6 @@ public class Settings {
 
         });
         dialog.add(btn).colspan(3);
-
 
 
         return dialog;

@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
+import sun.swing.UIAction;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
 
 import java.util.ArrayList;
@@ -19,7 +21,6 @@ public class PlayerSelectionScreen extends AbstractScreen {
 
     private Table table2;
     private ArrayList<Packages> packages;
-    private TextButton.TextButtonStyle style;
     private SelectBox<String> userSelectionBox;
     private SelectBox<String> packagesNameBox;
 
@@ -30,22 +31,6 @@ public class PlayerSelectionScreen extends AbstractScreen {
     @Override
     public void buildStage() {
         packages = Packages.getPackages();
-
-        final Skin skin = new Skin(Gdx.files.internal("assets/ui/default/uiskin.json"));
-
-        TextureAtlas buttonsAtlas = new TextureAtlas("assets/ui/button/button.pack"); //**button atlas image **//
-        Skin buttonSkin = new Skin();
-        buttonSkin.addRegions(buttonsAtlas); //** skins for on and off **//
-        BitmapFont font = new BitmapFont(Gdx.files.internal("assets/ui/button/default.fnt"), false); //** font **//
-
-        style = new TextButton.TextButtonStyle(); //** Button properties **//
-        style.up = buttonSkin.getDrawable("buttonOff");
-        style.down = buttonSkin.getDrawable("buttonOn");
-
-        style.font = font;
-
-
-        final SelectBox.SelectBoxStyle styleb = new SelectBox.SelectBoxStyle(skin.get(SelectBox.SelectBoxStyle.class));
 
         ArrayList<String> saveName = new ArrayList<String>();
         for (JsonValue v : SaveManager.getSaves()) {
@@ -62,8 +47,9 @@ public class PlayerSelectionScreen extends AbstractScreen {
 
         table2 = new Table();
 
-        userSelectionBox = new SelectBox<String>(styleb);
-        packagesNameBox = new SelectBox<String>(styleb);
+        userSelectionBox = new SelectBox<String>(UiManager.getInstance().getSkin());
+        packagesNameBox = new SelectBox<String>(UiManager.getInstance().getSkin());
+
 
         userSelectionBox.setItems(saveName.toArray(new String[saveName.size()]));
         packagesNameBox.setItems(packageNames.toArray(new String[packageNames.size()]));
@@ -80,7 +66,7 @@ public class PlayerSelectionScreen extends AbstractScreen {
             }
         });
 
-        TextButton ReturnButton = new TextButton(("RETOUR"), style);
+        TextButton ReturnButton = UiManager.getInstance().createCustomButton("RETOUR");
 
         ReturnButton.addListener(new ClickListener() {
             @Override
@@ -121,16 +107,16 @@ public class PlayerSelectionScreen extends AbstractScreen {
         for (final JsonValue v : packages.get(i).getPlayers().all()) {
             String realName = v.getString("real-name");
             String level = SaveManager.getInfoSave(username, v.getString("name")).getString("level");
-            TextButton btn = new TextButton(realName + " " + "(" + level + ")", style);
-            table2.add(btn);
-            btn.addListener( new ClickListener() {
+
+            TextButton btn = UiManager.getInstance().createCustomButton(realName + " " + "(" + level + ")");
+            btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Debug.log("coucou tu veux voir mon gland");
                     ScreenManager.getInstance().showScreen(ScreenList.STORY_NENU, v.getString("name"), username);
-
                 }
             });
+
+            table2.add(btn);
         }
 
     }

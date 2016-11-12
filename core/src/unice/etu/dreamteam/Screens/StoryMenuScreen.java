@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
 
 import java.io.File;
@@ -33,28 +34,13 @@ public class StoryMenuScreen extends AbstractScreen {
     public void buildStage() {
         final Packages packages = new Packages(GameInformation.getPackageName());
 
-        Skin skin = new Skin(Gdx.files.internal("assets/ui/default/uiskin.json"));
-
-        TextureAtlas buttonsAtlas = new TextureAtlas("assets/ui/button/button.pack"); //**button atlas image **//
-        Skin buttonSkin = new Skin();
-        buttonSkin.addRegions(buttonsAtlas); //** skins for on and off **//
-        BitmapFont font = new BitmapFont(Gdx.files.internal("assets/ui/button/default.fnt"), false); //** font **//
-
-        final TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(); //** Button properties **//
-        style.up = buttonSkin.getDrawable("buttonOff");
-        style.down = buttonSkin.getDrawable("buttonOn");
-
-        style.font = font;
-
         ArrayList<Story> stories = packages.getStories();
 
         Table table = new Table();
         table.setFillParent(true);
-        //table.debugAll();
         table.defaults().pad(10);
         for (Story story : stories) {
-            //  Debug.log("what's up nigga" + story.getName());
-            TextButton btn = new TextButton(story.getName(), style);
+            TextButton btn = UiManager.getInstance().createCustomButton(story.getName());
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
