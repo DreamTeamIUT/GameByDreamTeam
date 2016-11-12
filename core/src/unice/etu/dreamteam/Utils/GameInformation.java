@@ -1,6 +1,6 @@
 package unice.etu.dreamteam.Utils;
 
-import com.badlogic.gdx.utils.viewport.Viewport;
+import unice.etu.dreamteam.Audio.AudioManager;
 
 /**
  * Created by Guillaume on 01/11/2016.
@@ -21,6 +21,7 @@ public class GameInformation {
 
     public static void setPackageName(String packageName) {
         GameInformation.packageName = packageName;
+        AudioManager.getInstance().updatePackage();
     }
 
     public static void setViewportWidth(int viewportWidth) {

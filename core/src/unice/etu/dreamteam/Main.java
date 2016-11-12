@@ -3,12 +3,9 @@ package unice.etu.dreamteam;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Timer;
+import unice.etu.dreamteam.Audio.AudioManager;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class Main extends Game {
     private static long SPLASH_SCREEN_DURATION = 2000L;

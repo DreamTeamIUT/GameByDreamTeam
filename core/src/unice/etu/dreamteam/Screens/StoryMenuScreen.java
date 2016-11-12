@@ -1,21 +1,14 @@
 package unice.etu.dreamteam.Screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import unice.etu.dreamteam.Audio.AudioManager;
 import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class StoryMenuScreen extends AbstractScreen {

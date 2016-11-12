@@ -3,6 +3,7 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import unice.etu.dreamteam.Audio.AudioManager;
 import unice.etu.dreamteam.JsonEntities.Saves.Saves;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
@@ -38,7 +39,6 @@ public class PlayerCreationScreen extends AbstractScreen {
 
                 if (Saves.getSaves().get(field.getText()) == null) {
                     Saves.getSaves().initialize(field.getText());
-                   // saves.write();
                     ScreenManager.getInstance().showScreen(ScreenList.PLAYER_SELECT_SCREEN);
                 }
                 else {

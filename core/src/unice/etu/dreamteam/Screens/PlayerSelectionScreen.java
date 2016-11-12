@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Audio.AudioManager;
 import unice.etu.dreamteam.JsonEntities.Saves.Save;
 import unice.etu.dreamteam.JsonEntities.Saves.Saves;
 import unice.etu.dreamteam.Ui.UiManager;
@@ -94,6 +95,7 @@ public class PlayerSelectionScreen extends AbstractScreen {
     }
 
     private void updateTable() {
+        //TODO : Do not change package it create some not wanted behaviour..
         int i = packagesNameBox.getSelectedIndex();
         table2.clear();
         Debug.log("i:" + i);

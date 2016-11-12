@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import unice.etu.dreamteam.Ui.UiManager;
-import unice.etu.dreamteam.Utils.AudioManager;
+import unice.etu.dreamteam.Audio.AudioManager;
 import unice.etu.dreamteam.Utils.ScreenList;
 import unice.etu.dreamteam.Utils.ScreenManager;
 import unice.etu.dreamteam.Ui.Settings;

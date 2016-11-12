@@ -62,6 +62,7 @@ public class Saves {
             }
         }
         addSave(save);
+        write();
     }
 
     public void addSave(Save save){

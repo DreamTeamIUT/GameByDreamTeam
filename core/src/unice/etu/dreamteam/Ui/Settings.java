@@ -1,8 +1,6 @@
 package unice.etu.dreamteam.Ui;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import unice.etu.dreamteam.Utils.AudioManager;
+import unice.etu.dreamteam.Audio.AudioManager;
 import unice.etu.dreamteam.Utils.Debug;
 
 /**

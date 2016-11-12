@@ -16,5 +16,21 @@ saves: [
 			}
 		}
 	}
+	{
+		username: aaa
+		lastSave: 2016/11/12 22:03:56
+		packages: {
+			default: {
+				players: {
+					player01: {
+						level: 1
+					}
+					player02: {
+						level: 1
+					}
+				}
+			}
+		}
+	}
 ]
 }
