@@ -93,7 +93,7 @@ public class Story {
 
         JsonValue jsonStory = new JsonReader().parse(file.readString());
 
-        //TODO : Add item
+        //TODO : Add items when they will be ready ...
         story.setPackageName(GameInformation.getPackageName());
         story.setName(jsonStory.getString("name", ""));
         story.setMapPath(jsonStory.getString("map", null));

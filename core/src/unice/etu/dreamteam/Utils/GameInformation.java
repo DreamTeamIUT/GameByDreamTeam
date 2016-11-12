@@ -11,7 +11,6 @@ public class GameInformation {
     private static int viewportHeight;
     private static final Boolean debugMode = true;
 
-    //TODO : Add other variable if necessary.
     public static String getPackageName() {
         return packageName;
     }
