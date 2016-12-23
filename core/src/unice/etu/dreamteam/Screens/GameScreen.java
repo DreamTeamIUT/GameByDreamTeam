@@ -120,7 +120,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             case Input.Keys.ESCAPE:
                 if (!Settings.isOpen)
                     addActor(Settings.createWindow(getViewport()));
-
         }
         return false;
     }

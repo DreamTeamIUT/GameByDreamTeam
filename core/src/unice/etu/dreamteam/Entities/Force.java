@@ -17,7 +17,7 @@ public class Force {
         this.name = value.name;
         this.weapon = value.getString("weapon");
         this.speed = value.getFloat("speed");
-        this.items = value.get("onkill").get("pops");
+        this.items = value.get("onkill").get("spawnItems");
     }
 
     public String getName() {
@@ -29,7 +29,7 @@ public class Force {
     }
 
     public void kill() {
-        getOnMobKillListenner().pops(items);
+        getOnMobKillListenner().spawnItems(items);
     }
 
     public OnMobKillListenner getOnMobKillListenner() {
