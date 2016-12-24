@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
+import unice.etu.dreamteam.Map.ColisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.Settings;
@@ -25,6 +26,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private OrthographicCamera othoCamera;
     private SpriteBatch spriteBatch;
     private ShapeRenderer shapeRenderer;
+    private ColisionsManager colisionsManager;
 
     public GameScreen() {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -57,6 +59,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         Packages p = new Packages(GameInformation.getPackageName());
 
+        colisionsManager = new ColisionsManager();
+
         playerList.add(Player.create(p.getPlayers().get("player01"), spriteBatch, shapeRenderer));
         playerList.add(Player.create(p.getPlayers().get("player02"), spriteBatch, shapeRenderer));
         playerList.add(Player.create(p.getPlayers().get("player01"), spriteBatch, shapeRenderer));
@@ -65,6 +69,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         playerList.get(1).setCellPos(4, 6);
         playerList.get(2).setCellPos(7, 6);
         playerList.get(3).setCellPos(5, 9);
+
+        colisionsManager.addMapLayer(map.getLayerManager());
+        colisionsManager.addStory(s);
+
+
 
         Gdx.input.setInputProcessor(this);
     }
@@ -81,10 +90,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setProjectionMatrix(othoCamera.combined);
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
+        colisionsManager.update(delta);
+
+
         map.getRenderer().setView(othoCamera);
         map.render(delta);
 
-        map.getLayerManager().debugObjectLayer(shapeRenderer);
+        colisionsManager.debug(shapeRenderer);
+
         map.getRenderer().render(map.getLayerManager().getBeforeLayers());
 
         for (Player p : playerList)
@@ -123,5 +136,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         }
         return false;
     }
+
+
 
 }

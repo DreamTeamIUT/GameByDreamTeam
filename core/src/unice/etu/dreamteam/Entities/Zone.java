@@ -26,6 +26,10 @@ public class Zone {
         this.attacks.add(zone.get("attack"));
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void onEnter(){
         Debug.log("Entering in zone :" + this.name);
     }
