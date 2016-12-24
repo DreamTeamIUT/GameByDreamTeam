@@ -23,12 +23,18 @@
         }
       ],
       "sound": "ENTER_ZONE",
-      "onetime": true
+      "onetime": true,
+      "canExit" : true
     }
   },
   "gates": {
     "GATE01": {
-      "goto": "GATE02"
+      "goto": "GATE02",
+      "isOpen" : true
+    },
+    "GATE02":{
+      "goto" : "GATE01",
+      "isOpen" : true
     }
   }
 }
