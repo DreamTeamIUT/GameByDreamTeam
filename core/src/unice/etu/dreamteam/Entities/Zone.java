@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Zone {
+public class Zone extends Entity{
 
     //TODO : zone can be "un-exit-able"
 
@@ -19,15 +19,13 @@ public class Zone {
     private final String sound;
 
     public Zone(JsonValue zone) {
+        super();
+
         this.name = zone.name;
         this.sound = zone.getString("sound", null);
         this.isOneTime = zone.getBoolean("onetime", false);
         this.attacks = new ArrayList<JsonValue>();
         this.attacks.add(zone.get("attack"));
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void onEnter(){
@@ -45,6 +43,5 @@ public class Zone {
     public Boolean canExit(){
         return false;
     }
-
 
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.JsonValue;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Sounds extends Entities {
+public class Sounds extends EntitiesHolder<Sound> {
     public Sounds() {
         super();
     }

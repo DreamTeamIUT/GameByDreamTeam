@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.JsonValue;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Gates extends Entities {
+public class Gates extends EntitiesHolder<Gate> {
     public Gates() {
         super();
     }

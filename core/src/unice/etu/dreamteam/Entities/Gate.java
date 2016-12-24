@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.JsonValue;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Gate {
+public class Gate extends Entity{
 
     //TODO : gates haves start point and a destination point
     //TODO : gates can be closed
