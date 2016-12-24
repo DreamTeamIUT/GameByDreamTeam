@@ -7,6 +7,10 @@ import java.util.ArrayList;
 /**
  * Created by Guillaume on 31/10/2016.
  */
+
+//TODO REVIEW THIS CLASS !
+
+@Deprecated
 public class Entities {
 
     protected ArrayList<JsonValue> entities;
