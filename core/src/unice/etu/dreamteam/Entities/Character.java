@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Characters.CharacterHolder;
 import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ModelConverter;
