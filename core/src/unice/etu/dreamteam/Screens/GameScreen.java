@@ -61,10 +61,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         colisionsManager = new ColisionsManager();
 
-        playerList.add(Player.create(p.getPlayers().get("player01"), spriteBatch, shapeRenderer));
-        playerList.add(Player.create(p.getPlayers().get("player02"), spriteBatch, shapeRenderer));
-        playerList.add(Player.create(p.getPlayers().get("player01"), spriteBatch, shapeRenderer));
-        playerList.add(Player.create(p.getPlayers().get("player02"), spriteBatch, shapeRenderer));
+        playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
+        playerList.add((Player) p.getPlayers().get("player02").create( spriteBatch, shapeRenderer));
+        playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
+        playerList.add((Player) p.getPlayers().get("player02").create( spriteBatch, shapeRenderer));
 
         playerList.get(1).setCellPos(4, 6);
         playerList.get(2).setCellPos(7, 6);

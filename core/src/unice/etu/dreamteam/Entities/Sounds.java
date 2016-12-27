@@ -13,4 +13,10 @@ public class Sounds extends EntitiesHolder<Sound> {
     public Sounds(JsonValue.JsonIterator jsonValues) {
         super(jsonValues);
     }
+
+    @Override
+    public Boolean add(JsonValue value) {
+        return add(new Sound(value));
+    }
+
 }

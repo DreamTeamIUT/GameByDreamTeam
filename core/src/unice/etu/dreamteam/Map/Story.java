@@ -1,11 +1,9 @@
 package unice.etu.dreamteam.Map;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Entities.Entities;
 import unice.etu.dreamteam.Entities.*;
 import unice.etu.dreamteam.Utils.GameInformation;
 
@@ -37,7 +35,7 @@ public class Story {
         this.players = players;
     }
 
-    public Entities getMobs() {
+    public Mobs getMobs() {
         return mobs;
     }
 
@@ -102,6 +100,7 @@ public class Story {
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
         story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
+
 
         return story;
     }

@@ -11,29 +11,26 @@ import java.util.ArrayList;
  */
 public class Zone extends Entity{
 
-    //TODO : zone can be "un-exit-able"
-
     private final ArrayList<JsonValue> attacks;
-    private final String name;
     private final boolean isOneTime;
     private final String sound;
 
     public Zone(JsonValue zone) {
-        super();
+        super(zone);
 
-        this.name = zone.name;
         this.sound = zone.getString("sound", null);
         this.isOneTime = zone.getBoolean("onetime", false);
         this.attacks = new ArrayList<JsonValue>();
+        //TODO : improve the way of storing attacks ?
         this.attacks.add(zone.get("attack"));
     }
 
     public void onEnter(){
-        Debug.log("Entering in zone :" + this.name);
+        Debug.log("Entering in zone :" + getName());
     }
 
     public void onExit(){
-        Debug.log("Exiting zone :" + this.name);
+        Debug.log("Exiting zone :" + getName());
     }
 
     public Boolean canEnter(){
@@ -43,5 +40,6 @@ public class Zone extends Entity{
     public Boolean canExit(){
         return false;
     }
+
 
 }

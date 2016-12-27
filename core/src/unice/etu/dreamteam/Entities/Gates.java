@@ -13,4 +13,9 @@ public class Gates extends EntitiesHolder<Gate> {
     public Gates(JsonValue.JsonIterator jsonValues) {
         super(jsonValues);
     }
+
+    @Override
+    public Boolean add(JsonValue value) {
+        return add(new Gate(value));
+    }
 }

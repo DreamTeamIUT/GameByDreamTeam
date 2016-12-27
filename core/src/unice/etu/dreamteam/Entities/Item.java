@@ -1,16 +1,17 @@
 package unice.etu.dreamteam.Entities;
 
+import com.badlogic.gdx.utils.JsonValue;
+
 /**
  * Created by Dylan on 01/10/2016.
  */
 public class Item extends Entity {
 
     //TODO: items have image that should be printed
-    //TODO: items have action when grabed
-    //TODO: items may have time before desapearing
+    //TODO : Add properties ...
 
-    public Item(){
-        //TODO : Write better constructor
+    public Item(JsonValue value){
+        super(value);
     }
 
     private void loadItemDeps(){
@@ -32,4 +33,6 @@ public class Item extends Entity {
     public void onThrown(){
 
     }
+
+
 }

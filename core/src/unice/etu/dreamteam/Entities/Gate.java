@@ -11,8 +11,8 @@ public class Gate extends Entity{
     //TODO : gates can be closed
     //TODO : gates can disapear
 
-    public Gate(JsonValue gate) {
-
+    public Gate(JsonValue value) {
+        super(value);
     }
 
     public Boolean isOpen(){

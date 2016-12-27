@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Entities;
 
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
 /**
@@ -8,8 +9,9 @@ import com.badlogic.gdx.utils.JsonValue;
 public class Sound extends Entity {
     //TODO : basic sound properties
 
-    public Sound() {
-        super();
+    public Sound(JsonValue value) {
+        super(value);
     }
+
 
 }

@@ -10,11 +10,16 @@ import unice.etu.dreamteam.Utils.GameInformation;
  * Created by Guillaume on 31/10/2016.
  */
 
-public class Mobs extends Entities {
+public class Mobs extends EntitiesHolder<MobHolder> {
     private String packageName;
 
     public Mobs() {
         super();
+    }
+
+    @Override
+    public Boolean add(JsonValue value) {
+        return add(new MobHolder(value));
     }
 
     public Mobs(JsonValue.JsonIterator jsonIterator, String packageName) {
@@ -33,14 +38,5 @@ public class Mobs extends Entities {
     private JsonValue loadDep(String fileName) {
         FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/characters/" + fileName);
         return new JsonReader().parse(file.readString());
-    }
-
-    @Override
-    public JsonValue get(String name) {
-        for (JsonValue value : entities) {
-            if (value.getString("name", "").equals(name))
-                return value;
-        }
-        return null;
     }
 }

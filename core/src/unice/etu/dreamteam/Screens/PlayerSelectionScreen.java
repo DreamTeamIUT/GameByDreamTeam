@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.PlayerHolder;
 import unice.etu.dreamteam.JsonEntities.Saves.Save;
 import unice.etu.dreamteam.JsonEntities.Saves.Saves;
 import unice.etu.dreamteam.Ui.UiManager;
@@ -102,15 +103,15 @@ public class PlayerSelectionScreen extends AbstractScreen {
         GameInformation.setPackageName(packages.get(i).getFolderName());
 
         final String username = userSelectionBox.getSelected();
-        for (final JsonValue v : packages.get(i).getPlayers().all()) {
-            String realName = v.getString("real-name");
-            int level = Saves.getSaves().get(username).getPackages().get(packages.get(i).getFolderName()).getPlayers().get(v.getString("name")).getLevel();
+        for (final PlayerHolder player : packages.get(i).getPlayers().all()) {
+            String realName = player.getRealName();
+            int level = Saves.getSaves().get(username).getPackages().get(packages.get(i).getFolderName()).getPlayers().get(player.getName()).getLevel();
 
             TextButton btn = UiManager.getInstance().createCustomButton(realName + " " + "(" + level + ")");
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    ScreenManager.getInstance().showScreen(ScreenList.STORY_NENU, v.getString("name"), username);
+                    ScreenManager.getInstance().showScreen(ScreenList.STORY_NENU, player.getName(), username);
                 }
             });
 

@@ -9,7 +9,7 @@ import unice.etu.dreamteam.Utils.GameInformation;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Players extends Entities {
+public class Players extends EntitiesHolder<PlayerHolder>{
     private String packageName;
 
     public Players() {
@@ -30,18 +30,15 @@ public class Players extends Entities {
                 add(loadDep(entitie.toString()));
     }
 
+    @Override
+    public Boolean add(JsonValue value) {
+        return add(new PlayerHolder(value));
+    }
+
+
     private JsonValue loadDep(String fileName) {
         FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/characters/" + fileName);
         return new JsonReader().parse(file.readString());
-    }
-
-    @Override
-    public JsonValue get(String name) {
-        for (JsonValue value : entities) {
-            if (value.getString("name", "").equals(name))
-                return value;
-        }
-        return null;
     }
 
 }

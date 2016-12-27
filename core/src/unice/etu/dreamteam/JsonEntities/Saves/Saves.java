@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Entities.PlayerHolder;
 import unice.etu.dreamteam.Utils.Packages;
 
 import java.io.File;
@@ -53,11 +54,11 @@ public class Saves {
     public void initialize(String username){
         Save save = new Save(username);
         for (Packages p : Packages.getPackages()) {
-            for (JsonValue player : p.getPlayers().all()) {
+            for (PlayerHolder player : p.getPlayers().all()) {
                 PlayerSave playerSave = new PlayerSave();
                 playerSave.setDefaults();
 
-                save.addPlayerSave(p.getFolderName(), player.getString("name"), playerSave);
+                save.addPlayerSave(p.getFolderName(), player.getName(), playerSave);
 
             }
         }

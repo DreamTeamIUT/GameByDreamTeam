@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Guillaume on 24/12/2016.
  */
 
-public class EntitiesHolder<E extends Entity> extends ArrayList<E>{
+public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E>{
     public EntitiesHolder(){
         super();
     }
@@ -21,8 +21,7 @@ public class EntitiesHolder<E extends Entity> extends ArrayList<E>{
         return this;
     }
 
-    public void add(JsonValue value){
-    }
+    public abstract Boolean add(JsonValue value);
 
     public void add(JsonValue.JsonIterator jsonIterator) {
         for (JsonValue entitie : jsonIterator)

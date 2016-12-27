@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Characters.CharacterHolder;
 import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ModelConverter;
@@ -26,9 +27,10 @@ public class Character implements Disposable {
     private Boolean debug;
     private ShapeRenderer shapeRenderer;
 
-    public Character(JsonValue informations) {
+    public Character(CharacterHolder holder) {
         Debug.log("Load character");
-        loadJson(informations);
+        this.name = holder.getName();
+        this.modelName = holder.getModelName();
         cellPos = new Vector2(0, 0);
         animationManager = new ModelAnimationManager(modelName);
         modelConverter = new ModelConverter(animationManager);
@@ -79,11 +81,6 @@ public class Character implements Disposable {
 
     public SpriteBatch getBatch() {
         return batch;
-    }
-
-    protected void loadJson(JsonValue informations) {
-        this.modelName = informations.getString("modelName");
-        this.name = informations.getString("name");
     }
 
     @Override

@@ -17,7 +17,11 @@ public class Zones extends EntitiesHolder<Zone> {
 
     public Zones(JsonValue.JsonIterator jsonValues) {
         super(jsonValues);
+    }
 
+    @Override
+    public Boolean add(JsonValue value) {
+        return add(new Zone(value));
     }
 
 }
