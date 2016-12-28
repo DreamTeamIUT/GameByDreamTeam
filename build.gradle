@@ -18,10 +18,10 @@ allprojects {
     version = '1.0'
     ext {
         appName = "ProjetIUT"
-        gdxVersion = '1.9.4'
-        roboVMVersion = '2.2.0'
+        gdxVersion = '1.9.5'
+        roboVMVersion = '2.3.0'
         box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
+        ashleyVersion = '1.7.3'
         aiVersion = '1.8.0'
     }
 
