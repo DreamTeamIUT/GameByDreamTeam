@@ -10,6 +10,11 @@ import java.util.ArrayList;
  * Created by Guillaume on 02/11/2016.
  */
 public class ColisionsManager {
+
+    private static final int TYPE_ZONE = 1;
+    private static final int TYPE_GATE = 2;
+
+
     private LayerManager layerManager;
     private ArrayList<Character> characters;
     private Story story;
@@ -48,7 +53,7 @@ public class ColisionsManager {
     }
 
     public void debug(ShapeRenderer shapeRenderer) {
-        layerManager.debugObjectLayer(shapeRenderer);
+        layerManager.debugObjectsLayer(shapeRenderer);
 
         //TODO : draw zones, items, players, ... ( every thing colision related )
     }

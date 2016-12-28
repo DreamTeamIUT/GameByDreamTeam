@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import unice.etu.dreamteam.Utils.Debug;
 
@@ -18,6 +19,8 @@ import java.util.*;
  */
 public class LayerManager {
 
+    private static final Color DEBUG_ZONE_COLOR = new Color(207,121,0,255);
+    private static final Color DEBUG_OBJECT_COLOR = new Color(0,255,0,255);
 
     private int currentFloor = 1;
     private ArrayList<TiledMapTileLayer> tiledLayers;
@@ -166,13 +169,12 @@ public class LayerManager {
 
     }
 
-    public void debugObjectLayer(ShapeRenderer shapeRenderer) {
-
-        //TODO : Complete to draw Zone objects.
+    public void debugObjectsLayer(ShapeRenderer shapeRenderer) {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        shapeRenderer.setColor(Color.valueOf(this.getCurrentObjectLayer().getProperties().get("Color", String.class)));
+
+        shapeRenderer.setColor(DEBUG_OBJECT_COLOR);
 
         MapObjects obj = this.getCurrentObjectLayer().getObjects();
 
@@ -180,6 +182,17 @@ public class LayerManager {
             Rectangle r = rectangleObject.getRectangle();
             shapeRenderer.rect(r.getX() - 16, r.getY() + 16, r.getWidth(), r.getHeight());
         }
+
+
+        shapeRenderer.setColor(DEBUG_ZONE_COLOR);
+
+        obj = this.getCurrentZoneLayer().getObjects();
+
+        for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
+            Rectangle r = rectangleObject.getRectangle();
+            shapeRenderer.rect(r.getX() - 16, r.getY() + 16, r.getWidth(), r.getHeight());
+        }
+
 
         shapeRenderer.end();
     }
