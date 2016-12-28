@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
@@ -16,16 +17,24 @@ import java.util.*;
  * Created by Guillaume on 22/10/2016.
  */
 public class LayerManager {
+
+
+    private int currentFloor = 1;
+    private ArrayList<TiledMapTileLayer> tiledLayers;
+
+
     private final TiledMap map;
-    private int tiledLayerIndex;
-    private int realLayer = -1;
     private int beforeLayers[];
     private int afterLayers[];
-    private int objectLayerIndex;
     private int maxTiledLayer;
     private float opacity = 1;
 
+    private int zoneLayerIndex;
+    private int objectLayerIndex;
+
+
     public LayerManager(TiledMap map) {
+        tiledLayers = new ArrayList<>();
         this.map = map;
         updateData();
     }
@@ -33,20 +42,30 @@ public class LayerManager {
     private void updateData() {
         maxTiledLayer = getMaxLayer();
 
-        if (realLayer == -1)
-            realLayer = 1;
+        if (currentFloor == -1)
+            currentFloor = 1;
 
-        tiledLayerIndex = map.getLayers().getIndex(map.getLayers().get(realLayer + "_T"));
-        if (map.getLayers().get(realLayer + "_O") == null)
-            addEmptyObjectLayer();
-        objectLayerIndex = map.getLayers().getIndex(map.getLayers().get(realLayer + "_O"));
+        for (MapLayer l : map.getLayers()) {
+            if (l.getName().contains(currentFloor + "_T"))
+                tiledLayers.add((TiledMapTileLayer) l);
+        }
+
+
+        if (map.getLayers().get(currentFloor + "_O") == null)
+            addEmptyObjectLayer(currentFloor + "_O");
+        if (map.getLayers().get(currentFloor + "_Z") == null)
+            addEmptyObjectLayer(currentFloor + "_Z");
+
+
+        objectLayerIndex = map.getLayers().getIndex(map.getLayers().get(currentFloor + "_O"));
+        zoneLayerIndex = map.getLayers().getIndex(map.getLayers().get(currentFloor + "_Z"));
 
         ArrayList<String> orderedLayers = getOrderedLayersList(map.getLayers());
 
-        int index = realLayer == maxTiledLayer ? realLayer : realLayer + 1;
+        int index = currentFloor == maxTiledLayer ? currentFloor : currentFloor + 1;
 
-        List<String> before = orderedLayers.subList(0, orderedLayers.indexOf(index + "_T"));
-        List<String> after = orderedLayers.subList(orderedLayers.indexOf(index + "_T"), orderedLayers.size());
+        List<String> before = orderedLayers.subList(0, orderedLayers.indexOf(index + "_T1"));
+        List<String> after = orderedLayers.subList(orderedLayers.indexOf(index + "_T1"), orderedLayers.size());
 
         Debug.log(before.toString());
         Debug.log(after.toString());
@@ -77,27 +96,29 @@ public class LayerManager {
         return max;
     }
 
-    public int getTiledLayerIndex() {
-        return tiledLayerIndex;
-    }
 
-    public TiledMapTileLayer getCurrentTileLayer() {
-        return (TiledMapTileLayer) this.map.getLayers().get(tiledLayerIndex);
+    public ArrayList<TiledMapTileLayer> getCurrentTileLayer() {
+        return tiledLayers;
     }
 
     public MapLayer getCurrentObjectLayer() {
         return this.map.getLayers().get(objectLayerIndex);
     }
 
+    public MapLayer getCurrentZoneLayer() {
+        return this.map.getLayers().get(zoneLayerIndex);
+    }
+
+
     public void jumptToNext() {
-        realLayer = (realLayer == maxTiledLayer) ? maxTiledLayer : realLayer + 1;
+        currentFloor = (currentFloor == maxTiledLayer) ? maxTiledLayer : currentFloor + 1;
         updateData();
         setLayersOpacity(opacity);
 
     }
 
     public void jumpToPrevious() {
-        realLayer = (realLayer == 1) ? realLayer : realLayer - 1;
+        currentFloor = (currentFloor == 1) ? currentFloor : currentFloor - 1;
         updateData();
         setLayersOpacity(opacity);
     }
@@ -136,19 +157,22 @@ public class LayerManager {
         this.opacity = (opacity > 1) ? 1 : opacity;
         this.opacity = (opacity < 0) ? 0 : opacity;
 
-        for (TiledMapTileLayer l : map.getLayers().getByType(TiledMapTileLayer.class)) {
+        for (TiledMapTileLayer l : map.getLayers().getByType(TiledMapTileLayer.class))
             l.setOpacity(opacity);
-        }
 
-        getCurrentTileLayer().setOpacity(1);
 
-        if (realLayer != maxTiledLayer)
-            map.getLayers().get((realLayer + 1) + "_T").setOpacity(1);
+        for (MapLayer l : getCurrentTileLayer())
+            l.setOpacity(1);
+
     }
 
     public void debugObjectLayer(ShapeRenderer shapeRenderer) {
+
+        //TODO : Complete to draw Zone objects.
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0, 1, 0, 1);
+
+        shapeRenderer.setColor(Color.valueOf(this.getCurrentObjectLayer().getProperties().get("Color", String.class)));
 
         MapObjects obj = this.getCurrentObjectLayer().getObjects();
 
@@ -168,11 +192,18 @@ public class LayerManager {
         return afterLayers;
     }
 
-    private void addEmptyObjectLayer() {
+    private void addEmptyObjectLayer(String name) {
         MapLayer layer = new MapLayer();
         layer.setOpacity(1);
-        layer.setName(realLayer + "_O");
+        layer.setName(name);
         layer.setVisible(true);
         map.getLayers().add(layer);
+    }
+
+    public static Color hex2Rgb(String colorStr) {
+        return new Color(
+                Integer.valueOf(colorStr.substring(1, 3), 16),
+                Integer.valueOf(colorStr.substring(3, 5), 16),
+                Integer.valueOf(colorStr.substring(5, 7), 16), 1);
     }
 }

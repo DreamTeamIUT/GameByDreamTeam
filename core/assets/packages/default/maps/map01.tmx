@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="left-down" width="10" height="10" tilewidth="64" tileheight="32" nextobjectid="11">
- <tileset firstgid="1" name="Images" tilewidth="64" tileheight="64" tilecount="6" columns="0">
+<map version="1.0" orientation="isometric" renderorder="left-down" width="10" height="10" tilewidth="64" tileheight="32" nextobjectid="12">
+ <tileset firstgid="1" name="Images" tilewidth="64" tileheight="64" tilecount="7" columns="0">
   <tile id="0">
    <image width="64" height="64" source="../images/individual_tiles/tile__02.png"/>
   </tile>
@@ -22,15 +22,34 @@
    </properties>
    <image width="64" height="43" source="../images/individual_tiles/tile__07.png"/>
   </tile>
+  <tile id="7">
+   <image width="64" height="64" source="../images/individual_tiles/tile__19.png"/>
+  </tile>
  </tileset>
- <objectgroup name="1_O" visible="0">
+ <tileset firstgid="9" name="Gate" tilewidth="64" tileheight="128" tilecount="1" columns="0">
+  <tile id="0">
+   <properties>
+    <property name="type" type="int" value="2"/>
+   </properties>
+   <image width="64" height="128" source="../images/individual_tiles/tile__73.png"/>
+  </tile>
+ </tileset>
+ <objectgroup color="#00ff00" name="1_O">
+  <properties>
+   <property name="Color" value="#00ff00"/>
+  </properties>
   <object id="1" name="Rect1" x="64" y="192" width="96" height="96"/>
   <object id="3" name="Rect2" x="32" y="0" width="96" height="64"/>
   <object id="4" name="Rect3" x="192" y="96" width="64" height="128"/>
   <object id="5" name="Rect4" x="128" y="96" width="63.204" height="61.5833"/>
   <object id="6" name="mur1" x="256" y="192" width="64" height="32"/>
  </objectgroup>
- <layer name="1_T" width="10" height="10" opacity="0.97">
+ <objectgroup color="#c8c85a" name="1_Z">
+  <properties>
+   <property name="Color" value="#c8c85a"/>
+  </properties>
+ </objectgroup>
+ <layer name="1_T1" width="10" height="10" opacity="0.97">
   <data encoding="csv">
 4,0,0,0,1,1,1,1,4,4,
 4,0,0,0,1,1,1,1,4,4,
@@ -41,94 +60,79 @@
 4,4,0,0,0,1,0,0,1,1,
 4,2,0,0,0,1,1,4,4,6,
 4,2,0,0,0,1,1,1,1,6,
-4,4,2,2,1,1,1,4,4,6
+4,4,2,2,1,1,1,4,4,4
 </data>
  </layer>
- <layer name="2_T" width="10" height="10" offsetx="0" offsety="-32">
-  <properties>
-   <property name="sss" type="int" value="0"/>
-  </properties>
+ <layer name="1_T2" width="10" height="10" offsetx="0" offsety="-32">
   <data encoding="csv">
+0,0,0,0,5,5,5,5,5,5,
+0,0,0,0,0,0,0,0,0,9,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,2,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,2,2,2,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,2,
-0,0,0,0,0,0,2,0,0,2,
-0,0,0,2,0,0,0,0,0,2
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,2
 </data>
  </layer>
- <layer name="3_T" width="10" height="10" visible="0">
+ <layer name="1_T3" width="10" height="10" offsetx="0" offsety="-64">
   <data encoding="csv">
+0,0,0,0,2,2,2,2,2,2,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,2,2,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,2
 </data>
  </layer>
- <layer name="4_T" width="10" height="10" visible="0">
+ <objectgroup name="2_O" visible="0"/>
+ <objectgroup name="2_Z" visible="0"/>
+ <layer name="2_T1" width="10" height="10" visible="0" offsetx="0" offsety="-96">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,2,2,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8
 </data>
  </layer>
- <layer name="5_T" width="10" height="10" visible="0">
+ <layer name="2_T2" width="10" height="10" visible="0" offsetx="0" offsety="-128">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,2,2,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
+8,8,8,8,8,8,8,8,8,8,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="6_T" width="10" height="10" visible="0">
+ <layer name="2_T3" width="10" height="10" visible="0" offsetx="0" offsety="-160">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,2,2,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
- <layer name="7_T" width="10" height="10" visible="0">
-  <data encoding="csv">
-0,0,2,2,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
+8,8,8,8,8,8,8,8,8,8,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0,
+8,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
 </map>
