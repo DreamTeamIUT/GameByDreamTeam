@@ -64,7 +64,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         Packages p = new Packages(GameInformation.getPackageName());
 
-        colisionsManager = new ColisionsManager();
+        colisionsManager = new ColisionsManager(map);
 
         playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
 
@@ -73,7 +73,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         mobList.get(0).setCell(1,1);
 
-        colisionsManager.addMapLayer(map.getLayerManager());
         colisionsManager.addStory(s);
 
     }

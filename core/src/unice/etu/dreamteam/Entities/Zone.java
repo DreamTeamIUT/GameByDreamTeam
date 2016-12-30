@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Zone extends Entity{
+public class Zone extends Entity {
 
     private final ArrayList<JsonValue> attacks;
     private final boolean isOneTime;
@@ -26,19 +26,24 @@ public class Zone extends Entity{
         this.attacks.add(zone.get("attack"));
     }
 
-    public void onEnter(){
+    public void onEnter() {
         Debug.log("Entering in zone :" + getName());
+        if (!getCurrentZoneState().isZoneDone)
+            return; //TODO : At this place we should start the "script". Don't know how we can achieve that for the moment
+
     }
 
-    public void onExit(){
+    public void onExit() {
         Debug.log("Exiting zone :" + getName());
     }
 
-    public Boolean canEnter(){
-        return false;
+    public Boolean canEnter() {
+        return true;
     }
 
-    public Boolean canExit(){
+    public Boolean canExit() {
+        if (getCurrentZoneState().isZoneDone)
+            return true;
         return false;
     }
 
@@ -46,7 +51,7 @@ public class Zone extends Entity{
         return currentZoneState;
     }
 
-    private class ZoneState{
+    private class ZoneState {
         public Boolean isplayerIn = false;
         public Boolean isZoneDone = false;
         public int playerTravels = 0;

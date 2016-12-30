@@ -30,32 +30,28 @@ public class Character implements Disposable {
         cellPos = new Vector2(0, 0);
        // animationManager = new ModelAnimationManager(modelName);
        // modelConverter = new ModelConverter(animationManager);
-        playerZone = new Rectangle();
         updatePlayerZone();
-        playerZone.width = 32;
-        playerZone.height = 32;
     }
 
     private void updatePlayerZone() {
-        playerZone.x = 32 * getCellPos().x;
-        playerZone.y = 32 * getCellPos().y;
+        playerZone = getRectangleAt(this.getCellPos());
     }
 
     public Vector2 moveToLeft() {
 
-        return new Vector2(cellPos.x--, cellPos.y);
+        return new Vector2(cellPos.x-1, cellPos.y);
     }
 
     public Vector2 moveToRight() {
-        return new Vector2(cellPos.x++, cellPos.y);
+        return new Vector2(cellPos.x+1, cellPos.y);
     }
 
     public Vector2 moveToUp() {
-        return new Vector2(cellPos.x, cellPos.y++);
+        return new Vector2(cellPos.x, cellPos.y+1);
     }
 
     public Vector2 moveToDown() {
-        return new Vector2(cellPos.x, cellPos.y--);
+        return new Vector2(cellPos.x, cellPos.y-1);
     }
 
     public void setCell(int x, int y) {
@@ -66,6 +62,15 @@ public class Character implements Disposable {
 
     public Rectangle getRectangle() {
         return playerZone;
+    }
+
+    public Rectangle getRectangleAt(Vector2 cellPos){
+        Rectangle zone = new Rectangle();
+        zone.width = 32;
+        zone.height = 32;
+        zone.x = 32 * cellPos.x;
+        zone.y = 32 * cellPos.y;
+        return zone;
     }
 
    /* public ModelAnimationManager getAnimationManager() {

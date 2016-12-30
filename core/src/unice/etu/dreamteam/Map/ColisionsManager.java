@@ -1,9 +1,12 @@
 package unice.etu.dreamteam.Map;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Character;
+import unice.etu.dreamteam.Screens.GameScreen;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
@@ -15,15 +18,14 @@ public class ColisionsManager {
 
     private static final int TYPE_ZONE = 1;
     private static final int TYPE_GATE = 2;
+    private final Map map;
 
-
-    private LayerManager layerManager;
     private ArrayList<Character> characters;
     private Story story;
 
     //TODO : make a generic class that can be used for all other classes/entities/players/mobs
-    public ColisionsManager(){
-
+    public ColisionsManager(Map map){
+        this.map = map;
     }
 
 
@@ -65,7 +67,23 @@ public class ColisionsManager {
 
     public Boolean canGoTo(Vector2 cells, Character p){
 
-        return false;
+        Debug.vector(p.getCellPos());
+
+        //TODO : empty cell return false, first check.
+
+        if (cells.x >= map.getMapHeight() || cells.y >= map.getMapWidth() || cells.x < 0 || cells.y < 0)
+            return false;
+
+        Debug.log("Invisible Wall -> ok ");
+
+        for (RectangleMapObject rectangleObject : map.getLayerManager().getCurrentObjectLayer().getObjects().getByType(RectangleMapObject.class)) {
+            if (Intersector.overlaps(rectangleObject.getRectangle(), p.getRectangleAt(cells))){
+                Debug.log("Intersect with" + rectangleObject.getName());
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public Boolean canGoTo(float cellx, float cellY, Character p){
@@ -78,16 +96,12 @@ public class ColisionsManager {
         this.characters = characters;
     }
 
-    public void addMapLayer(LayerManager layerManager) {
-        this.layerManager = layerManager;
-    }
-
     public void addStory(Story s) {
         this.story = s;
     }
 
     public void debug(ShapeRenderer shapeRenderer) {
-        layerManager.debugObjectsLayer(shapeRenderer);
+        map.getLayerManager().debugObjectsLayer(shapeRenderer);
 
         //TODO : draw zones, items, players, ... ( every thing colision related )
     }
