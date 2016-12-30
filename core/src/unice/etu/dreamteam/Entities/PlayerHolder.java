@@ -25,7 +25,7 @@ public class PlayerHolder extends CharacterHolder {
         p.setBatch(batch);
         p.setShapeRenderer(shapeRenderer);
         p.setDebug(GameInformation.getDebugMode());
-        p.getAnimationManager().setAnimation("STOPPED");
+       // p.getAnimationManager().setAnimation("STOPPED");
         return p;
     }
 

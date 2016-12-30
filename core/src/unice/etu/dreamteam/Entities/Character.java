@@ -5,33 +5,31 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import unice.etu.dreamteam.Characters.ModelAnimationManager;
 import unice.etu.dreamteam.Utils.Debug;
-import unice.etu.dreamteam.Utils.ModelConverter;
 
 /**
  * Created by Dylan on 01/10/2016.
  */
 public class Character implements Disposable {
 
-    private ModelConverter modelConverter;
-    private ModelAnimationManager animationManager;
-    private Vector2 cellPos;
-    private Vector2 realPos;
-    private Rectangle playerZone;
-    private String modelName;
-    private String name;
-    private SpriteBatch batch;
-    private Boolean debug;
-    private ShapeRenderer shapeRenderer;
+   // private ModelConverter modelConverter;
+   // private ModelAnimationManager animationManager;
+    protected Vector2 cellPos;
+    protected Vector2 realPos;
+    protected Rectangle playerZone;
+    protected String modelName;
+    protected String name;
+    protected SpriteBatch batch;
+    protected Boolean debug;
+    protected ShapeRenderer shapeRenderer;
 
     public Character(CharacterHolder holder) {
         Debug.log("Load character");
         this.name = holder.getName();
         this.modelName = holder.getModelName();
         cellPos = new Vector2(0, 0);
-        animationManager = new ModelAnimationManager(modelName);
-        modelConverter = new ModelConverter(animationManager);
+       // animationManager = new ModelAnimationManager(modelName);
+       // modelConverter = new ModelConverter(animationManager);
         playerZone = new Rectangle();
         updatePlayerZone();
         playerZone.width = 32;
@@ -43,20 +41,21 @@ public class Character implements Disposable {
         playerZone.y = 32 * getCellPos().y;
     }
 
-    public void moveToLeft() {
-        cellPos.x--;
+    public Vector2 moveToLeft() {
+
+        return new Vector2(cellPos.x--, cellPos.y);
     }
 
-    public void moveToRight() {
-        cellPos.x++;
+    public Vector2 moveToRight() {
+        return new Vector2(cellPos.x++, cellPos.y);
     }
 
-    public void moveToUp() {
-        cellPos.y++;
+    public Vector2 moveToUp() {
+        return new Vector2(cellPos.x, cellPos.y++);
     }
 
-    public void moveToDown() {
-        cellPos.y--;
+    public Vector2 moveToDown() {
+        return new Vector2(cellPos.x, cellPos.y--);
     }
 
     public void setCell(int x, int y) {
@@ -69,13 +68,16 @@ public class Character implements Disposable {
         return playerZone;
     }
 
-    public ModelAnimationManager getAnimationManager() {
+   /* public ModelAnimationManager getAnimationManager() {
         return animationManager;
     }
+*/
 
+/*
     public ModelConverter getModelConverter() {
         return modelConverter;
     }
+*/
 
     public SpriteBatch getBatch() {
         return batch;
@@ -83,8 +85,8 @@ public class Character implements Disposable {
 
     @Override
     public void dispose() {
-        modelConverter.dispose();
-        animationManager.dispose();
+      //  modelConverter.dispose();
+      //  animationManager.dispose();
     }
 
     public Vector2 getRealPos() {
@@ -114,25 +116,25 @@ public class Character implements Disposable {
     }
 
     private void update(float delta) {
-        modelConverter.update(delta);
+       // modelConverter.update(delta);
         updatePlayerZone();
     }
 
     public void render(float delta) {
         this.update(delta);
-        modelConverter.render();
+       // modelConverter.render();
 
         if (debug)
             drawDebug();
 
         getBatch().begin();
         //TODO : calc the best pos ! Cneter of frame buffer = center perso, locate center and draw to center of cell.
-        getBatch().draw(modelConverter.getCurrentTexture(), getRectangle().x, getRectangle().y);
+       // getBatch().draw(modelConverter.getCurrentTexture(), getRectangle().x, getRectangle().y);
         getBatch().end();
 
     }
 
-    private void drawDebug() {
+    protected void drawDebug() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 1f, 1);
         shapeRenderer.rect(getRectangle().x - 16, getRectangle().y + 16, getRectangle().getWidth(), getRectangle().getHeight());
@@ -152,4 +154,5 @@ public class Character implements Disposable {
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
     }
+
 }

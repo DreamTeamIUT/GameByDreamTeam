@@ -21,7 +21,7 @@ public class Main extends Game {
 
         UiManager.initialise();
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
+        ScreenManager.getInstance().showScreen(ScreenList.GAME);
         AudioManager.initialize();
 
 

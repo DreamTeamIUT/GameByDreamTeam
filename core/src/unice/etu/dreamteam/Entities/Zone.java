@@ -14,10 +14,11 @@ public class Zone extends Entity{
     private final ArrayList<JsonValue> attacks;
     private final boolean isOneTime;
     private final String sound;
+    private ZoneState currentZoneState;
 
     public Zone(JsonValue zone) {
         super(zone);
-
+        this.currentZoneState = new ZoneState();
         this.sound = zone.getString("sound", null);
         this.isOneTime = zone.getBoolean("onetime", false);
         this.attacks = new ArrayList<JsonValue>();
@@ -39,6 +40,16 @@ public class Zone extends Entity{
 
     public Boolean canExit(){
         return false;
+    }
+
+    public ZoneState getCurrentZoneState() {
+        return currentZoneState;
+    }
+
+    private class ZoneState{
+        public Boolean isplayerIn = false;
+        public Boolean isZoneDone = false;
+        public int playerTravels = 0;
     }
 
 
