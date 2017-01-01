@@ -22,9 +22,16 @@
           "count": "10"
         }
       ],
+      "spawnitems": [
+        {
+          "type": "border-left",
+          "rotate": 0,
+          "item": "fence"
+        }
+      ],
       "sound": "ENTER_ZONE",
-      "maxEnter": 1,
-      "maxExecute": 1,
+      "maxEnter": 2,
+      "maxExecute": 2,
       "blocked": "false"
     }
   },

@@ -89,11 +89,15 @@ public class CollisionsManager {
             if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangleAt(cells))) {
 
                 if (story.getZones().exist(rectangleMapObject.getName())) {
-                    Debug.log(!story.getZones().get(rectangleMapObject.getName()).canEnter() + " zone");
-                    if (!story.getZones().get(rectangleMapObject.getName()).canEnter())
-                        return false;
+                    Zone z = story.getZones().get(rectangleMapObject.getName());
 
-                    //TODO : can enter but no leave the current zone
+                    Debug.log(!z.canEnter() + " zone");
+
+                    if (z.isIn()) {
+                        if (!z.canLeave())
+                            return false;
+                    } else if (!z.canEnter())
+                        return false;
                 }
             }
         }
