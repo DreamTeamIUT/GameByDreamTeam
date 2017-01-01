@@ -12,49 +12,71 @@ import java.util.ArrayList;
 public class Zone extends Entity {
 
     private final ArrayList<JsonValue> attacks;
-    private final boolean isOneTime;
     private final String sound;
-    private ZoneState currentZoneState;
+
+    public final int maxEnter;
+    public final int maxExecute;
+
+    public final Boolean blocked;
+
+    private ZoneState zoneState;
 
     public Zone(JsonValue zone) {
         super(zone);
-        this.currentZoneState = new ZoneState();
+        this.zoneState = new ZoneState();
         this.sound = zone.getString("sound", null);
-        this.isOneTime = zone.getBoolean("onetime", false);
         this.attacks = new ArrayList<JsonValue>();
         //TODO : improve the way of storing attacks ?
         this.attacks.add(zone.get("attack"));
+
+        this.maxEnter = zone.getInt("maxEnter");
+        this.maxExecute = zone.getInt("maxExecute");
+
+        this.blocked = zone.getBoolean("blocked");
     }
 
     public void onEnter() {
         Debug.log("Entering in zone :" + getName());
-        if (!getCurrentZoneState().isZoneDone)
-            return; //TODO : At this place we should start the "script". Don't know how we can achieve that for the moment
 
+        getZoneState().isIn = true;
+        getZoneState().countEnter++;
+
+        if(getZoneState().countExecute < maxExecute)
+            Debug.log("Execute script ...");
     }
 
-    public void onExit() {
+    public void onLeave() {
         Debug.log("Exiting zone :" + getName());
+
+        getZoneState().isIn = false;
     }
 
     public Boolean canEnter() {
-        return true;
+        Debug.log(getZoneState().countEnter + " " + maxEnter);
+        return getZoneState().countEnter < maxEnter || maxEnter < 0;
     }
 
-    public Boolean canExit() {
-        if (getCurrentZoneState().isZoneDone)
-            return true;
-        return false;
+    public Boolean canLeave() {
+        return !blocked || !getZoneState().blocked;
     }
 
-    public ZoneState getCurrentZoneState() {
-        return currentZoneState;
+    public ZoneState getZoneState() {
+        return zoneState;
+    }
+
+    public Boolean isIn() {
+        return getZoneState().isIn;
+    }
+
+    public void setBlockedZone(Boolean is) {
+        getZoneState().blocked = is;
     }
 
     private class ZoneState {
-        public Boolean isplayerIn = false;
-        public Boolean isZoneDone = false;
-        public int playerTravels = 0;
+        Boolean isIn = false;
+        Boolean blocked = false;
+        int countEnter = 0;
+        int countExecute = 0;
     }
 
 

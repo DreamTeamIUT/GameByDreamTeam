@@ -2,7 +2,6 @@ package unice.etu.dreamteam.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
-import unice.etu.dreamteam.Map.ColisionsManager;
+import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.Settings;
@@ -27,7 +26,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private OrthographicCamera othoCamera;
     private SpriteBatch spriteBatch;
     private ShapeRenderer shapeRenderer;
-    private ColisionsManager colisionsManager;
+    private CollisionsManager collisionsManager;
 
     public GameScreen() {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -64,16 +63,16 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         Packages p = new Packages(GameInformation.getPackageName());
 
-        colisionsManager = new ColisionsManager(map);
+        collisionsManager = new CollisionsManager(map);
 
         playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
-
+        playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
 
         mobList.add((Mob)s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
 
         mobList.get(0).setCell(1,1);
 
-        colisionsManager.addStory(s);
+        collisionsManager.addStory(s);
 
     }
 
@@ -89,13 +88,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setProjectionMatrix(othoCamera.combined);
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
-        colisionsManager.update(delta);
+        collisionsManager.update(delta);
 
 
         map.getRenderer().setView(othoCamera);
         map.render(delta);
 
-        colisionsManager.debug(shapeRenderer);
+        collisionsManager.debug(shapeRenderer);
 
         map.getRenderer().render(map.getLayerManager().getBeforeLayers());
 
@@ -137,23 +136,28 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     addActor(Settings.createWindow(getViewport()));
                 return true;
             case Input.Keys.D:
-                if (colisionsManager.canGoTo(p.moveToRight(), p)){
+                if (collisionsManager.canGoTo(p.moveToRight(), p)){
                     p.setCellPos(p.moveToRight());
+                    collisionsManager.findActionFor(p);
                 }
                 return true;
             case Input.Keys.S:
-                if (colisionsManager.canGoTo(p.moveToDown(), p)){
+                if (collisionsManager.canGoTo(p.moveToDown(), p)){
                     p.setCellPos(p.moveToDown());
+                    collisionsManager.findActionFor(p);
                 }
                 return true;
             case Input.Keys.Q:
-                if (colisionsManager.canGoTo(p.moveToLeft(), p)){
+                if (collisionsManager.canGoTo(p.moveToLeft(), p)){
                     p.setCellPos(p.moveToLeft());
+                    collisionsManager.findActionFor(p);
                 }
                 return true;
             case Input.Keys.Z:
-                if (colisionsManager.canGoTo(p.moveToUp(), p)){
+                Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToUp(), p));
+                if (collisionsManager.canGoTo(p.moveToUp(), p)){
                     p.setCellPos(p.moveToUp());
+                    collisionsManager.findActionFor(p);
                 }
                 return true;
         }

@@ -3,8 +3,7 @@ package unice.etu.dreamteam.Entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Entities.Character;
-import unice.etu.dreamteam.Entities.Entity;
+import unice.etu.dreamteam.Characters.Character;
 
 /**
  * Created by Guillaume on 27/12/2016.

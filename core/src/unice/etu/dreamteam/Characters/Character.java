@@ -1,10 +1,11 @@
-package unice.etu.dreamteam.Entities;
+package unice.etu.dreamteam.Characters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import unice.etu.dreamteam.Entities.CharacterHolder;
 import unice.etu.dreamteam.Utils.Debug;
 
 /**

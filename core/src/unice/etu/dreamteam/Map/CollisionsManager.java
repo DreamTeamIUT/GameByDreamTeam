@@ -4,9 +4,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.org.apache.regexp.internal.RE;
 import unice.etu.dreamteam.Characters.Player;
-import unice.etu.dreamteam.Entities.Character;
-import unice.etu.dreamteam.Screens.GameScreen;
+import unice.etu.dreamteam.Characters.Character;
+import unice.etu.dreamteam.Entities.Zone;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by Guillaume on 02/11/2016.
  */
-public class ColisionsManager {
+public class CollisionsManager {
 
     private static final int TYPE_ZONE = 1;
     private static final int TYPE_GATE = 2;
@@ -24,7 +25,7 @@ public class ColisionsManager {
     private Story story;
 
     //TODO : make a generic class that can be used for all other classes/entities/players/mobs
-    public ColisionsManager(Map map){
+    public CollisionsManager(Map map){
         this.map = map;
     }
 
@@ -33,13 +34,13 @@ public class ColisionsManager {
 
     }
 
-    public Object handleColision(Object a, Object b){
+    public Object handleCollision(Object a, Object b){
         Debug.log("Type a : " + a.getClass().getName());
         Debug.log("Type b : " + b.getClass().getName());
         return null;
     }
 
-    public Object hasColisionWith(Player p){
+    public Object hasCollisionWith(Player p){
 
         //TODO : check if hole or Wall ( if zone is tagged as not existable, it act like wall )
         //      Return
@@ -56,13 +57,13 @@ public class ColisionsManager {
         return null;
     }
 
-    public Object hasColisionWithAt(Vector2 cell, Character p){
+    public Object hasCollisionWithAt(Vector2 cell, Character p){
         return null;
     }
 
-    public Object hasRelativeColisionWithAt(float x, float y, Character p ){
+    public Object hasRelativeCollisionWithAt(float x, float y, Character p ){
         Vector2 v = new Vector2(p.getCellPos().x+x, p.getCellPos().y+y);
-        return hasColisionWithAt(v, p);
+        return hasCollisionWithAt(v, p);
     }
 
     public Boolean canGoTo(Vector2 cells, Character p){
@@ -79,7 +80,22 @@ public class ColisionsManager {
         for (RectangleMapObject rectangleObject : map.getLayerManager().getCurrentObjectLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (Intersector.overlaps(rectangleObject.getRectangle(), p.getRectangleAt(cells))){
                 Debug.log("Intersect with" + rectangleObject.getName());
-                return false;
+
+                    return false;
+            }
+        }
+
+        for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class))
+        {
+            if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangleAt(cells))){
+
+                if(story.getZones().exist(rectangleMapObject.getName())) {
+                    Debug.log(!story.getZones().get(rectangleMapObject.getName()).canEnter() + " zone");
+                    if(!story.getZones().get(rectangleMapObject.getName()).canEnter())
+                        return false;
+
+                    //TODO : can enter but no leave the current zone
+                }
             }
         }
 
@@ -103,6 +119,27 @@ public class ColisionsManager {
     public void debug(ShapeRenderer shapeRenderer) {
         map.getLayerManager().debugObjectsLayer(shapeRenderer);
 
-        //TODO : draw zones, items, players, ... ( every thing colision related )
+        //TODO : draw zones, items, players, ... ( every thing collision related )
+    }
+
+    public void findActionFor(Character p) {
+        for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class))
+        {
+            if(story.getZones().exist(rectangleMapObject.getName())) {
+                Zone zone = story.getZones().get(rectangleMapObject.getName());
+
+                if(zone.isIn()) {
+                    if (!Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canLeave()) {
+                        zone.onLeave();
+                    }
+                }
+                else {
+                    Debug.log("not in");
+                    if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canEnter()) {
+                        zone.onEnter();
+                    }
+                }
+            }
+        }
     }
 }

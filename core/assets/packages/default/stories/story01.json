@@ -23,7 +23,9 @@
         }
       ],
       "sound": "ENTER_ZONE",
-      "onetime": true
+      "maxEnter": 1,
+      "maxExecute": 1,
+      "blocked": "false"
     }
   },
   "gates": {
