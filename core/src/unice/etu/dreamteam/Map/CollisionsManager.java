@@ -25,22 +25,22 @@ public class CollisionsManager {
     private Story story;
 
     //TODO : make a generic class that can be used for all other classes/entities/players/mobs
-    public CollisionsManager(Map map){
+    public CollisionsManager(Map map) {
         this.map = map;
     }
 
 
-    public void update(float delta){
+    public void update(float delta) {
 
     }
 
-    public Object handleCollision(Object a, Object b){
+    public Object handleCollision(Object a, Object b) {
         Debug.log("Type a : " + a.getClass().getName());
         Debug.log("Type b : " + b.getClass().getName());
         return null;
     }
 
-    public Object hasCollisionWith(Player p){
+    public Object hasCollisionWith(Player p) {
 
         //TODO : check if hole or Wall ( if zone is tagged as not existable, it act like wall )
         //      Return
@@ -57,41 +57,40 @@ public class CollisionsManager {
         return null;
     }
 
-    public Object hasCollisionWithAt(Vector2 cell, Character p){
+    public Object hasCollisionWithAt(Vector2 cell, Character p) {
         return null;
     }
 
-    public Object hasRelativeCollisionWithAt(float x, float y, Character p ){
-        Vector2 v = new Vector2(p.getCellPos().x+x, p.getCellPos().y+y);
+    public Object hasRelativeCollisionWithAt(float x, float y, Character p) {
+        Vector2 v = new Vector2(p.getCellPos().x + x, p.getCellPos().y + y);
         return hasCollisionWithAt(v, p);
     }
 
-    public Boolean canGoTo(Vector2 cells, Character p){
+    public Boolean canGoTo(Vector2 cells, Character p) {
 
         Debug.vector(p.getCellPos());
 
-        //TODO : empty cell return false, first check.
-
         if (cells.x >= map.getMapHeight() || cells.y >= map.getMapWidth() || cells.x < 0 || cells.y < 0)
+            return false;
+
+        if (map.getLayerManager().getCurrentTileLayer().get(0).getCell((int) cells.x, (int) cells.y) == null)
             return false;
 
         Debug.log("Invisible Wall -> ok ");
 
         for (RectangleMapObject rectangleObject : map.getLayerManager().getCurrentObjectLayer().getObjects().getByType(RectangleMapObject.class)) {
-            if (Intersector.overlaps(rectangleObject.getRectangle(), p.getRectangleAt(cells))){
+            if (Intersector.overlaps(rectangleObject.getRectangle(), p.getRectangleAt(cells))) {
                 Debug.log("Intersect with" + rectangleObject.getName());
-
-                    return false;
+                return false;
             }
         }
 
-        for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class))
-        {
-            if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangleAt(cells))){
+        for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
+            if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangleAt(cells))) {
 
-                if(story.getZones().exist(rectangleMapObject.getName())) {
+                if (story.getZones().exist(rectangleMapObject.getName())) {
                     Debug.log(!story.getZones().get(rectangleMapObject.getName()).canEnter() + " zone");
-                    if(!story.getZones().get(rectangleMapObject.getName()).canEnter())
+                    if (!story.getZones().get(rectangleMapObject.getName()).canEnter())
                         return false;
 
                     //TODO : can enter but no leave the current zone
@@ -102,10 +101,9 @@ public class CollisionsManager {
         return true;
     }
 
-    public Boolean canGoTo(float cellx, float cellY, Character p){
+    public Boolean canGoTo(int cellx, int cellY, Character p) {
         return canGoTo(new Vector2(cellx, cellY), p);
     }
-
 
 
     public void addCharacters(ArrayList<Character> characters) {
@@ -123,17 +121,15 @@ public class CollisionsManager {
     }
 
     public void findActionFor(Character p) {
-        for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class))
-        {
-            if(story.getZones().exist(rectangleMapObject.getName())) {
+        for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
+            if (story.getZones().exist(rectangleMapObject.getName())) {
                 Zone zone = story.getZones().get(rectangleMapObject.getName());
 
-                if(zone.isIn()) {
+                if (zone.isIn()) {
                     if (!Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canLeave()) {
                         zone.onLeave();
                     }
-                }
-                else {
+                } else {
                     Debug.log("not in");
                     if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canEnter()) {
                         zone.onEnter();
