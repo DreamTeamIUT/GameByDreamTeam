@@ -114,6 +114,7 @@ public class Character implements Disposable {
 
     public void setCellPos(Vector2 cellPos) {
         this.cellPos = cellPos;
+        this.updatePlayerZone();
     }
 
     public void setCellPos(int x, int y) {
