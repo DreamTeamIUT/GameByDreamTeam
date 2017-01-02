@@ -55,12 +55,6 @@ public class Character implements Disposable {
         return new Vector2(cellPos.x, cellPos.y-1);
     }
 
-    public void setCell(int x, int y) {
-        cellPos.x = x;
-        cellPos.y = y;
-    }
-
-
     public Rectangle getRectangle() {
         return playerZone;
     }
