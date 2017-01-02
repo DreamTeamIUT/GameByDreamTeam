@@ -81,12 +81,10 @@ public class CollisionsManager {
 
         TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y);
         if (c != null) {
-            String value = c.getTile().getProperties().get("type", String.class);
-            if (value != null && !value.equals("GATE"))
+            //Can be more precise...
+            if (!TileTypes.contain(c.getTile().getProperties().get("type", "", String.class)))
                 return false;
-
         }
-
 
         Debug.log("Invisible Wall -> ok ");
 
@@ -124,6 +122,7 @@ public class CollisionsManager {
 
 
         return true;
+
     }
 
     public Boolean canGoTo(int cellx, int cellY, Character p) {
