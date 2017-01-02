@@ -19,9 +19,9 @@ import java.util.*;
  */
 public class LayerManager {
 
-    private static final Color DEBUG_ZONE_COLOR = new Color(207,121,0,255);
-    private static final Color DEBUG_OBJECT_COLOR = new Color(0,255,0,255);
-    private static final Color DEBUG_GATE_COLOR = new Color(71, 66, 216, 255);
+    private static final Color DEBUG_ZONE_COLOR = Color.valueOf("cf7900ff");
+    private static final Color DEBUG_OBJECT_COLOR = Color.valueOf("00ff00ff");
+    private static final Color DEBUG_GATE_COLOR = Color.valueOf("4742d8ff");
 
     private int currentFloor = 1;
     private ArrayList<TiledMapTileLayer> tiledLayers;
