@@ -1,7 +1,7 @@
 {
   "name": "Story 02",
   "minimum-level": 10,
-  "map": "map01.tmx",
+  "map": "map02.tmx",
   "mobs": [
     "mob01.json"
   ],

@@ -23,7 +23,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private ArrayList<Player> playerList;
     private ArrayList<Item> itemList;
     private Map map;
-    private OrthographicCamera othoCamera;
+    private OrthographicCamera orthoCamera;
     private SpriteBatch spriteBatch;
     private ShapeRenderer shapeRenderer;
     private CollisionsManager collisionsManager;
@@ -37,7 +37,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         Gdx.input.setInputProcessor(this);
 
-        othoCamera = (OrthographicCamera) getCamera();
+        orthoCamera = (OrthographicCamera) getCamera();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
@@ -56,9 +56,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map.setSpriteBatch(spriteBatch);
 
         Debug.log("debug");
-        othoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
-        othoCamera.zoom = 1f;
-        othoCamera.update();
+        orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
+        orthoCamera.zoom = 1f;
+        orthoCamera.update();
         Debug.log("debug");
 
         Packages p = new Packages(GameInformation.getPackageName());
@@ -82,15 +82,15 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         if (Settings.isOpen)
             return;
 
-        othoCamera.update();
+        orthoCamera.update();
 
-        shapeRenderer.setProjectionMatrix(othoCamera.combined);
+        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         collisionsManager.update(delta);
 
 
-        map.getRenderer().setView(othoCamera);
+        map.getRenderer().setView(orthoCamera);
         map.render(delta);
 
         collisionsManager.debug(shapeRenderer);
@@ -138,18 +138,21 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 if (collisionsManager.canGoTo(p.moveToRight(), p)){
                     p.setCellPos(p.moveToRight());
                     collisionsManager.findActionFor(p);
+                    orthoCamera.translate((map.getTileWidth()) / 2, -map.getTileWidth() / 4);
                 }
                 return true;
             case Input.Keys.S:
                 if (collisionsManager.canGoTo(p.moveToDown(), p)){
                     p.setCellPos(p.moveToDown());
                     collisionsManager.findActionFor(p);
+                    orthoCamera.translate(-(map.getTileWidth() + map.getTileHeight()) / 3,-(map.getTileWidth() + map.getTileHeight()) / 6 );
                 }
                 return true;
             case Input.Keys.Q:
                 if (collisionsManager.canGoTo(p.moveToLeft(), p)){
                     p.setCellPos(p.moveToLeft());
                     collisionsManager.findActionFor(p);
+                    orthoCamera.translate(-(map.getTileWidth() / 2),map.getTileWidth() / 4);
                 }
                 return true;
             case Input.Keys.Z:
@@ -157,6 +160,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 if (collisionsManager.canGoTo(p.moveToUp(), p)){
                     p.setCellPos(p.moveToUp());
                     collisionsManager.findActionFor(p);
+                    orthoCamera.translate((map.getTileWidth() + map.getTileHeight()) / 3,(map.getTileWidth() + map.getTileHeight()) / 6);
                 }
                 return true;
         }

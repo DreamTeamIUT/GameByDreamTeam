@@ -76,6 +76,10 @@ public class CollisionsManager {
         if (map.getLayerManager().getCurrentTileLayer().get(0).getCell((int) cells.x, (int) cells.y) == null)
             return false;
 
+
+        if(map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y) != null)
+            return false;
+
         Debug.log("Invisible Wall -> ok ");
 
         for (RectangleMapObject rectangleObject : map.getLayerManager().getCurrentObjectLayer().getObjects().getByType(RectangleMapObject.class)) {
