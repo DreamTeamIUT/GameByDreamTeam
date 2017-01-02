@@ -21,6 +21,7 @@ public class LayerManager {
 
     private static final Color DEBUG_ZONE_COLOR = new Color(207,121,0,255);
     private static final Color DEBUG_OBJECT_COLOR = new Color(0,255,0,255);
+    private static final Color DEBUG_GATE_COLOR = new Color(71, 66, 216, 255);
 
     private int currentFloor = 1;
     private ArrayList<TiledMapTileLayer> tiledLayers;
@@ -34,6 +35,7 @@ public class LayerManager {
 
     private int zoneLayerIndex;
     private int objectLayerIndex;
+    private int gateLayerIndex;
 
 
     public LayerManager(TiledMap map) {
@@ -62,6 +64,7 @@ public class LayerManager {
 
         objectLayerIndex = map.getLayers().getIndex(map.getLayers().get(currentFloor + "_O"));
         zoneLayerIndex = map.getLayers().getIndex(map.getLayers().get(currentFloor + "_Z"));
+        gateLayerIndex = map.getLayers().getIndex(map.getLayers().get(currentFloor + "_G"));
 
         ArrayList<String> orderedLayers = getOrderedLayersList(map.getLayers());
 
@@ -110,6 +113,10 @@ public class LayerManager {
 
     public MapLayer getCurrentZoneLayer() {
         return this.map.getLayers().get(zoneLayerIndex);
+    }
+
+    public MapLayer getCurrentGateLayer() {
+        return this.map.getLayers().get(gateLayerIndex);
     }
 
 
@@ -187,6 +194,16 @@ public class LayerManager {
         shapeRenderer.setColor(DEBUG_ZONE_COLOR);
 
         obj = this.getCurrentZoneLayer().getObjects();
+
+        for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
+            Rectangle r = rectangleObject.getRectangle();
+            shapeRenderer.rect(r.getX() - 16, r.getY() + 16, r.getWidth(), r.getHeight());
+        }
+
+
+        shapeRenderer.setColor(DEBUG_GATE_COLOR);
+
+        obj = this.getCurrentGateLayer().getObjects();
 
         for (RectangleMapObject rectangleObject : obj.getByType(RectangleMapObject.class)) {
             Rectangle r = rectangleObject.getRectangle();

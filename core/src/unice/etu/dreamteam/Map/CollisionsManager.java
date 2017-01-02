@@ -2,11 +2,14 @@ package unice.etu.dreamteam.Map;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.sun.org.apache.regexp.internal.RE;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Characters.Character;
+import unice.etu.dreamteam.Entities.Gate;
 import unice.etu.dreamteam.Entities.Zone;
 import unice.etu.dreamteam.Utils.Debug;
 
@@ -76,9 +79,15 @@ public class CollisionsManager {
         if (map.getLayerManager().getCurrentTileLayer().get(0).getCell((int) cells.x, (int) cells.y) == null)
             return false;
 
+        TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y);
+        if( c != null)
+        {
+            Debug.log(Debug.iteratorToString(c.getTile().getProperties().getValues()));
+            if(!c.getTile().getProperties().get("type", String.class).equals("GATE"))
+                return false;
 
-        if(map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y) != null)
-            return false;
+        }
+
 
         Debug.log("Invisible Wall -> ok ");
 
@@ -105,6 +114,15 @@ public class CollisionsManager {
                 }
             }
         }
+
+        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)){
+            Gate g = story.getGates().get(gateObject.getName());
+            if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())){
+                if (!g.isOpen())
+                    return false;
+            }
+        }
+
 
         return true;
     }
@@ -145,5 +163,17 @@ public class CollisionsManager {
                 }
             }
         }
+
+        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)){
+            Gate g = story.getGates().get(gateObject.getName());
+            Debug.log(gateObject.getName());
+            Debug.log(g.getName() + " : " + (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()));
+            Debug.log(gateObject.getRectangle().toString());
+            if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen() ){
+                g.onPass(p);
+                break;
+            }
+        }
+
     }
 }

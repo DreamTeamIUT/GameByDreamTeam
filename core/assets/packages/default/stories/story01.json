@@ -17,7 +17,7 @@
     "ZONE1": {
       "attack": [
         {
-          "modId": "mob01",
+          "mobName": "mob01",
           "force": "1",
           "count": "10"
         }
@@ -32,12 +32,19 @@
       "sound": "ENTER_ZONE",
       "maxEnter": 2,
       "maxExecute": 2,
-      "blocked": "false"
+      "blocked": "false",
+      "maxRevive": 2,
+      "time":600
     }
   },
   "gates": {
     "GATE01": {
-      "goto": "GATE02"
+      "goto": "GATE02",
+      "isOpen" : true
+    },
+    "GATE02":{
+      "goto" : "GATE01",
+      "isOpen" : true
     }
   }
 }
