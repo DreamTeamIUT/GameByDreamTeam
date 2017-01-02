@@ -80,10 +80,9 @@ public class CollisionsManager {
             return false;
 
         TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y);
-        if( c != null)
-        {
-            Debug.log(Debug.iteratorToString(c.getTile().getProperties().getValues()));
-            if(!c.getTile().getProperties().get("type", String.class).equals("GATE"))
+        if (c != null) {
+            String value = c.getTile().getProperties().get("type", String.class);
+            if (value != null && !value.equals("GATE"))
                 return false;
 
         }
@@ -115,9 +114,9 @@ public class CollisionsManager {
             }
         }
 
-        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)){
+        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
             Gate g = story.getGates().get(gateObject.getName());
-            if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())){
+            if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
                 if (!g.isOpen())
                     return false;
             }
@@ -164,13 +163,13 @@ public class CollisionsManager {
             }
         }
 
-        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)){
+        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
             Gate g = story.getGates().get(gateObject.getName());
             Debug.log(gateObject.getName());
             Debug.log(g.getName() + " : " + (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()));
             Debug.log(gateObject.getRectangle().toString());
-            if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen() ){
-                g.onPass(p);
+            if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()) {
+                g.onPass(new MapEvent(p, map));
                 break;
             }
         }

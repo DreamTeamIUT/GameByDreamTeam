@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import unice.etu.dreamteam.Utils.Debug;
 
 /**
  * Created by Guillaume on 31/10/2016.
@@ -12,10 +14,10 @@ public class Map {
 
     private LayerManager layerManager;
     private TiledMap mapData;
-    private Integer mapHeight;
-    private Integer mapWidth;
-    private Integer tileHeight;
-    private Integer tileWidth;
+    private static Integer mapHeight;
+    private static Integer mapWidth;
+    private static Integer tileHeight;
+    private static Integer tileWidth;
     private SpriteBatch spriteBatch;
     private IsometricTiledMapRenderer renderer;
 
@@ -43,19 +45,19 @@ public class Map {
         return mapData;
     }
 
-    public Integer getMapHeight() {
+    public static Integer getMapHeight() {
         return mapHeight;
     }
 
-    public Integer getMapWidth() {
+    public static Integer getMapWidth() {
         return mapWidth;
     }
 
-    public Integer getTileHeight() {
+    public static Integer getTileHeight() {
         return tileHeight;
     }
 
-    public Integer getTileWidth() {
+    public static Integer getTileWidth() {
         return tileWidth;
     }
 
@@ -83,5 +85,16 @@ public class Map {
 
     public IsometricTiledMapRenderer getRenderer() {
         return renderer;
+    }
+
+    public static Vector2 pixelToCell(float x, float y){
+        Vector2 pos = new Vector2(0,0);
+
+        pos.x = Math.round(x/getTileHeight());
+        pos.y = Math.round(y/getTileHeight());
+
+        Debug.vector(pos);
+
+        return pos;
     }
 }

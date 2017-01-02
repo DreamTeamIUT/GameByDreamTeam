@@ -1,7 +1,14 @@
 package unice.etu.dreamteam.Entities;
 
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Characters.Character;
+import unice.etu.dreamteam.Map.CollisionsManager;
+import unice.etu.dreamteam.Map.Map;
+import unice.etu.dreamteam.Map.MapEvent;
 import unice.etu.dreamteam.Utils.Debug;
 
 /**
@@ -35,9 +42,14 @@ public class Gate extends Entity{
         return 0;
     }
 
-    public void onPass(Character p){
+    public void onPass(MapEvent event){
         getGateState().countPass++;
-        p.setCell(0,0);
+        RectangleMapObject nextGateObject = (RectangleMapObject) event.getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
+        if (nextGateObject != null)
+        {
+            Vector2 v = Map.pixelToCell(nextGateObject.getRectangle().getX(), nextGateObject.getRectangle().getY());
+            event.getCharacter().setCellPos(v);
+        }
     }
 
     public GateState getGateState() {
@@ -45,7 +57,7 @@ public class Gate extends Entity{
     }
 
     public class GateState{
-        public boolean isOpen = false;
-        public int countPass =0;
+        boolean isOpen = false;
+        int countPass =0;
     }
 }
