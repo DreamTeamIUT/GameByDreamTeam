@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
@@ -15,6 +16,7 @@ import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
@@ -65,14 +67,19 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         collisionsManager = new CollisionsManager(map);
 
-        playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
-        playerList.add((Player) p.getPlayers().get("player01").create( spriteBatch, shapeRenderer));
+        playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
+        playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
 
-        mobList.add((Mob)s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
-        mobList.get(0).setCellPos(1,1);
+        mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+        mobList.get(0).setCellPos(1, 1);
 
         collisionsManager.addStory(s);
 
+    }
+
+    public void center_camera(Player p) {
+        Vector3 pos = new Vector3(p.getCellPos().x * map.getTileHeight(), p.getCellPos().y * map.getTileHeight() , 0);
+        orthoCamera.position.set(pos.mul(IsoTransform.getIsoTransform()));
     }
 
     @Override
@@ -81,6 +88,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         if (Settings.isOpen)
             return;
+
+        center_camera(playerList.get(0));
 
         orthoCamera.update();
 
@@ -138,21 +147,18 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 if (collisionsManager.canGoTo(p.moveToRight(), p)){
                     p.setCellPos(p.moveToRight());
                     collisionsManager.findActionFor(p);
-                    orthoCamera.translate((map.getTileWidth()) / 2, -map.getTileWidth() / 4);
                 }
                 return true;
             case Input.Keys.S:
                 if (collisionsManager.canGoTo(p.moveToDown(), p)){
                     p.setCellPos(p.moveToDown());
                     collisionsManager.findActionFor(p);
-                    orthoCamera.translate(-(map.getTileWidth() + map.getTileHeight()) / 3,-(map.getTileWidth() + map.getTileHeight()) / 6 );
                 }
                 return true;
             case Input.Keys.Q:
                 if (collisionsManager.canGoTo(p.moveToLeft(), p)){
                     p.setCellPos(p.moveToLeft());
                     collisionsManager.findActionFor(p);
-                    orthoCamera.translate(-(map.getTileWidth() / 2),map.getTileWidth() / 4);
                 }
                 return true;
             case Input.Keys.Z:
@@ -160,7 +166,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 if (collisionsManager.canGoTo(p.moveToUp(), p)){
                     p.setCellPos(p.moveToUp());
                     collisionsManager.findActionFor(p);
-                    orthoCamera.translate((map.getTileWidth() + map.getTileHeight()) / 3,(map.getTileWidth() + map.getTileHeight()) / 6);
                 }
                 return true;
         }
