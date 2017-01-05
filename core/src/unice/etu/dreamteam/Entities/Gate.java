@@ -14,9 +14,10 @@ import unice.etu.dreamteam.Utils.Debug;
 /**
  * Created by Guillaume on 31/10/2016.
  */
-public class Gate extends Entity{
+public class Gate extends Entity {
     private final String nextGate;
     private final GateState gateState;
+    private final String nextMap;
 
     //TODO : gates haves start point and a destination point
     //TODO : gates can be closed
@@ -25,30 +26,39 @@ public class Gate extends Entity{
     public Gate(JsonValue value) {
         super(value);
         Debug.log(this.getName());
-        nextGate = value.getString("goto");
+        String[] tmp = value.getString("goto").split(":");
+        nextGate = tmp[1];
+        nextMap = tmp[0];
+
         gateState = new GateState();
         gateState.isOpen = value.getBoolean("isOpen");
     }
 
-    public Boolean isOpen(){
+    public Boolean isOpen() {
         return getGateState().isOpen;
     }
 
-    public Boolean isAlive(){
+    public Boolean isAlive() {
         return false;
     }
 
-    public long getRemainingTime(){
+    public long getRemainingTime() {
         return 0;
     }
 
-    public void onPass(MapEvent event){
+    public void onPass(MapEvent event) {
         getGateState().countPass++;
         RectangleMapObject nextGateObject = (RectangleMapObject) event.getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
-        if (nextGateObject != null)
-        {
+        //TODO : Changement de map, recherche destination, ... Correct bug Map tiles
+        if (nextGateObject != null) {
+            if (event.getStory().getMaps().get(this.nextMap) != null) {
+                if (this.nextMap.equals(event.getMap().getMapInfo().getName())) {
+                    event.getMap().setMapData(Map.getMapData(event.getStory().getMaps().get(this.nextMap).getFilename()));
+                }
+            }
             Vector2 v = Map.pixelToCell(nextGateObject.getRectangle().getX(), nextGateObject.getRectangle().getY());
             event.getCharacter().setCellPos(v);
+
         }
     }
 
@@ -56,8 +66,8 @@ public class Gate extends Entity{
         return gateState;
     }
 
-    public class GateState{
+    public class GateState {
         boolean isOpen = false;
-        int countPass =0;
+        int countPass = 0;
     }
 }

@@ -5,7 +5,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import unice.etu.dreamteam.Entities.MapHolder;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
  * Created by Guillaume on 31/10/2016.
@@ -20,16 +22,30 @@ public class Map {
     private static Integer tileWidth;
     private SpriteBatch spriteBatch;
     private IsometricTiledMapRenderer renderer;
+    private MapHolder mapInfo;
+
+    public Map(MapHolder mapInfo) {
+        this.mapInfo = mapInfo;
+    }
 
 
-    public static Map load(String path) {
-        Map map = new Map();
-        map.setMapData(new TmxMapLoader().load("assets/" + path));
+    public static Map load(String path, MapHolder mapInfo) {
+        Map map = new Map(mapInfo);
+        map.setMapData(getMapData(path));
         return map;
     }
 
+    public static TiledMap getMapData(String path){
+        return new TmxMapLoader().load("assets/" + GameInformation.getPackagePath() + "/maps/" + path);
+    }
+
     public void setMapData(TiledMap mapData) {
+
+        if (this.mapData != null)
+            this.mapData.dispose();
+
         this.mapData = mapData;
+
         if (layerManager == null)
             layerManager = new LayerManager(mapData);
         layerManager.update();
@@ -70,13 +86,13 @@ public class Map {
     }
 
     public void dispose() {
+        renderer.dispose();
         mapData.dispose();
     }
 
     public void setSpriteBatch(SpriteBatch spriteBatch) {
         this.spriteBatch = spriteBatch;
         this.renderer = new IsometricTiledMapRenderer(getData(), getSpriteBatch());
-
     }
 
     public SpriteBatch getSpriteBatch() {
@@ -96,5 +112,9 @@ public class Map {
         Debug.vector(pos);
 
         return pos;
+    }
+
+    public MapHolder getMapInfo() {
+        return mapInfo;
     }
 }

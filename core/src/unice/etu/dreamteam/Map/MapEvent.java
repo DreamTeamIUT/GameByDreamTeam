@@ -9,12 +9,14 @@ public class MapEvent {
 
     public static final int EVENT_TYPE_GATE = 304;
 
+    private Story story;
     private Character character;
     private Map map;
 
-    public MapEvent(Character p, Map map){
+    public MapEvent(Character p, Map map, Story s){
         this.map = map;
         this.character = p;
+        this.story = s;
     }
 
     public Map getMap() {
@@ -31,5 +33,9 @@ public class MapEvent {
 
     public void setCharacter(Character character) {
         this.character = character;
+    }
+
+    public Story getStory() {
+        return story;
     }
 }

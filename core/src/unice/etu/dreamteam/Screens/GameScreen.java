@@ -16,7 +16,6 @@ import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
@@ -52,7 +51,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Story s = Story.load("story01.json");
 
 
-        map = Map.load(s.getMapPath());
+        map = s.getMaps().getDefaultMap().load();
 
         map.getLayerManager().setLayersOpacity(0.3f);
         map.setSpriteBatch(spriteBatch);

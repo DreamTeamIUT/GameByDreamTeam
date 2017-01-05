@@ -1,7 +1,11 @@
 {
   "name": "Story 02",
   "minimum-level": 10,
-  "map": "map02.tmx",
+  "default-map" : "map02",
+  "maps": [
+    "map02.json",
+    "map01.json"
+  ],
   "mobs": [
     "mob01.json"
   ],
@@ -39,11 +43,11 @@
   },
   "gates": {
     "GATE01": {
-      "goto": "GATE02",
+      "goto": "map01:GATE02",
       "isOpen" : true
     },
     "GATE02":{
-      "goto" : "GATE01",
+      "goto" : "map02:GATE01",
       "isOpen" : true
     }
   }

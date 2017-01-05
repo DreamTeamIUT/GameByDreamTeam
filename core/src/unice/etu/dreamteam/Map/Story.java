@@ -17,7 +17,7 @@ public class Story {
     private Zones zones;
     private Gates gates;
     private Sounds sounds;
-    private String mapPath;
+    private Maps maps;
     private String name;
     private String packageName;
     private int minimumLevel;
@@ -67,12 +67,12 @@ public class Story {
         this.sounds = sounds;
     }
 
-    public String getMapPath() {
-        return GameInformation.getPackagePath() + "/maps/" + mapPath;
+    public Maps getMaps() {
+        return this.maps;
     }
 
-    public void setMapPath(String mapPath) {
-        this.mapPath = mapPath;
+    public void setMaps(Maps m) {
+        maps = m;
     }
 
     public String getName() {
@@ -94,7 +94,7 @@ public class Story {
         //TODO : Add items when they will be ready ...
         story.setPackageName(GameInformation.getPackageName());
         story.setName(jsonStory.getString("name", ""));
-        story.setMapPath(jsonStory.getString("map", null));
+        story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
         story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getPackageName()));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));

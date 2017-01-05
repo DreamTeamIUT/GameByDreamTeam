@@ -168,7 +168,7 @@ public class CollisionsManager {
             Debug.log(g.getName() + " : " + (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()));
             Debug.log(gateObject.getRectangle().toString());
             if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()) {
-                g.onPass(new MapEvent(p, map));
+                g.onPass(new MapEvent(p, map, story));
                 break;
             }
         }
