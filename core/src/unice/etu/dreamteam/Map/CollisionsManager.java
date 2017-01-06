@@ -114,7 +114,15 @@ public class CollisionsManager {
 
         for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
             Gate g = story.getGates().get(gateObject.getName());
+            if (g == null)
+            {
+                Debug.log("GATE", gateObject.getName() + " not exist !");
+                continue;
+
+            }
+
             if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
+                Debug.log(gateObject.getName());
                 if (!g.isOpen())
                     return false;
             }
