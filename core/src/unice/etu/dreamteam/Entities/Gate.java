@@ -48,17 +48,22 @@ public class Gate extends Entity {
 
     public void onPass(MapEvent event) {
         getGateState().countPass++;
-        RectangleMapObject nextGateObject = (RectangleMapObject) event.getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
-        //TODO : Changement de map, recherche destination, ... Correct bug Map tiles
-        if (nextGateObject != null) {
-            if (event.getStory().getMaps().get(this.nextMap) != null) {
-                if (this.nextMap.equals(event.getMap().getMapInfo().getName())) {
-                    event.getMap().setMapData(Map.getMapData(event.getStory().getMaps().get(this.nextMap).getFilename()));
-                }
+
+        if (event.getStory().getMaps().get(this.nextMap) != null) {
+            Debug.log("lasdfsdfsdfdf");
+            Debug.log(this.nextMap + " next map" + event.getMap().getMapInfo().getName()  + " current map ");
+            if (!this.nextMap.equals(event.getMap().getMapInfo().getName())) {
+                Debug.log("la");
+                event.getMap().setMapData(event.getStory().getMaps().get(this.nextMap).load().getData());
             }
+        }
+
+        RectangleMapObject nextGateObject = (RectangleMapObject) event.getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
+
+        Debug.log(nextGateObject + "");
+        if (nextGateObject != null) {
             Vector2 v = Map.pixelToCell(nextGateObject.getRectangle().getX(), nextGateObject.getRectangle().getY());
             event.getCharacter().setCellPos(v);
-
         }
     }
 

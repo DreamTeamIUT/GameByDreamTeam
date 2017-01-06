@@ -4,7 +4,8 @@
   "default-map" : "map02",
   "maps": [
     "map02.json",
-    "map01.json"
+    "map01.json",
+    "maison01.json"
   ],
   "mobs": [
     "mob01.json"
@@ -43,7 +44,7 @@
   },
   "gates": {
     "GATE01": {
-      "goto": "map01:GATE02",
+      "goto": "maison01:GATE02",
       "isOpen" : true
     },
     "GATE02":{

@@ -35,19 +35,25 @@ public class Map {
         return map;
     }
 
-    public static TiledMap getMapData(String path){
+    public static TiledMap getMapData(String path) {
         return new TmxMapLoader().load("assets/" + GameInformation.getPackagePath() + "/maps/" + path);
     }
 
     public void setMapData(TiledMap mapData) {
 
-        if (this.mapData != null)
-            this.mapData.dispose();
+        Debug.log("Set map data, map data : " + mapData);
+
+        TiledMap old = this.mapData;
+        if (old != null) {
+            old.dispose();
+            this.mapData = null;
+        }
 
         this.mapData = mapData;
 
+
         if (layerManager == null)
-            layerManager = new LayerManager(mapData);
+            layerManager = new LayerManager(this.mapData);
         layerManager.update();
 
         mapHeight = mapData.getProperties().get("height", Integer.class);
@@ -103,11 +109,11 @@ public class Map {
         return renderer;
     }
 
-    public static Vector2 pixelToCell(float x, float y){
-        Vector2 pos = new Vector2(0,0);
+    public static Vector2 pixelToCell(float x, float y) {
+        Vector2 pos = new Vector2(0, 0);
 
-        pos.x = Math.round(x/getTileHeight());
-        pos.y = Math.round(y/getTileHeight());
+        pos.x = Math.round(x / getTileHeight());
+        pos.y = Math.round(y / getTileHeight());
 
         Debug.vector(pos);
 
