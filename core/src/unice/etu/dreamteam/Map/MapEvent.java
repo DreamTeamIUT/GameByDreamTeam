@@ -1,6 +1,7 @@
 package unice.etu.dreamteam.Map;
 
 import unice.etu.dreamteam.Characters.Character;
+import unice.etu.dreamteam.Screens.GameScreen;
 
 /**
  * Created by Guillaume on 02/01/2017.
@@ -8,15 +9,17 @@ import unice.etu.dreamteam.Characters.Character;
 public class MapEvent {
 
     public static final int EVENT_TYPE_GATE = 304;
+    private final GameScreen game;
 
     private Story story;
     private Character character;
     private Map map;
 
-    public MapEvent(Character p, Map map, Story s){
+    public MapEvent(Character p, Map map, Story s, GameScreen game){
         this.map = map;
         this.character = p;
         this.story = s;
+        this.game = game;
     }
 
     public Map getMap() {
@@ -37,5 +40,9 @@ public class MapEvent {
 
     public Story getStory() {
         return story;
+    }
+
+    public GameScreen getGame() {
+        return game;
     }
 }

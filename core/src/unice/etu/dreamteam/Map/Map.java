@@ -56,10 +56,10 @@ public class Map {
             layerManager = new LayerManager(this.mapData);
         layerManager.update();
 
-        mapHeight = mapData.getProperties().get("height", Integer.class);
-        mapWidth = mapData.getProperties().get("width", Integer.class);
-        tileWidth = mapData.getProperties().get("tilewidth", Integer.class);
-        tileHeight = mapData.getProperties().get("tileheight", Integer.class);
+        mapHeight = this.mapData.getProperties().get("height", Integer.class);
+        mapWidth = this.mapData.getProperties().get("width", Integer.class);
+        tileWidth = this.mapData.getProperties().get("tilewidth", Integer.class);
+        tileHeight = this.mapData.getProperties().get("tileheight", Integer.class);
 
     }
 

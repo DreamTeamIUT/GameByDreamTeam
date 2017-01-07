@@ -11,6 +11,7 @@ import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Characters.Character;
 import unice.etu.dreamteam.Entities.Gate;
 import unice.etu.dreamteam.Entities.Zone;
+import unice.etu.dreamteam.Screens.GameScreen;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
@@ -23,13 +24,15 @@ public class CollisionsManager {
     private static final int TYPE_ZONE = 1;
     private static final int TYPE_GATE = 2;
     private final Map map;
+    protected final GameScreen game;
 
     private ArrayList<Character> characters;
     private Story story;
 
     //TODO : make a generic class that can be used for all other classes/entities/players/mobs
-    public CollisionsManager(Map map) {
+    public CollisionsManager(Map map, GameScreen game) {
         this.map = map;
+        this.game = game;
     }
 
 
@@ -118,7 +121,6 @@ public class CollisionsManager {
             {
                 Debug.log("GATE", gateObject.getName() + " not exist !");
                 continue;
-
             }
 
             if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
@@ -178,7 +180,7 @@ public class CollisionsManager {
             Debug.log(g.getName() + " : " + (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()));
             Debug.log(gateObject.getRectangle().toString());
             if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()) {
-                g.onPass(new MapEvent(p, map, story));
+                g.onPass(new MapEvent(p, map, story, game));
                 break;
             }
         }

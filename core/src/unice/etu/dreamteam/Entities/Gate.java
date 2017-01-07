@@ -54,13 +54,13 @@ public class Gate extends Entity {
             Debug.log(this.nextMap + " next map" + event.getMap().getMapInfo().getName()  + " current map ");
             if (!this.nextMap.equals(event.getMap().getMapInfo().getName())) {
                 Debug.log("la");
-                event.getMap().setMapData(event.getStory().getMaps().get(this.nextMap).load().getData());
+                event.getGame().setMap(event.getStory().getMaps().get(this.nextMap).load());
             }
         }
 
-        RectangleMapObject nextGateObject = (RectangleMapObject) event.getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
+        RectangleMapObject nextGateObject = (RectangleMapObject) event.getGame().getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
 
-        Debug.log(nextGateObject + "");
+        Debug.log(nextGateObject + " -> next Gate Obj");
         if (nextGateObject != null) {
             Vector2 v = Map.pixelToCell(nextGateObject.getRectangle().getX(), nextGateObject.getRectangle().getY());
             event.getCharacter().setCellPos(v);

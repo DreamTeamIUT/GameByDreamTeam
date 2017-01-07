@@ -28,6 +28,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private SpriteBatch spriteBatch;
     private ShapeRenderer shapeRenderer;
     private CollisionsManager collisionsManager;
+    private Story s;
 
     public GameScreen() {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -39,32 +40,22 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         orthoCamera = (OrthographicCamera) getCamera();
-        spriteBatch = new SpriteBatch();
-        shapeRenderer = new ShapeRenderer();
 
+        this.spriteBatch = new SpriteBatch();
+        this.shapeRenderer = new ShapeRenderer();
 
         playerList = new ArrayList<>();
         mobList = new ArrayList<>();
 
         GameInformation.setPackageName("default");
 
-        Story s = Story.load("story01.json");
+        s = Story.load("story01.json");
 
+        setMap(s.getMaps().getDefaultMap().load());
 
-        map = s.getMaps().getDefaultMap().load();
-
-        map.getLayerManager().setLayersOpacity(0.3f);
-        map.setSpriteBatch(spriteBatch);
-
-        Debug.log("debug");
-        orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
-        orthoCamera.zoom = 1f;
-        orthoCamera.update();
-        Debug.log("debug");
 
         Packages p = new Packages(GameInformation.getPackageName());
 
-        collisionsManager = new CollisionsManager(map);
 
         playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
         playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
@@ -72,13 +63,65 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
 
-        collisionsManager.addStory(s);
-
     }
 
     public void center_camera(Player p) {
         Vector3 pos = new Vector3(p.getCellPos().x * map.getTileHeight(), p.getCellPos().y * map.getTileHeight() , 0);
         orthoCamera.position.set(pos.mul(IsoTransform.getIsoTransform()));
+    }
+
+    public void setMap(Map m){
+
+        SpriteBatch oldSpriteBatch = this.spriteBatch;
+        ShapeRenderer oldShapeRender = this.shapeRenderer;
+        this.spriteBatch = null;
+        this.shapeRenderer = null;
+
+        this.spriteBatch = new SpriteBatch();
+        this.shapeRenderer = new ShapeRenderer();
+
+        for (Player p : playerList){
+            p.setBatch(this.spriteBatch);
+            p.setShapeRenderer(this.shapeRenderer);
+        }
+
+        for (Mob mob : mobList){
+            mob.setBatch(this.spriteBatch);
+            mob.setShapeRenderer(this.shapeRenderer);
+        }
+
+        if (oldSpriteBatch != null)
+            oldSpriteBatch.dispose();
+
+
+        if (oldShapeRender != null)
+            oldShapeRender.dispose();
+
+
+
+        Map oldMap = this.map;
+        this.map = m;
+
+        map.getLayerManager().setLayersOpacity(0.3f);
+        map.setSpriteBatch(spriteBatch);
+
+        if (oldMap != null)
+            oldMap.dispose();
+
+
+        Debug.log("debug");
+        orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
+        orthoCamera.zoom = 1f;
+        orthoCamera.update();
+        Debug.log("debug");
+
+        collisionsManager = new CollisionsManager(map, this);
+        collisionsManager.addStory(s);
+
+    }
+
+    public Map getMap(){
+        return map;
     }
 
     @Override
@@ -100,6 +143,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         map.getRenderer().setView(orthoCamera);
         map.render(delta);
+
 
         collisionsManager.debug(shapeRenderer);
 
@@ -131,6 +175,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.dispose();
         for (Player p : playerList)
             p.dispose();
+
+        for (Mob m : mobList)
+            m.dispose();
     }
 
     @Override
