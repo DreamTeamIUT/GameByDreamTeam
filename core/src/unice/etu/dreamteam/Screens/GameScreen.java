@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
 
+    public static final int TYPE_MAP = 5;
+    public static final int TYPE_STORY = 8;
     private ArrayList<Mob> mobList;
     private ArrayList<Player> playerList;
     private ArrayList<Item> itemList;
@@ -30,9 +33,36 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private CollisionsManager collisionsManager;
     private Story s;
 
-    public GameScreen() {
+    public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        if (type == TYPE_STORY)
+        {
+            s = Story.load(storyFile);
+            map = s.getMaps().getDefaultMap().load();
+        }
+        else if (type == TYPE_MAP){
+            try {
+                s = Story.getStory();
+            } catch (LoadException e) {
+                e.printStackTrace();
+                Gdx.app.exit();
+            }
+
+            Debug.log(storyFile);
+            map = s.getMaps().get(storyFile).load();
+        }
+        else {
+            Debug.log("You should pass a valid type !");
+            Gdx.app.exit();
+        }
     }
+
+    public GameScreen(String storyFile, String mapName){
+        super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        s = Story.load(storyFile);
+        map = s.getMaps().get(mapName).load();
+    }
+
 
     @Override
     public void buildStage() {
@@ -47,11 +77,20 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         playerList = new ArrayList<>();
         mobList = new ArrayList<>();
 
-        GameInformation.setPackageName("default");
+        if (map == null)
+            map =  s.getMaps().getDefaultMap().load();
 
-        s = Story.load("story01.json");
+        map.getLayerManager().setLayersOpacity(0.3f);
+        map.setSpriteBatch(spriteBatch);
 
-        setMap(s.getMaps().getDefaultMap().load());
+        collisionsManager = new CollisionsManager(map, this);
+        collisionsManager.addStory(s);
+
+        Debug.log("debug");
+        orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
+        orthoCamera.zoom = 1f;
+        orthoCamera.update();
+        Debug.log("debug");
 
 
         Packages p = new Packages(GameInformation.getPackageName());
@@ -68,56 +107,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     public void center_camera(Player p) {
         Vector3 pos = new Vector3(p.getCellPos().x * map.getTileHeight(), p.getCellPos().y * map.getTileHeight() , 0);
         orthoCamera.position.set(pos.mul(IsoTransform.getIsoTransform()));
-    }
-
-    public void setMap(Map m){
-
-        SpriteBatch oldSpriteBatch = this.spriteBatch;
-        ShapeRenderer oldShapeRender = this.shapeRenderer;
-        this.spriteBatch = null;
-        this.shapeRenderer = null;
-
-        this.spriteBatch = new SpriteBatch();
-        this.shapeRenderer = new ShapeRenderer();
-
-        for (Player p : playerList){
-            p.setBatch(this.spriteBatch);
-            p.setShapeRenderer(this.shapeRenderer);
-        }
-
-        for (Mob mob : mobList){
-            mob.setBatch(this.spriteBatch);
-            mob.setShapeRenderer(this.shapeRenderer);
-        }
-
-        if (oldSpriteBatch != null)
-            oldSpriteBatch.dispose();
-
-
-        if (oldShapeRender != null)
-            oldShapeRender.dispose();
-
-
-
-        Map oldMap = this.map;
-        this.map = m;
-
-        map.getLayerManager().setLayersOpacity(0.3f);
-        map.setSpriteBatch(spriteBatch);
-
-        if (oldMap != null)
-            oldMap.dispose();
-
-
-        Debug.log("debug");
-        orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
-        orthoCamera.zoom = 1f;
-        orthoCamera.update();
-        Debug.log("debug");
-
-        collisionsManager = new CollisionsManager(map, this);
-        collisionsManager.addStory(s);
-
     }
 
     public Map getMap(){
