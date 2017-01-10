@@ -1,26 +1,23 @@
 package unice.etu.dreamteam.Utils;
 
 import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.GamePackage;
 
 /**
  * Created by Guillaume on 01/11/2016.
  */
 public class GameInformation {
-    private static String packageName;
+    private static GamePackage gamePackage;
     private static int viewportWidth;
     private static int viewportHeight;
     private static final Boolean debugMode = true;
 
-    public static String getPackageName() {
-        return packageName;
+    public static GamePackage getGamePackage() {
+        return gamePackage;
     }
 
-    public static String getPackagePath() {
-        return "packages/" + packageName;
-    }
-
-    public static void setPackageName(String packageName) {
-        GameInformation.packageName = packageName;
+    public static void setGamePackage(GamePackage gamePackage) {
+        GameInformation.gamePackage = gamePackage;
         AudioManager.getInstance().updatePackage();
     }
 

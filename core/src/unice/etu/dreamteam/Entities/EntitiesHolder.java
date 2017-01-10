@@ -1,8 +1,10 @@
 package unice.etu.dreamteam.Entities;
 
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Guillaume on 24/12/2016.
@@ -33,7 +35,8 @@ public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E>{
             if (e.getName().equals(name))
                 return e;
         }
-      return null;
+        //throw new NoSuchElementException("l'élément " + name + " n'est pas trouvable !");
+        return null;
     }
 }
 

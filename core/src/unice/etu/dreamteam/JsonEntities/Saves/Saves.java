@@ -3,9 +3,9 @@ package unice.etu.dreamteam.JsonEntities.Saves;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Entities.GamePackage;
 import unice.etu.dreamteam.Entities.PlayerHolder;
-import unice.etu.dreamteam.Utils.Packages;
+import unice.etu.dreamteam.Entities.GamePackages;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,12 +53,12 @@ public class Saves {
 
     public void initialize(String username){
         Save save = new Save(username);
-        for (Packages p : Packages.getPackages()) {
+        for (GamePackage p : GamePackages.getPackages()) {
             for (PlayerHolder player : p.getPlayers().all()) {
                 PlayerSave playerSave = new PlayerSave();
                 playerSave.setDefaults();
 
-                save.addPlayerSave(p.getFolderName(), player.getName(), playerSave);
+                save.addPlayerSave(p.getName(), player.getName(), playerSave);
 
             }
         }

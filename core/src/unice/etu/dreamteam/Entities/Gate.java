@@ -10,6 +10,7 @@ import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.MapEvent;
 import unice.etu.dreamteam.Screens.GameScreen;
+import unice.etu.dreamteam.Utils.ActionContainer;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ScreenList;
 import unice.etu.dreamteam.Utils.ScreenManager;
@@ -56,18 +57,22 @@ public class Gate extends Entity {
             Debug.log("lasdfsdfsdfdf");
             Debug.log(this.nextMap + " next map" + event.getMap().getMapInfo().getName()  + " current map ");
             if (!this.nextMap.equals(event.getMap().getMapInfo().getName())) {
-                Debug.log("la");
-                ScreenManager.getInstance().showScreen(ScreenList.GAME, this.nextMap, GameScreen.TYPE_MAP);
+                ActionContainer container = new ActionContainer();
+                container.moveToGate = this.nextGate;
+                ScreenManager.getInstance().showScreen(ScreenList.GAME, this.nextMap, GameScreen.TYPE_MAP, container);
+            }
+        }
+        else {
+            RectangleMapObject nextGateObject = (RectangleMapObject) event.getGame().getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
+
+            Debug.log(nextGateObject + " -> next Gate Obj");
+            if (nextGateObject != null) {
+                Vector2 v = Map.pixelToCell(nextGateObject.getRectangle().getX(), nextGateObject.getRectangle().getY());
+                event.getCharacter().setCellPos(v);
             }
         }
 
-        RectangleMapObject nextGateObject = (RectangleMapObject) event.getGame().getMap().getLayerManager().getCurrentGateLayer().getObjects().get(this.nextGate);
 
-        Debug.log(nextGateObject + " -> next Gate Obj");
-        if (nextGateObject != null) {
-            Vector2 v = Map.pixelToCell(nextGateObject.getRectangle().getX(), nextGateObject.getRectangle().getY());
-            event.getCharacter().setCellPos(v);
-        }
     }
 
     public GateState getGateState() {

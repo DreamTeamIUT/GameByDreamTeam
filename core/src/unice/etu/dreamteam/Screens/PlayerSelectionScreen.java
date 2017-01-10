@@ -5,8 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.GamePackage;
+import unice.etu.dreamteam.Entities.GamePackages;
 import unice.etu.dreamteam.Entities.PlayerHolder;
 import unice.etu.dreamteam.JsonEntities.Saves.Save;
 import unice.etu.dreamteam.JsonEntities.Saves.Saves;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class PlayerSelectionScreen extends AbstractScreen {
 
     private Table table2;
-    private ArrayList<Packages> packages;
+    private GamePackages packages;
     private SelectBox<String> userSelectionBox;
     private SelectBox<String> packagesNameBox;
 
@@ -28,7 +29,7 @@ public class PlayerSelectionScreen extends AbstractScreen {
 
     @Override
     public void buildStage() {
-        packages = Packages.getPackages();
+        packages = GamePackages.getPackages();
 
         ArrayList<String> saveName = new ArrayList<String>();
         for (Save s : Saves.getSaves().all()) {
@@ -38,8 +39,8 @@ public class PlayerSelectionScreen extends AbstractScreen {
         Debug.log(saveName.toString());
 
         ArrayList<String> packageNames = new ArrayList<String>();
-        for (Packages p : Packages.getPackages()) {
-            packageNames.add(p.getName());
+        for (GamePackage p : GamePackages.getPackages()) {
+            packageNames.add(p.getDisplayName());
         }
 
 
@@ -100,12 +101,12 @@ public class PlayerSelectionScreen extends AbstractScreen {
         int i = packagesNameBox.getSelectedIndex();
         table2.clear();
         Debug.log("i:" + i);
-        GameInformation.setPackageName(packages.get(i).getFolderName());
+        GameInformation.setGamePackage(packages.get(i));
 
         final String username = userSelectionBox.getSelected();
         for (final PlayerHolder player : packages.get(i).getPlayers().all()) {
             String realName = player.getRealName();
-            int level = Saves.getSaves().get(username).getPackages().get(packages.get(i).getFolderName()).getPlayers().get(player.getName()).getLevel();
+            int level = Saves.getSaves().get(username).getPackages().get(packages.get(i).getName()).getPlayers().get(player.getName()).getLevel();
 
             TextButton btn = UiManager.getInstance().createCustomButton(realName + " " + "(" + level + ")");
             btn.addListener(new ClickListener() {

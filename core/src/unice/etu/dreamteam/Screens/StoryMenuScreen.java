@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.GamePackages;
 import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
@@ -25,9 +26,8 @@ public class StoryMenuScreen extends AbstractScreen {
 
     @Override
     public void buildStage() {
-        final Packages packages = new Packages(GameInformation.getPackageName());
 
-        ArrayList<Story> stories = packages.getStories();
+        ArrayList<Story> stories = GameInformation.getGamePackage().getStories();
 
         Table table = new Table();
         table.setFillParent(true);

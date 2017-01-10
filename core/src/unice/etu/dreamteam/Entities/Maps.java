@@ -37,7 +37,7 @@ public class Maps extends EntitiesHolder<MapHolder> {
     }
 
     private JsonValue loadDep(String fileName) {
-        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/maps/" + fileName);
+        FileHandle file = Gdx.files.internal( GameInformation.getGamePackage().getPackagePath() + "/maps/" + fileName);
         return new JsonReader().parse(file.readString());
     }
 

@@ -3,6 +3,8 @@ package unice.etu.dreamteam.Utils;
 import com.badlogic.gdx.Gdx;
 import unice.etu.dreamteam.Screens.*;
 
+import javax.swing.*;
+
 
 public enum ScreenList { //prédéfinition des screens dune liste
     MAIN_MENU {
@@ -19,12 +21,8 @@ public enum ScreenList { //prédéfinition des screens dune liste
 
     GAME {
         public AbstractScreen getScreen(Object... params) { //retourne une nouvelle instance avec les paramètres du screen
-            if (params.length != 2)
-            {
-                Debug.error("Invalid parametter !! ");
-                Gdx.app.exit();
-            }
-            else {
+
+            if (params.length == 2) {
                Object p1 = params[0];
                Object p2 = params[1];
 
@@ -34,6 +32,15 @@ public enum ScreenList { //prédéfinition des screens dune liste
                else if (p1 instanceof String && p2 instanceof String){
                    return new GameScreen((String) p1, (String) p2);
                }
+            }
+            else if (params.length == 3){
+                Object p1 = params[0];
+                Object p2 = params[1];
+                Object p3 = params[2];
+
+                if (p1 instanceof String && p2 instanceof Integer && p3 instanceof ActionContainer){
+                    return new GameScreen((String) p1, (Integer) p2, (ActionContainer) p3);
+                }
             }
             return null;
         }

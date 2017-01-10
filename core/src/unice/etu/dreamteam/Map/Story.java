@@ -95,15 +95,15 @@ public class Story {
 
         story = new Story();
 
-        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/stories/" + storyFile);
+        FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/stories/" + storyFile);
 
         JsonValue jsonStory = new JsonReader().parse(file.readString());
 
         //TODO : Add items when they will be ready ...
-        story.setPackageName(GameInformation.getPackageName());
+        story.setPackageName(GameInformation.getGamePackage().getName());
         story.setName(jsonStory.getString("name", ""));
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
-        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getPackageName()));
+        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getGamePackage().getPackagePath()));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));

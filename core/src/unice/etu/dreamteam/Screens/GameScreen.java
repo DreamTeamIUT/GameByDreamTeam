@@ -6,14 +6,18 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
+import unice.etu.dreamteam.Entities.GamePackage;
 import unice.etu.dreamteam.Entities.Item;
 import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Utils.ActionContainer;
 import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
 
@@ -23,6 +27,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     public static final int TYPE_MAP = 5;
     public static final int TYPE_STORY = 8;
+    private ActionContainer actionContainer;
     private ArrayList<Mob> mobList;
     private ArrayList<Player> playerList;
     private ArrayList<Item> itemList;
@@ -63,6 +68,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map = s.getMaps().get(mapName).load();
     }
 
+    public GameScreen(String storyFile, int type, ActionContainer container ){
+        this(storyFile, type);
+        actionContainer = container;
+    }
+
 
     @Override
     public void buildStage() {
@@ -93,14 +103,31 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.log("debug");
 
 
-        Packages p = new Packages(GameInformation.getPackageName());
+        GamePackage p = GameInformation.getGamePackage();
 
 
         playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
-        playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
+        playerList.get(0).setCellPos(map.getMapInfo().getStartPoint());
 
         mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
+
+        parseActionContainer();
+
+    }
+
+    private void parseActionContainer() {
+        if (actionContainer == null)
+            return;
+
+        if (actionContainer.moveTo != null)
+            playerList.get(0).setCellPos(actionContainer.moveTo);
+
+        if (actionContainer.moveToGate != null){
+            RectangleMapObject obj = (RectangleMapObject) map.getLayerManager().getCurrentGateLayer().getObjects().get(actionContainer.moveToGate);
+            Vector2 v = Map.pixelToCell(obj.getRectangle().getX(), obj.getRectangle().getY());
+            playerList.get(0).setCellPos(v);
+        }
 
     }
 

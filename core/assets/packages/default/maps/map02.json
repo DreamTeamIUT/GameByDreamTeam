@@ -1,8 +1,8 @@
 {
   "name": "map02",
   "start": {
-    "x": 0,
-    "y": 0
+    "x": 5,
+    "y": 5
   },
   "file" : "map02.tmx"
 }

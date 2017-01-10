@@ -36,7 +36,7 @@ public class Map {
     }
 
     public static TiledMap getMapData(String path) {
-        return new TmxMapLoader().load("assets/" + GameInformation.getPackagePath() + "/maps/" + path);
+        return new TmxMapLoader().load(GameInformation.getGamePackage().getPackagePath() + "/maps/" + path);
     }
 
     public void setMapData(TiledMap mapData) {
