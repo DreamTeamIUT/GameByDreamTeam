@@ -16,7 +16,7 @@ public class Character implements Disposable {
     protected Vector2 realPos;
     protected Boolean animating = false;
     protected int currentMove;
-    protected Float speed = 0.20f;
+    protected Float speed = 0.07f;
 
     protected Rectangle playerZone;
     protected String modelName;
@@ -33,6 +33,9 @@ public class Character implements Disposable {
         realPos = new Vector2(0, 0);
        // animationManager = new ModelAnimationManager(modelName);
        // modelConverter = new ModelConverter(animationManager);
+
+        currentMove = CharacterMove.NONE;
+
         updatePlayerZone();
     }
 
@@ -87,20 +90,32 @@ public class Character implements Disposable {
     }
 
     public void moveTo(int characterMove) {
-        animating = true;
-        currentMove = characterMove;
+        if(!animating) {
+            Debug.log("moveTo");
 
-        if(characterMove == CharacterMove.LEFT)
-            cellPos.x -= 1;
-        else if(characterMove == CharacterMove.RIGHT)
-            cellPos.x += 1;
-        else if(characterMove == CharacterMove.UP)
-            cellPos.y += 1;
-        else if(characterMove == CharacterMove.DOWN)
-            cellPos.y -= 1;
+            animating = true;
+            currentMove = characterMove;
+
+            if(characterMove == CharacterMove.LEFT)
+                cellPos.x -= 1;
+            else if(characterMove == CharacterMove.RIGHT)
+                cellPos.x += 1;
+            else if(characterMove == CharacterMove.UP)
+                cellPos.y += 1;
+            else if(characterMove == CharacterMove.DOWN)
+                cellPos.y -= 1;
+
+            Debug.vector("realPos", realPos);
+            Debug.vector("cellPos", cellPos);
+        }
     }
 
     public Vector2 moveToCheck(int characterMove) {
+        Debug.log("moveToCheck");
+
+        Debug.vector("realPos", realPos);
+        Debug.vector("cellPos", cellPos);
+
         if(characterMove == CharacterMove.LEFT)
             return new Vector2(cellPos.x - 1, cellPos.y);
         else if(characterMove == CharacterMove.RIGHT)
@@ -116,40 +131,41 @@ public class Character implements Disposable {
     private void moveTransition() {
         if (animating) {
             if(currentMove == CharacterMove.LEFT) {
-                if(realPos.x < cellPos.x) {
-                    animating = false;
-                    realPos.x = cellPos.x;
-                }
+                if(realPos.x < cellPos.x)
+                    stopAnimating();
                 else
                     realPos.x -= speed;
             }
             else if(currentMove == CharacterMove.RIGHT) {
-                if(realPos.x > cellPos.x) {
-                    animating = false;
-                    realPos.x = cellPos.x;
-                }
+                Debug.vector(cellPos);
+                if(realPos.x > cellPos.x)
+                    stopAnimating();
                 else
                     realPos.x += speed;
             }
             else if(currentMove == CharacterMove.UP) {
-                if(realPos.y > cellPos.y) {
-                    animating = false;
-                    realPos.y = cellPos.y;
-                }
+                if(realPos.y > cellPos.y)
+                    stopAnimating();
                 else
                     realPos.y += speed;
             }
             else if(currentMove == CharacterMove.DOWN) {
-                if(realPos.y < cellPos.y) {
-                    animating = false;
-                    realPos.y = cellPos.y;
-                }
+                if(realPos.y < cellPos.y)
+                    stopAnimating();
                 else
                     realPos.y -= speed;
             }
 
             this.updatePlayerZone();
         }
+    }
+
+    private void stopAnimating() {
+        currentMove = CharacterMove.NONE;
+        animating = false;
+
+        realPos.x = cellPos.x;
+        realPos.y = cellPos.y;
     }
 
     public Rectangle getRectangle() {
@@ -205,6 +221,18 @@ public class Character implements Disposable {
 
     public void setCellPos(Vector2 cellPos) {
         this.cellPos = cellPos;
+
+        this.updatePlayerZone();
+    }
+
+    public void setPos(Vector2 vector2) {
+        Vector2 vector21 = new Vector2();
+        vector21.x = vector2.x;
+        vector21.y = vector2.y;
+
+        this.cellPos = vector2;
+        this.realPos = vector21;
+
         this.updatePlayerZone();
     }
 

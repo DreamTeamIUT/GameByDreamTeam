@@ -37,6 +37,7 @@
       "sound": "ENTER_ZONE",
       "maxEnter": 2,
       "maxExecute": 2,
+      "general": true,
       "blocked": "false",
       "maxRevive": 2,
       "time":600

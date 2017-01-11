@@ -1,10 +1,13 @@
 package unice.etu.dreamteam.Map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import org.xguzm.pathfinding.grid.GridCell;
+import org.xguzm.pathfinding.grid.NavigationGrid;
 import unice.etu.dreamteam.Entities.MapHolder;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
@@ -23,6 +26,7 @@ public class Map {
     private SpriteBatch spriteBatch;
     private IsometricTiledMapRenderer renderer;
     private MapHolder mapInfo;
+    private NavigationGrid<GridCell> navigationGrid;
 
     public Map(MapHolder mapInfo) {
         this.mapInfo = mapInfo;
@@ -60,7 +64,18 @@ public class Map {
         mapWidth = this.mapData.getProperties().get("width", Integer.class);
         tileWidth = this.mapData.getProperties().get("tilewidth", Integer.class);
         tileHeight = this.mapData.getProperties().get("tileheight", Integer.class);
+    }
 
+    public void calculateGridCell(CollisionsManager collisionsManager) {
+        GridCell[][] gridCells = new GridCell[mapWidth][mapHeight];
+
+        for (int x = 0; x < getMapWidth(); x++) {
+            for (int y = 0; y < getMapHeight(); y++) {
+                gridCells[x][y] = new GridCell(x, y, collisionsManager.canGoTo(new Vector2(x, y)));
+            }
+        }
+
+        navigationGrid = new NavigationGrid<>(gridCells, false);
     }
 
     public TiledMap getData() {
@@ -122,5 +137,9 @@ public class Map {
 
     public MapHolder getMapInfo() {
         return mapInfo;
+    }
+
+    public NavigationGrid<GridCell> getNavigationGrid() {
+        return navigationGrid;
     }
 }

@@ -17,6 +17,7 @@ public class Zone extends Entity {
     public final int maxEnter;
     public final int maxExecute;
 
+    public final Boolean general;
     public final Boolean blocked;
 
     private ZoneState zoneState;
@@ -32,6 +33,7 @@ public class Zone extends Entity {
         this.maxEnter = zone.getInt("maxEnter");
         this.maxExecute = zone.getInt("maxExecute");
 
+        this.general = zone.getBoolean("general");
         this.blocked = zone.getBoolean("blocked");
     }
 
@@ -51,9 +53,14 @@ public class Zone extends Entity {
         getZoneState().isIn = false;
     }
 
-    public Boolean canEnter() {
+    public Boolean canEnter(Boolean general) {
         Debug.log(getZoneState().countEnter + " " + maxEnter);
-        return getZoneState().countEnter < maxEnter || maxEnter < 0;
+
+        return general ? this.general : getZoneState().countEnter < maxEnter || maxEnter < 0;
+    }
+
+    public Boolean canEnter() {
+        return canEnter(false);
     }
 
     public Boolean canLeave() {

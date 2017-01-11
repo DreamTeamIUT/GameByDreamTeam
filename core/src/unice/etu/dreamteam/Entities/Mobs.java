@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import org.xguzm.pathfinding.grid.GridCell;
+import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
@@ -26,6 +28,8 @@ public class Mobs extends EntitiesHolder<MobHolder> {
         super();
         this.packageName = packageName;
         add(jsonIterator);
+
+        AStarGridFinder<GridCell> finder = new AStarGridFinder(GridCell.class);
     }
 
     @Override

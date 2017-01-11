@@ -4,6 +4,8 @@
   "forces": {
     "1": {
       "speed": 1,
+      "proximityRange": 2,
+      "detectionRange": 10,
       "weapon": "weaponId01",
       "onkill": {
         "pops": [

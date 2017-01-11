@@ -23,6 +23,7 @@ import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
 
@@ -38,6 +39,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private ShapeRenderer shapeRenderer;
     private CollisionsManager collisionsManager;
     private Story s;
+
+    private List<Integer> keyCodes;
 
     public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -77,6 +80,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public void buildStage() {
+        keyCodes = new ArrayList<>();
 
         Gdx.input.setInputProcessor(this);
 
@@ -97,6 +101,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         collisionsManager = new CollisionsManager(map, this);
         collisionsManager.addStory(s);
 
+        map.calculateGridCell(collisionsManager);
+
         Debug.log("debug");
         orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
         orthoCamera.zoom = 1f;
@@ -108,7 +114,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
         playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
-        playerList.get(0).setCellPos(map.getMapInfo().getStartPoint());
+        Debug.vector(map.getMapInfo().getStartPoint());
+        playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
         mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
@@ -133,7 +140,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     public void center_camera(Player p) {
-        Vector3 pos = new Vector3(p.getCellPos().x * map.getTileHeight(), p.getCellPos().y * map.getTileHeight() , 0);
+        Vector3 pos = new Vector3(p.getRealPos().x * map.getTileHeight(), p.getRealPos().y * map.getTileHeight() , 0);
         orthoCamera.position.set(pos.mul(IsoTransform.getIsoTransform()));
     }
 
@@ -172,6 +179,65 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             m.render(delta);
 
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
+
+        if(keyCodes.size() > 0) {
+            Player p = playerList.get(0);
+
+            for(int i = 0; i < keyCodes.size(); i++) {
+                switch (keyCodes.get(i)) {
+                    case Input.Keys.ESCAPE:
+                        if (!Settings.isOpen)
+                            addActor(Settings.createWindow(getViewport()));
+                        break;
+                    case Input.Keys.D:
+                        Debug.log("D");
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)){
+                            //p.setCellPos(p.moveToRight());
+                            p.moveTo(CharacterMove.RIGHT);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                    case Input.Keys.S:
+                        Debug.log("S");
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)){
+                            //p.setCellPos(p.moveToDown());
+                            p.moveTo(CharacterMove.DOWN);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                    case Input.Keys.Q:
+                        Debug.log("Q");
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)){
+                            //p.setCellPos(p.moveToLeft());
+                            p.moveTo(CharacterMove.LEFT);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                    case Input.Keys.Z:
+                        Debug.log("Z");
+                        Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)){
+                            //p.setCellPos(p.moveToUp());
+                            p.moveTo(CharacterMove.UP);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    public void getMobsPathToPlayer() {
+        for(Mob m : mobList)
+            m.setPathToPlayer(map.getNavigationGrid(), playerList.get(0));
     }
 
     @Override
@@ -197,49 +263,22 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        Debug.log("In keyup !");
-        Player p = playerList.get(0);
-        switch (keycode) {
-            case Input.Keys.ESCAPE:
-                if (!Settings.isOpen)
-                    addActor(Settings.createWindow(getViewport()));
-                return true;
-            case Input.Keys.D:
-                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)){
-                    //p.setCellPos(p.moveToRight());
-                    p.moveTo(CharacterMove.RIGHT);
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-            case Input.Keys.S:
-                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)){
-                    //p.setCellPos(p.moveToDown());
-                    p.moveTo(CharacterMove.DOWN);
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-            case Input.Keys.Q:
-                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)){
-                    //p.setCellPos(p.moveToLeft());
-                    p.moveTo(CharacterMove.LEFT);
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-            case Input.Keys.Z:
-                Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
-                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)){
-                    //p.setCellPos(p.moveToUp());
-                    p.moveTo(CharacterMove.UP);
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-        }
-        return false;
+    public boolean keyDown(int keyCode) {
+        if(keyCodes.indexOf(keyCode) < 0)
+            keyCodes.add(keyCode);
+
+        Debug.log("KEY DOWN", keyCodes.toString());
+
+        return true;
     }
 
     @Override
     public boolean keyUp(int keyCode) {
-        return false;
+        if(keyCodes.indexOf(keyCode) >= 0)
+            keyCodes.remove(keyCodes.indexOf(keyCode));
+
+        Debug.log("KEY UP", keyCodes.toString());
+
+        return true;
     }
 }
