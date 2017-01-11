@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.FileUtils;
 import unice.etu.dreamteam.Utils.GameInformation;
-import unice.etu.dreamteam.Utils.Packages;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class AudioManager implements Disposable {
         Debug.log("Package update");
         ArrayList<File> paths = new ArrayList<>();
 
-        FileUtils.listFile(GameInformation.getPackagePath() + "/music/", ".mp3", true, paths);
+        FileUtils.listFile(GameInformation.getGamePackage().getPackagePath() + "/music/", ".mp3", true, paths);
         for (File f : paths) {
             audios.put(f.getName().replace(".mp3", ""), f.getPath());
             assets.load(f.getPath(), getType(f.getParentFile().getName()));

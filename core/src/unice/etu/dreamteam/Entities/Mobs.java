@@ -36,7 +36,7 @@ public class Mobs extends EntitiesHolder<MobHolder> {
     }
 
     private JsonValue loadDep(String fileName) {
-        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/characters/" + fileName);
+        FileHandle file = Gdx.files.internal( GameInformation.getGamePackage().getPackagePath() + "/characters/" + fileName);
         return new JsonReader().parse(file.readString());
     }
 }

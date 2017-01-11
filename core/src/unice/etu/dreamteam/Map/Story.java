@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Entities.*;
 import unice.etu.dreamteam.Utils.GameInformation;
 
@@ -12,6 +13,7 @@ import unice.etu.dreamteam.Utils.GameInformation;
  */
 public class Story {
 
+    private static Story story;
     private Players players;
     private Mobs mobs;
     private Zones zones;
@@ -22,6 +24,12 @@ public class Story {
     private String packageName;
     private int minimumLevel;
 
+    public static Story getStory() throws LoadException {
+        if (story == null){
+            throw new LoadException("The story has not been loaded yet. Call Story.load() before !");
+        }
+        return story;
+    }
 
     public Story() {
 
@@ -85,17 +93,17 @@ public class Story {
 
     public static Story load(String storyFile) {
 
-        Story story = new Story();
+        story = new Story();
 
-        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getPackagePath() + "/stories/" + storyFile);
+        FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/stories/" + storyFile);
 
         JsonValue jsonStory = new JsonReader().parse(file.readString());
 
         //TODO : Add items when they will be ready ...
-        story.setPackageName(GameInformation.getPackageName());
+        story.setPackageName(GameInformation.getGamePackage().getName());
         story.setName(jsonStory.getString("name", ""));
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
-        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getPackageName()));
+        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getGamePackage().getPackagePath()));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));

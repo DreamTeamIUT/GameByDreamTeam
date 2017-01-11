@@ -4,6 +4,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.GamePackages;
+import unice.etu.dreamteam.Screens.GameScreen;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
 
@@ -21,7 +23,10 @@ public class Main extends Game {
 
         UiManager.initialise();
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenList.GAME);
+
+        GameInformation.setGamePackage(GamePackages.getPackages().get("default"));
+
+        ScreenManager.getInstance().showScreen(ScreenList.GAME, "story01.json", GameScreen.TYPE_STORY);
         AudioManager.initialize();
 
 

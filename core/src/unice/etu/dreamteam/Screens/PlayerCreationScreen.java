@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.GamePackage;
+import unice.etu.dreamteam.Entities.GamePackages;
 import unice.etu.dreamteam.JsonEntities.Saves.Saves;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
@@ -20,14 +22,13 @@ public class PlayerCreationScreen extends AbstractScreen {
 
     @Override
     public void buildStage() {
-        final ArrayList<Packages> packages = Packages.getPackages();
 
 
         final TextField field = new TextField("aaa", UiManager.getInstance().getSkin());
 
         ArrayList<String> packagesStrings = new ArrayList<String>();
-        for (Packages p : packages) {
-            packagesStrings.add(p.getName());
+        for (GamePackage p : GamePackages.getPackages()) {
+            packagesStrings.add(p.getDisplayName());
         }
 
         TextButton createCharacterButton = UiManager.getInstance().createCustomButton("NOUVEAU PERSONNAGE");
