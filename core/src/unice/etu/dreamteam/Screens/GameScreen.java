@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import unice.etu.dreamteam.Characters.CharacterMove;
 import unice.etu.dreamteam.Characters.Mob;
 import unice.etu.dreamteam.Characters.Player;
 import unice.etu.dreamteam.Entities.Item;
@@ -67,7 +68,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         collisionsManager = new CollisionsManager(map);
 
         playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
-        playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
+        //playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
 
         mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
@@ -143,27 +144,31 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     addActor(Settings.createWindow(getViewport()));
                 return true;
             case Input.Keys.D:
-                if (collisionsManager.canGoTo(p.moveToRight(), p)){
-                    p.setCellPos(p.moveToRight());
+                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)){
+                    //p.setCellPos(p.moveToRight());
+                    p.moveTo(CharacterMove.RIGHT);
                     collisionsManager.findActionFor(p);
                 }
                 return true;
             case Input.Keys.S:
-                if (collisionsManager.canGoTo(p.moveToDown(), p)){
-                    p.setCellPos(p.moveToDown());
+                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)){
+                    //p.setCellPos(p.moveToDown());
+                    p.moveTo(CharacterMove.DOWN);
                     collisionsManager.findActionFor(p);
                 }
                 return true;
             case Input.Keys.Q:
-                if (collisionsManager.canGoTo(p.moveToLeft(), p)){
-                    p.setCellPos(p.moveToLeft());
+                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)){
+                    //p.setCellPos(p.moveToLeft());
+                    p.moveTo(CharacterMove.LEFT);
                     collisionsManager.findActionFor(p);
                 }
                 return true;
             case Input.Keys.Z:
-                Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToUp(), p));
-                if (collisionsManager.canGoTo(p.moveToUp(), p)){
-                    p.setCellPos(p.moveToUp());
+                Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
+                if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)){
+                    //p.setCellPos(p.moveToUp());
+                    p.moveTo(CharacterMove.UP);
                     collisionsManager.findActionFor(p);
                 }
                 return true;
@@ -171,6 +176,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         return false;
     }
 
-
-
+    @Override
+    public boolean keyUp(int keyCode) {
+        return false;
+    }
 }
