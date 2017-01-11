@@ -1,7 +1,7 @@
 package unice.etu.dreamteam.Utils;
 
-import unice.etu.dreamteam.Audio.AudioManager;
-import unice.etu.dreamteam.Entities.GamePackage;
+import unice.etu.dreamteam.Entities.Sounds.Manager.AudioManager;
+import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 
 /**
  * Created by Guillaume on 01/11/2016.

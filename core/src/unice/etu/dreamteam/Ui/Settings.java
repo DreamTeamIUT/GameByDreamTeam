@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.Sounds.Manager.AudioManager;
 import unice.etu.dreamteam.Utils.Debug;
 
 /**

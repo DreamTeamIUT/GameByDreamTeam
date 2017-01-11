@@ -3,17 +3,14 @@ package unice.etu.dreamteam.Map;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.org.apache.regexp.internal.RE;
-import unice.etu.dreamteam.Characters.Player;
-import unice.etu.dreamteam.Characters.Character;
-import unice.etu.dreamteam.Entities.Gate;
-import unice.etu.dreamteam.Entities.Zone;
+import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
+import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
+import unice.etu.dreamteam.Entities.Gates.Gate;
+import unice.etu.dreamteam.Entities.Zones.Zone;
 import unice.etu.dreamteam.Screens.GameScreen;
-import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
 
