@@ -20,6 +20,7 @@ public class Story {
     private Gates gates;
     private Sounds sounds;
     private Maps maps;
+    private Items items;
     private String name;
     private String packageName;
     private int minimumLevel;
@@ -99,7 +100,6 @@ public class Story {
 
         JsonValue jsonStory = new JsonReader().parse(file.readString());
 
-        //TODO : Add items when they will be ready ...
         story.setPackageName(GameInformation.getGamePackage().getName());
         story.setName(jsonStory.getString("name", ""));
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
@@ -107,6 +107,7 @@ public class Story {
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
+        story.setItems(Items.loadFromDir());
         story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
 
 
@@ -127,5 +128,13 @@ public class Story {
 
     public int getMinimumLevel() {
         return minimumLevel;
+    }
+
+    public Items getItems() {
+        return items;
+    }
+
+    public void setItems(Items items) {
+        this.items = items;
     }
 }

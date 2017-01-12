@@ -8,8 +8,8 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.*;
@@ -87,8 +87,41 @@ public class LayerManager {
 
     public void update() {
         updateData();
+
     }
 
+    public HashMap<Vector2, String> getTilePrositionWithProperty(String property, String value) {
+        HashMap<Vector2, String> selectedTiles = new HashMap<>();
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < getCurrentTileLayers().size(); i++) {
+            for (int x = 0; x < Map.getMapWidth(); x++) {
+                for (int y = 0; y < Map.getMapHeight(); y++) {
+                    TiledMapTileLayer.Cell c = getCurrentTileLayers().get(i).getCell(x, y);
+                    if (c != null) {
+                        Object valueProperty = c.getTile().getProperties().get(property);
+                        if (valueProperty != null) {
+                            if (String.valueOf(valueProperty).equals(value))
+                                selectedTiles.put(new Vector2(x,y), c.getTile().getProperties().get("name", null, String.class));
+                        }
+                    }
+                }
+            }
+        }
+        Debug.log("TIMING", String.valueOf(System.currentTimeMillis() - start));
+        return selectedTiles;
+    }
+
+    public TiledMapTileLayer getLayerForTypeAt(String type, Vector2 at){
+        for (int i=0; i< getCurrentTileLayers().size(); i++){
+            TiledMapTileLayer.Cell c = getCurrentTileLayers().get(i).getCell((int)at.x, (int)at.y);
+            if (c != null)
+            {
+                if (c.getTile().getProperties().get("type", "", String.class).equals(type))
+                    return getCurrentTileLayers().get(i);
+            }
+        }
+        return null;
+    }
 
     private int getMaxLayer() {
         int max = 0;
@@ -103,7 +136,7 @@ public class LayerManager {
     }
 
 
-    public ArrayList<TiledMapTileLayer> getCurrentTileLayer() {
+    public ArrayList<TiledMapTileLayer> getCurrentTileLayers() {
         return tiledLayers;
     }
 
@@ -171,7 +204,7 @@ public class LayerManager {
             l.setOpacity(opacity);
 
 
-        for (MapLayer l : getCurrentTileLayer())
+        for (MapLayer l : getCurrentTileLayers())
             l.setOpacity(1);
 
     }

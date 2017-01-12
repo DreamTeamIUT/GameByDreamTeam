@@ -1,0 +1,7 @@
+{
+  "name" :"chest",
+  "tile": "chest.png",
+  "ttl" : -1,
+  "type" :-1,
+  "action": null
+}

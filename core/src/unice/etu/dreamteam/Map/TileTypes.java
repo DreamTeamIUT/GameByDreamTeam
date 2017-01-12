@@ -5,7 +5,9 @@ package unice.etu.dreamteam.Map;
  */
 public enum TileTypes {
     //Add some other type if needed !
-    GATE;
+    GATE,
+    ITEM;
+
 
     public static boolean contain(TileTypes type){
         for (TileTypes t : TileTypes.values())
