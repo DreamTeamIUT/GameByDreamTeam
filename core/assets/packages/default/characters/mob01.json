@@ -1,18 +1,23 @@
 {
   "name": "mob01",
-  "modelName": "Demon",
-  "forces": {
-    "1": {
-      "speed": 1,
-      "weapon": "weaponId01",
+  "model-name": "Demon",
+  "forces": [
+    {
+      "name": "EASY",
+      "powerful": 1,
+      "default": true,
+      "speed": 0.01,
+      "proximity-range": 2,
+      "detection-range": 10,
+      "weapon-id": "weapon01",
       "onkill": {
         "pops": [
           {
-            "itemId": "itemId01",
+            "itemId": "item01",
             "luck": 5
           }
         ]
       }
     }
-  }
+  ]
 }

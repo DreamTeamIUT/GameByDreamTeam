@@ -3,7 +3,6 @@ package unice.etu.dreamteam.Ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -11,9 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.glass.ui.View;
-import com.sun.javafx.css.Size;
-import unice.etu.dreamteam.Audio.AudioManager;
+import unice.etu.dreamteam.Entities.Sounds.Manager.AudioManager;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;

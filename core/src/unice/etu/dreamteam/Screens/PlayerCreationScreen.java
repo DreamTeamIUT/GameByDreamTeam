@@ -3,10 +3,10 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import unice.etu.dreamteam.Audio.AudioManager;
-import unice.etu.dreamteam.Entities.GamePackage;
-import unice.etu.dreamteam.Entities.GamePackages;
-import unice.etu.dreamteam.JsonEntities.Saves.Saves;
+import unice.etu.dreamteam.Entities.Sounds.Manager.AudioManager;
+import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
+import unice.etu.dreamteam.Entities.GamesPackages.GamePackages;
+import unice.etu.dreamteam.Saves.Saves;
 import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.*;
 

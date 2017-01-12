@@ -44,12 +44,20 @@ public class Debug { //que du statique, raccourci debug.
         position("Logger-Position", pos);
     }
 
-    public static void vector(Vector3 v) {
-        log("Logger-Vector3", "x:" + v.x + " y:" + v.y + " z:" + v.z);
+    public static void vector(String tag, Vector3 vector3) {
+        log(tag + "-Vector3", "x:" + vector3.x + " y:" + vector3.y + " z:" + vector3.z);
     }
 
-    public static void vector(Vector2 v) {
-        log("Logger-Vector2", "x:" + v.x + " y:" + v.y);
+    public static void vector(Vector3 vector3) {
+        vector("Logger", vector3);
+    }
+
+    public static void vector(String tag, Vector2 vector2) {
+        log(tag + "-Vector2", "x:" + vector2.x + " y:" + vector2.y);
+    }
+
+    public static void vector(Vector2 vector2) {
+        vector("Logger", vector2);
     }
 
     public static String iteratorToString(Iterator i) {

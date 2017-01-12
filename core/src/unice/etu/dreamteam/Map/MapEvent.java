@@ -1,6 +1,6 @@
 package unice.etu.dreamteam.Map;
 
-import unice.etu.dreamteam.Characters.Character;
+import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Screens.GameScreen;
 
 /**
