@@ -38,7 +38,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private SpriteBatch spriteBatch;
     private ShapeRenderer shapeRenderer;
     private CollisionsManager collisionsManager;
-    private Story s;
+    private Story story;
 
     private List<Integer> keyCodes;
 
@@ -46,19 +46,19 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         if (type == TYPE_STORY)
         {
-            s = Story.load(storyFile);
-            map = s.getMaps().getDefaultMap().load();
+            story = Story.load(storyFile);
+            map = story.getMaps().getDefaultMap().load();
         }
         else if (type == TYPE_MAP){
             try {
-                s = Story.getStory();
+                story = Story.getStory();
             } catch (LoadException e) {
                 e.printStackTrace();
                 Gdx.app.exit();
             }
 
             Debug.log(storyFile);
-            map = s.getMaps().get(storyFile).load();
+            map = story.getMaps().get(storyFile).load();
         }
         else {
             Debug.log("You should pass a valid type !");
@@ -68,8 +68,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     public GameScreen(String storyFile, String mapName){
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        s = Story.load(storyFile);
-        map = s.getMaps().get(mapName).load();
+        story = Story.load(storyFile);
+        map = story.getMaps().get(mapName).load();
     }
 
     public GameScreen(String storyFile, int type, ActionContainer container ){
@@ -93,13 +93,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         mobList = new ArrayList<>();
 
         if (map == null)
-            map =  s.getMaps().getDefaultMap().load();
+            map =  story.getMaps().getDefaultMap().load();
 
         map.getLayerManager().setLayersOpacity(0.3f);
         map.setSpriteBatch(spriteBatch);
 
         collisionsManager = new CollisionsManager(map, this);
-        collisionsManager.addStory(s);
+        collisionsManager.addStory(story);
 
         map.calculateGridCell(collisionsManager);
 
@@ -110,14 +110,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.log("debug");
 
 
-        GamePackage p = GameInformation.getGamePackage();
+        GamePackage gamePackage = GameInformation.getGamePackage();
 
 
-        playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
+        playerList.add((Player) gamePackage.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+        mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
 
         parseActionContainer();

@@ -38,6 +38,15 @@ public class Saves {
         return null;
     }
 
+    public PlayerSave get(String username, String packageName, String playerName) {
+        for (Save save : saves) {
+            if(save.getUsername().equals(username))
+                return save.getPlayerSave(packageName, playerName);
+        }
+
+        return null;
+    }
+
     public static Saves getSaves() {
         if (currentSaves == null)
         {

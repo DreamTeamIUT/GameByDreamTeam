@@ -12,9 +12,9 @@ public class Mobs extends EntitiesHolder<MobHolder> {
         super();
     }
 
-    public Mobs(JsonValue.JsonIterator jsonIterator, String packageName) {
+    public Mobs(JsonValue.JsonIterator jsonIterator) {
         super();
-        add(jsonIterator, "characters");
+        add(jsonIterator);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Mobs extends EntitiesHolder<MobHolder> {
     }
 
     @Override
-    public void add(JsonValue.JsonIterator jsonIterator, String path) {
+    public void add(JsonValue.JsonIterator jsonIterator) {
         for (JsonValue jsonValue : jsonIterator) {
             if (jsonValue.toString().endsWith(".json"))
                 add(new MobHolder(loadDependencies("characters", jsonValue.toString())));

@@ -4,8 +4,8 @@
     {
       "name": "NORMAL",
       "powerful": 1,
-      "speedReload": 5,
-      "bulletId": "bullet01"
+      "speed-reload": 5,
+      "bullet-id": "bullet01"
     }
   ]
 }

@@ -6,15 +6,15 @@ import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
+import unice.etu.dreamteam.Entities.Weapons.Weapons;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
  * Created by Guillaume on 27/12/2016.
  */
 public class PlayerHolder extends CharacterHolder {
-
     private String realName;
-
+    private Weapons weapons;
 
     public PlayerHolder(JsonValue value){
         super(value);

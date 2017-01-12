@@ -3,6 +3,7 @@ package unice.etu.dreamteam.Entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 import java.util.ArrayList;
@@ -11,12 +12,15 @@ import java.util.ArrayList;
  * Created by Guillaume on 24/12/2016.
  */
 
-public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E>{
+public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E> {
+    protected String path;
+
     public EntitiesHolder(){
         super();
     }
 
     public EntitiesHolder(JsonValue.JsonIterator jsonValues){
+        super();
         add(jsonValues);
     }
 
@@ -31,13 +35,6 @@ public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E>{
             this.add(entity);
     }
 
-    public void add(JsonValue.JsonIterator jsonIterator, String path) {
-        for (JsonValue entity : jsonIterator) {
-            if(entity.toString().endsWith(".json"))
-                this.add(loadDependencies(path, entity.toString()));
-        }
-    }
-
     public E get(String name){
         for (E e : this){
             if (e.getName().equals(name))
@@ -48,10 +45,15 @@ public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E>{
     }
 
     protected JsonValue loadDependencies(String path, String fileName) {
+        Debug.log("assets/packages/default/");
+        Debug.log(GameInformation.getGamePackage().toString());
+
         try {
             return new JsonReader().parse(Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/" + path + "/" + fileName).readString());
         }
         catch (Exception e) {
+            Debug.log("error loading player");
+
             return null;
         }
     }

@@ -16,6 +16,37 @@ public class Forces extends EntitiesHolder<Force> {
         add(jsonIterator);
     }
 
+    public Force get(int powerful) {
+        for (Force force : this) {
+            if(force.getPowerful() == powerful)
+                return force;
+        }
+
+        return null;
+    }
+
+    public int getDefaultPowerful() {
+        for(Force force : this) {
+            if(force.isDefault())
+                return force.getPowerful();
+        }
+
+        return 0;
+    }
+
+    public Boolean existPowerful(int powerful) {
+        for (Force force : this) {
+            if(force.getPowerful() == powerful)
+                return true;
+        }
+
+        return false;
+    }
+
+    public Boolean areEnough() {
+        return this.size() > 0;
+    }
+
     @Override
     public Boolean add(JsonValue value) {
         return add(new Force(value));

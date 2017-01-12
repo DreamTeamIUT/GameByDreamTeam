@@ -7,6 +7,12 @@
     "map01.json",
     "maison01.json"
   ],
+  "weapons": [
+    "weapon01.json"
+  ],
+  "bullets": [
+    "bullet01.json"
+  ],
   "mobs": [
     "mob01.json"
   ],

@@ -29,8 +29,7 @@ public class GamePackage extends Entity {
         this.creator = value.getString("creator", "NC");
         this.version = value.getString("version", "NC");
         this.lastEdit = value.getString("last-edit", "NC");
-        this.players = new Players(value.get("players").iterator(), getName(), getPackagePath());
-
+        this.players = new Players(value.get("players").iterator(), packagePath);
     }
 
     public String getPackagePath() {

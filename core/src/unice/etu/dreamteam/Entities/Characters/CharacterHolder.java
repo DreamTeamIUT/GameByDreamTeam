@@ -15,7 +15,7 @@ public abstract class CharacterHolder extends Entity {
 
     public CharacterHolder(JsonValue value){
         super(value);
-        this.modelName = value.getString("modelName");
+        this.modelName = value.getString("model-name");
     }
 
     public abstract Character create(SpriteBatch batch, ShapeRenderer shapeRenderer);

@@ -12,6 +12,10 @@ public class PackageSave {
         players = new ObjectMap<>();
     }
 
+    public PlayerSave getPlayerSave(String playerName) {
+        return this.players.get(playerName);
+    }
+
     public void addPlayerSave(String playerName, PlayerSave save) {
         this.players.put(playerName, save);
     }

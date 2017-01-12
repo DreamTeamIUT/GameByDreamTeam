@@ -6,48 +6,53 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.EntitiesHolder;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackages;
+import unice.etu.dreamteam.Utils.Debug;
 
 /**
  * Created by Guillaume on 31/10/2016.
  */
 public class Players extends EntitiesHolder<PlayerHolder> {
-    private String packageName;
-
     public Players() {
         super();
     }
 
-    public Players(JsonValue.JsonIterator jsonIterator, String packageName) {
+    public Players(JsonValue.JsonIterator jsonIterator, String packagePath) {
         super();
-        this.packageName = packageName;
-        add(jsonIterator);
+        add(jsonIterator, packagePath);
     }
 
-    public Players(JsonValue.JsonIterator jsonIterator, String packageName, String path) {
-        super();
-        this.packageName = packageName;
-        add(jsonIterator, path);
+    {
+        path = "characters";
     }
 
+    /*
     @Override
     public void add(JsonValue.JsonIterator jsonIterator) {
         for (JsonValue entitie : jsonIterator)
             if (entitie.toString().endsWith(".json"))
                 add(loadDep(entitie.toString()));
     }
-
-    public void add(JsonValue.JsonIterator jsonIterator, String path) {
-        for (JsonValue entitie : jsonIterator)
-            if (entitie.toString().endsWith(".json"))
-                add(loadDep(entitie.toString(), path));
-    }
+    */
 
     @Override
     public Boolean add(JsonValue value) {
         return add(new PlayerHolder(value));
     }
 
+    public void add(JsonValue.JsonIterator jsonIterator, String packagePath) {
+        for (JsonValue value : jsonIterator)
+            if (value.toString().endsWith(".json"))
+                add(new PlayerHolder(loadDependencies(packagePath, value.toString())));
+    }
 
+    @Override
+    protected JsonValue loadDependencies(String packagePath, String fileName) {
+        Debug.log(packagePath);
+        FileHandle file = Gdx.files.internal(packagePath + "/" + path + "/" + fileName);
+        return new JsonReader().parse(file.readString());
+    }
+
+    /*
     private JsonValue loadDep(String fileName) {
         return loadDep(fileName, GamePackages.getPackages().get(packageName).getPackagePath());
     }
@@ -56,5 +61,5 @@ public class Players extends EntitiesHolder<PlayerHolder> {
         FileHandle file = Gdx.files.internal(packagePath + "/characters/" + fileName);
         return new JsonReader().parse(file.readString());
     }
-
+    */
 }

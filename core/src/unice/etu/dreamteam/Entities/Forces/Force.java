@@ -3,16 +3,21 @@ package unice.etu.dreamteam.Entities.Forces;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.Entity;
 import unice.etu.dreamteam.Entities.Characters.Mobs.OnMobKillListenner;
+import unice.etu.dreamteam.Entities.Weapons.Graphics.Weapon;
+import unice.etu.dreamteam.Entities.Weapons.WeaponHolder;
+import unice.etu.dreamteam.Entities.Weapons.Weapons;
 import unice.etu.dreamteam.Utils.Debug;
 
 /**
  * Created by Guillaume on 31/10/2016.
  */
 public class Force extends Entity {
+    private int powerful;
+    private Boolean isDefault;
+    private WeaponHolder weaponHolder;
+
     private final JsonValue items;
     private OnMobKillListenner onMobKillListenner;
-    private String name;
-    private String weapon;
     private float speed;
 
     private int proximityRange;
@@ -27,13 +32,9 @@ public class Force extends Entity {
         proximityRange = value.getInt("proximityRange");
         detectionRange = value.getInt("detectionRange");
 
-        weapon = value.getString("weaponId");
+        weaponHolder = Weapons.getInstance().get(value.getString("weaponId"));
         speed = value.getFloat("speed");
         items = value.get("onkill").get("spawnItems");
-    }
-
-    public String getWeapon() {
-        return weapon;
     }
 
     public void kill() {
@@ -58,5 +59,13 @@ public class Force extends Entity {
 
     public float getSpeed() {
         return speed;
+    }
+
+    public int getPowerful() {
+        return powerful;
+    }
+
+    public Boolean isDefault() {
+        return isDefault;
     }
 }

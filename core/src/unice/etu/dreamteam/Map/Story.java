@@ -5,11 +5,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import javafx.fxml.LoadException;
+import unice.etu.dreamteam.Entities.Bullets.Bullets;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Characters.Players.Players;
 import unice.etu.dreamteam.Entities.Gates.Gates;
 import unice.etu.dreamteam.Entities.Maps.Maps;
 import unice.etu.dreamteam.Entities.Sounds.Sounds;
+import unice.etu.dreamteam.Entities.Weapons.Graphics.Weapon;
+import unice.etu.dreamteam.Entities.Weapons.Weapons;
 import unice.etu.dreamteam.Entities.Zones.Zones;
 import unice.etu.dreamteam.Utils.GameInformation;
 
@@ -108,11 +111,14 @@ public class Story {
         story.setPackageName(GameInformation.getGamePackage().getName());
         story.setName(jsonStory.getString("name", ""));
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
-        story.setMobs(new Mobs(jsonStory.get("mobs").iterator(), GameInformation.getGamePackage().getPackagePath()));
+        story.setMobs(new Mobs(jsonStory.get("mobs").iterator()));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
         story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
+
+        Bullets.getInstance().add(jsonStory.get("bullets").iterator());
+        Weapons.getInstance().add(jsonStory.get("weapons").iterator());
 
 
         return story;

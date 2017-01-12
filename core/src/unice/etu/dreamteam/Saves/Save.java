@@ -30,6 +30,20 @@ public class Save {
         packages = new ObjectMap<>();
     }
 
+    public PlayerSave getPlayerSave(String packageName, String playerName) {
+        PackageSave packageSave = getPackages().get(packageName);
+
+        if(packageSave == null)
+            return null;
+
+        PlayerSave playerSave = packageSave.getPlayerSave(playerName);
+
+        if(playerSave == null)
+            return null;
+
+        return playerSave;
+    }
+
     public void addPlayerSave(String packageName, String playerName, PlayerSave save) {
         PackageSave temp = getPackages().get(packageName);
         if (temp == null) {
