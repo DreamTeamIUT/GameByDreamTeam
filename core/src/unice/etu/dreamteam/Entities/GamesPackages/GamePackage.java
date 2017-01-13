@@ -23,7 +23,6 @@ public class GamePackage extends Entity {
 
     public GamePackage(JsonValue value) {
         super(value);
-
         this.packagePath = value.getString("path");
         this.displayName = value.getString("displayName", "NC");
         this.creator = value.getString("creator", "NC");
@@ -59,7 +58,7 @@ public class GamePackage extends Entity {
     public ArrayList<Story> getStories() {
         ArrayList<Story> list = new ArrayList<Story>();
 
-        File directory = new File(getPackagePath());
+        File directory = new File(getPackagePath() + "/stories/");
 
         // get all the files from a directory
         File[] fList = directory.listFiles();

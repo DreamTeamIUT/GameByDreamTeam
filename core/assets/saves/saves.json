@@ -32,5 +32,21 @@ saves: [
 			}
 		}
 	}
+	{
+		username: KIKOU
+		lastSave: 2017/01/12 18:08:57
+		packages: {
+			default: {
+				players: {
+					player01: {
+						level: 1
+					}
+					player02: {
+						level: 1
+					}
+				}
+			}
+		}
+	}
 ]
 }
