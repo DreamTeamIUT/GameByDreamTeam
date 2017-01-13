@@ -121,11 +121,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
 
-        s.getItems().clearInstances(map);
+        story.getItems().clearInstances(map);
 
-        s.getItems().addInstances(map.getLayerManager().getTilePrositionWithProperty("type", "ITEM"));
+        story.getItems().addInstances(map.getLayerManager().getTilePrositionWithProperty("type", "ITEM"));
 
-        Item.ItemInstance i = s.getItems().get("chest").addInstance(new Vector2(0,0));
+        Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(0,0));
         i.onThrown(map);
 
 
@@ -166,7 +166,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         center_camera(playerList.get(0));
 
-        s.getItems().updateInstances(map);
+        story.getItems().updateInstances(map);
 
         orthoCamera.update();
 

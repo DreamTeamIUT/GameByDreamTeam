@@ -9,6 +9,7 @@ import unice.etu.dreamteam.Entities.Bullets.Bullets;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Characters.Players.Players;
 import unice.etu.dreamteam.Entities.Gates.Gates;
+import unice.etu.dreamteam.Entities.Items.Items;
 import unice.etu.dreamteam.Entities.Maps.Maps;
 import unice.etu.dreamteam.Entities.Sounds.Sounds;
 import unice.etu.dreamteam.Entities.Weapons.Graphics.Weapon;

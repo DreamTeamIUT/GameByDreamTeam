@@ -12,6 +12,7 @@ import unice.etu.dreamteam.Entities.Gates.Gate;
 import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Zones.Zone;
 import unice.etu.dreamteam.Screens.GameScreen;
+import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
 
