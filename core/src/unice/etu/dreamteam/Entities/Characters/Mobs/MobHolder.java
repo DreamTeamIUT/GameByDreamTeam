@@ -1,17 +1,14 @@
 package unice.etu.dreamteam.Entities.Characters.Mobs;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.JsonValue;
-import com.badlogic.gdx.utils.StringBuilder;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Forces.ForceMobHolder;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Forces.ForcesMobHolder;
-import unice.etu.dreamteam.Entities.Forces.Force;
-import unice.etu.dreamteam.Entities.Forces.Forces;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
+import unice.etu.dreamteam.Entities.Characters.OnCharacterEventListener;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
@@ -44,10 +41,19 @@ public class MobHolder extends CharacterHolder {
     }
 
     public void setForce(int powerful) {
-        if(forces.existPowerful(powerful))
+        if(forces.existPowerful(powerful)) {
             currentPowerful = powerful;
+        }
         else
             Debug.log("MobHolder", "Error powerful with forces : " + String.valueOf(powerful));
+    }
+
+    @Override
+    public OnCharacterEventListener triggerEvent() {
+        if(forces.areEnough())
+            return getForce().getOnCharacterEventListener();
+        else
+            return null;
     }
 
     @Override
@@ -64,5 +70,4 @@ public class MobHolder extends CharacterHolder {
 
         return null;
     }
-
 }

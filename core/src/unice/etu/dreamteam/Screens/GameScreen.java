@@ -130,7 +130,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
         parseActionContainer();
-
     }
 
     private void parseActionContainer() {

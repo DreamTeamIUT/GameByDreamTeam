@@ -1,6 +1,7 @@
 package unice.etu.dreamteam.Entities.Characters.Mobs.Forces;
 
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Entities.Characters.OnCharacterEventListener;
 import unice.etu.dreamteam.Entities.ForceEntity;
 import unice.etu.dreamteam.Entities.Weapons.WeaponHolder;
 import unice.etu.dreamteam.Entities.Weapons.Weapons;
@@ -14,6 +15,8 @@ public class ForceMobHolder extends ForceEntity {
     private int detectionRange;
 
     private String weaponId;
+
+    private OnCharacterEventListener onCharacterEventListener;
 
     public ForceMobHolder(JsonValue value) {
         super(value);
@@ -39,5 +42,17 @@ public class ForceMobHolder extends ForceEntity {
 
     public WeaponHolder getWeapon() {
         return Weapons.getInstance().get(weaponId);
+    }
+
+    public void onKill() {
+        //drop items and damage range
+    }
+
+    public OnCharacterEventListener getOnCharacterEventListener() {
+        return onCharacterEventListener;
+    }
+
+    public void setOnCharacterEventListener(OnCharacterEventListener onCharacterEventListener) {
+        this.onCharacterEventListener = onCharacterEventListener;
     }
 }
