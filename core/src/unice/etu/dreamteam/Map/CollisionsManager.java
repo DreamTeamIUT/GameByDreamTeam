@@ -9,8 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Gates.Gate;
+import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Zones.Zone;
 import unice.etu.dreamteam.Screens.GameScreen;
+import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
 
@@ -77,21 +79,18 @@ public class CollisionsManager {
         if (cells.x >= map.getMapHeight() || cells.y >= map.getMapWidth() || cells.x < 0 || cells.y < 0)
             return false;
 
-        if (map.getLayerManager().getCurrentTileLayer().get(0).getCell((int) cells.x, (int) cells.y) == null)
+        if (map.getLayerManager().getCurrentTileLayers().get(0).getCell((int) cells.x, (int) cells.y) == null)
             return false;
 
-        TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y);
+        TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayers().get(1).getCell((int) cells.x, (int) cells.y);
         if (c != null) {
             //Can be more precise...
             if (!TileTypes.contain(c.getTile().getProperties().get("type", "", String.class)))
                 return false;
         }
 
-        //Debug.log("Invisible Wall -> ok ");
-
         for (RectangleMapObject rectangleObject : map.getLayerManager().getCurrentObjectLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (Intersector.overlaps(rectangleObject.getRectangle(), p.getRectangleAt(cells))) {
-                //Debug.log("Intersect with" + rectangleObject.getName());
                 return false;
             }
         }
@@ -117,12 +116,11 @@ public class CollisionsManager {
             Gate g = story.getGates().get(gateObject.getName());
             if (g == null)
             {
-                //Debug.log("GATE", gateObject.getName() + " not exist !");
+                Debug.log("GATE", gateObject.getName() + " not exist !");
                 continue;
             }
 
             if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
-                //Debug.log(gateObject.getName());
                 if (!g.isOpen())
                     return false;
             }
@@ -139,10 +137,10 @@ public class CollisionsManager {
         if (cells.x >= map.getMapHeight() || cells.y >= map.getMapWidth() || cells.x < 0 || cells.y < 0)
             return false;
 
-        if (map.getLayerManager().getCurrentTileLayer().get(0).getCell((int) cells.x, (int) cells.y) == null)
+        if (map.getLayerManager().getCurrentTileLayers().get(0).getCell((int) cells.x, (int) cells.y) == null)
             return false;
 
-        TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayer().get(1).getCell((int) cells.x, (int) cells.y);
+        TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayers().get(1).getCell((int) cells.x, (int) cells.y);
         if (c != null) {
             //Can be more precise...
             if (!TileTypes.contain(c.getTile().getProperties().get("type", "", String.class)))
@@ -207,6 +205,12 @@ public class CollisionsManager {
     }
 
     public void findActionFor(Character p) {
+
+        Item.ItemInstance instance = story.getItems().getInstanceAt(p.getCellPos());
+        if (instance != null){
+            instance.onGrab(new MapEvent(p, map, story, game));
+        }
+
         for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (story.getZones().exist(rectangleMapObject.getName())) {
                 Zone zone = story.getZones().get(rectangleMapObject.getName());
@@ -216,7 +220,6 @@ public class CollisionsManager {
                         zone.onLeave();
                     }
                 } else {
-                    //Debug.log("not in");
                     if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canEnter()) {
                         zone.onEnter();
                     }
@@ -228,9 +231,7 @@ public class CollisionsManager {
             Gate g = story.getGates().get(gateObject.getName());
             if (g == null)
                 continue;
-            //Debug.log(gateObject.getName());
-            //Debug.log(g.getName() + " : " + (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()));
-            //Debug.log(gateObject.getRectangle().toString());
+
             if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()) {
                 g.onPass(new MapEvent(p, map, story, game));
                 break;

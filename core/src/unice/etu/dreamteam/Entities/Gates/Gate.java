@@ -68,8 +68,6 @@ public class Gate extends Entity {
                 event.getCharacter().setCellPos(v);
             }
         }
-
-
     }
 
     public GateState getGateState() {
