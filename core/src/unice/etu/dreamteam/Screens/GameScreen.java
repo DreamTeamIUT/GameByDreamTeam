@@ -197,9 +197,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
         final int keyUp = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSUP);
-        final int keyDown = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSDOWN);
-        final int keyleft = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSLEFT);
-        final int keyRight = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSRIGHT);
+        final int keyDown = prefs.getInteger(Settings.KEY_DOWN, Settings.DEFAULTSETTINGSDOWN);
+        final int keyleft = prefs.getInteger(Settings.KEY_LEFT, Settings.DEFAULTSETTINGSLEFT);
+        final int keyRight = prefs.getInteger(Settings.KEY_RIGHT, Settings.DEFAULTSETTINGSRIGHT);
+
+        Debug.log(keyUp + "");
 
         if (keyCodes.size() > 0) {
             Player p = playerList.get(0);
