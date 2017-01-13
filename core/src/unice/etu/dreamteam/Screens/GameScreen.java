@@ -121,7 +121,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         mobList.get(0).setCellPos(1, 1);
 
         parseActionContainer();
-
     }
 
     private void parseActionContainer() {
