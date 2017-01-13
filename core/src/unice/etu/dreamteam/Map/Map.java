@@ -2,6 +2,8 @@ package unice.etu.dreamteam.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -132,6 +134,17 @@ public class Map {
         Debug.vector(pos);
 
         return pos;
+    }
+
+    public TiledMapTile getTileByName(String name){
+        for (TiledMapTileSet tiledMapTileSet : this.getData().getTileSets()){
+            for (TiledMapTile t : tiledMapTileSet){
+                if (t.getProperties().get("name", "", String.class).equals(name)){
+                    return t;
+                }
+            }
+        }
+        return null;
     }
 
     public MapHolder getMapInfo() {

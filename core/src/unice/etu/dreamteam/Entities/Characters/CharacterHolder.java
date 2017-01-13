@@ -23,4 +23,6 @@ public abstract class CharacterHolder extends Entity {
     public String getModelName() {
         return modelName;
     }
+
+    public abstract OnCharacterEventListener triggerEvent();
 }
