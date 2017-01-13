@@ -7,6 +7,12 @@
     "map01.json",
     "maison01.json"
   ],
+  "weapons": [
+    "weapon01.json"
+  ],
+  "bullets": [
+    "bullet01.json"
+  ],
   "mobs": [
     "mob01.json"
   ],
@@ -37,6 +43,7 @@
       "sound": "ENTER_ZONE",
       "maxEnter": 2,
       "maxExecute": 2,
+      "general": true,
       "blocked": "false",
       "maxRevive": 2,
       "time":600

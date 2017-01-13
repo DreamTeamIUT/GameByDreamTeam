@@ -10,10 +10,11 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import javafx.fxml.LoadException;
-import unice.etu.dreamteam.Characters.Mob;
-import unice.etu.dreamteam.Characters.Player;
-import unice.etu.dreamteam.Entities.GamePackage;
-import unice.etu.dreamteam.Entities.Item;
+import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
+import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
+import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
+import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
+import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
@@ -22,6 +23,7 @@ import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen extends AbstractScreen implements InputProcessor {
 
@@ -36,25 +38,27 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private SpriteBatch spriteBatch;
     private ShapeRenderer shapeRenderer;
     private CollisionsManager collisionsManager;
-    private Story s;
+    private Story story;
+
+    private List<Integer> keyCodes;
 
     public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         if (type == TYPE_STORY)
         {
-            s = Story.load(storyFile);
-            map = s.getMaps().getDefaultMap().load();
+            story = Story.load(storyFile);
+            map = story.getMaps().getDefaultMap().load();
         }
         else if (type == TYPE_MAP){
             try {
-                s = Story.getStory();
+                story = Story.getStory();
             } catch (LoadException e) {
                 e.printStackTrace();
                 Gdx.app.exit();
             }
 
             Debug.log(storyFile);
-            map = s.getMaps().get(storyFile).load();
+            map = story.getMaps().get(storyFile).load();
         }
         else {
             Debug.log("You should pass a valid type !");
@@ -64,8 +68,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     public GameScreen(String storyFile, String mapName){
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        s = Story.load(storyFile);
-        map = s.getMaps().get(mapName).load();
+        story = Story.load(storyFile);
+        map = story.getMaps().get(mapName).load();
     }
 
     public GameScreen(String storyFile, int type, ActionContainer container ){
@@ -76,6 +80,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public void buildStage() {
+        keyCodes = new ArrayList<>();
 
         Gdx.input.setInputProcessor(this);
 
@@ -88,14 +93,16 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         mobList = new ArrayList<>();
 
         if (map == null)
-            map =  s.getMaps().getDefaultMap().load();
+            map =  story.getMaps().getDefaultMap().load();
 
         map.getLayerManager().setLayersOpacity(0.3f);
         map.setSpriteBatch(spriteBatch);
 
 
         collisionsManager = new CollisionsManager(map, this);
-        collisionsManager.addStory(s);
+        collisionsManager.addStory(story);
+
+        map.calculateGridCell(collisionsManager);
 
         Debug.log("debug");
         orthoCamera.setToOrtho(false, map.getMapWidth(), map.getMapHeight());
@@ -104,13 +111,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.log("debug");
 
 
-        GamePackage p = GameInformation.getGamePackage();
+        GamePackage gamePackage = GameInformation.getGamePackage();
 
 
-        playerList.add((Player) p.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
-        playerList.get(0).setCellPos(map.getMapInfo().getStartPoint());
+        playerList.add((Player) gamePackage.getPlayers().get("player01").create(spriteBatch, shapeRenderer));
+        Debug.vector(map.getMapInfo().getStartPoint());
+        playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        mobList.add((Mob) s.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+        mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
         mobList.get(0).setCellPos(1, 1);
 
         s.getItems().clearInstances(map);
@@ -141,7 +149,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     public void center_camera(Player p) {
-        Vector3 pos = new Vector3(p.getCellPos().x * map.getTileHeight(), p.getCellPos().y * map.getTileHeight() , 0);
+        Vector3 pos = new Vector3(p.getRealPos().x * map.getTileHeight(), p.getRealPos().y * map.getTileHeight() , 0);
         orthoCamera.position.set(pos.mul(IsoTransform.getIsoTransform()));
     }
 
@@ -171,7 +179,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map.getRenderer().setView(orthoCamera);
         map.render(delta);
 
-
         collisionsManager.debug(shapeRenderer);
 
         map.getRenderer().render(map.getLayerManager().getBeforeLayers());
@@ -183,6 +190,65 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             m.render(delta);
 
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
+
+        if(keyCodes.size() > 0) {
+            Player p = playerList.get(0);
+
+            for(int i = 0; i < keyCodes.size(); i++) {
+                switch (keyCodes.get(i)) {
+                    case Input.Keys.ESCAPE:
+                        if (!Settings.isOpen)
+                            addActor(Settings.createWindow(getViewport()));
+                        break;
+                    case Input.Keys.D:
+                        Debug.log("D");
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)){
+                            //p.setCellPos(p.moveToRight());
+                            p.moveTo(CharacterMove.RIGHT);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                    case Input.Keys.S:
+                        Debug.log("S");
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)){
+                            //p.setCellPos(p.moveToDown());
+                            p.moveTo(CharacterMove.DOWN);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                    case Input.Keys.Q:
+                        Debug.log("Q");
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)){
+                            //p.setCellPos(p.moveToLeft());
+                            p.moveTo(CharacterMove.LEFT);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                    case Input.Keys.Z:
+                        Debug.log("Z");
+                        Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)){
+                            //p.setCellPos(p.moveToUp());
+                            p.moveTo(CharacterMove.UP);
+                            collisionsManager.findActionFor(p);
+
+                            getMobsPathToPlayer();
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    public void getMobsPathToPlayer() {
+        for(Mob m : mobList)
+            m.setPathToPlayer(map.getNavigationGrid(), playerList.get(0));
     }
 
     @Override
@@ -208,43 +274,22 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        Debug.log("In keyup !");
-        Player p = playerList.get(0);
-        switch (keycode) {
-            case Input.Keys.ESCAPE:
-                if (!Settings.isOpen)
-                    addActor(Settings.createWindow(getViewport()));
-                return true;
-            case Input.Keys.D:
-                if (collisionsManager.canGoTo(p.moveToRight(), p)){
-                    p.setCellPos(p.moveToRight());
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-            case Input.Keys.S:
-                if (collisionsManager.canGoTo(p.moveToDown(), p)){
-                    p.setCellPos(p.moveToDown());
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-            case Input.Keys.Q:
-                if (collisionsManager.canGoTo(p.moveToLeft(), p)){
-                    p.setCellPos(p.moveToLeft());
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-            case Input.Keys.Z:
-                Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToUp(), p));
-                if (collisionsManager.canGoTo(p.moveToUp(), p)){
-                    p.setCellPos(p.moveToUp());
-                    collisionsManager.findActionFor(p);
-                }
-                return true;
-        }
-        return false;
+    public boolean keyDown(int keyCode) {
+        if(keyCodes.indexOf(keyCode) < 0)
+            keyCodes.add(keyCode);
+
+        Debug.log("KEY DOWN", keyCodes.toString());
+
+        return true;
     }
 
+    @Override
+    public boolean keyUp(int keyCode) {
+        if(keyCodes.indexOf(keyCode) >= 0)
+            keyCodes.remove(keyCodes.indexOf(keyCode));
 
+        Debug.log("KEY UP", keyCodes.toString());
 
+        return true;
+    }
 }

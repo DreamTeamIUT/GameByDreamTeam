@@ -1,0 +1,11 @@
+{
+  "name": "weapon01",
+  "forces": [
+    {
+      "name": "NORMAL",
+      "powerful": 1,
+      "speed-reload": 5,
+      "bullet-id": "bullet01"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import unice.etu.dreamteam.Characters.ModelAnimationManager;
+import unice.etu.dreamteam.Entities.Characters.Graphics.ModelAnimationManager;
 
 /**
  * Created by Guillaume on 01/11/2016.
