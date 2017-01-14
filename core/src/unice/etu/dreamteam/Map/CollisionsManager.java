@@ -206,10 +206,10 @@ public class CollisionsManager {
 
     public void findActionFor(Character p) {
 
-        Item.ItemInstance instance = story.getItems().getInstanceAt(p.getCellPos());
+       /* Item.ItemInstance instance = story.getItems().getInstanceAt(p.getCellPos());
         if (instance != null){
             instance.onGrab(new MapEvent(p, map, story, game));
-        }
+        }*/
 
         for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (story.getZones().exist(rectangleMapObject.getName())) {

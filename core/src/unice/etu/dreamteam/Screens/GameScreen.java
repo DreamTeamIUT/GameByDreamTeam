@@ -201,6 +201,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                         break;
                     case Input.Keys.D:
                         Debug.log("D");
+                        p.setView(CharacterMove.RIGHT);
                         if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)){
                             //p.setCellPos(p.moveToRight());
                             p.moveTo(CharacterMove.RIGHT);
@@ -211,6 +212,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                         break;
                     case Input.Keys.S:
                         Debug.log("S");
+                        p.setView(CharacterMove.DOWN);
                         if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)){
                             //p.setCellPos(p.moveToDown());
                             p.moveTo(CharacterMove.DOWN);
@@ -221,6 +223,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                         break;
                     case Input.Keys.Q:
                         Debug.log("Q");
+                        p.setView(CharacterMove.LEFT);
                         if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)){
                             //p.setCellPos(p.moveToLeft());
                             p.moveTo(CharacterMove.LEFT);
@@ -230,6 +233,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                         }
                         break;
                     case Input.Keys.Z:
+                        p.setView(CharacterMove.UP);
                         Debug.log("Z");
                         Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
                         if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)){
