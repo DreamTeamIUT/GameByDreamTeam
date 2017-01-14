@@ -1,17 +1,24 @@
 package unice.etu.dreamteam.Entities.Characters.Graphics;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.IsoTransform;
+import unice.etu.dreamteam.Utils.ModelConverter;
 
 public class Character implements Disposable {
 
-   // private ModelConverter modelConverter;
-   // private ModelAnimationManager animationManager;
+    private ModelConverter modelConverter;
+    private ModelAnimationManager animationManager;
+
     protected Vector2 cellPos;
     protected Vector2 realPos;
     protected Boolean animating = false;
@@ -31,8 +38,9 @@ public class Character implements Disposable {
         this.modelName = holder.getModelName();
         cellPos = new Vector2(0, 0);
         realPos = new Vector2(0, 0);
-       // animationManager = new ModelAnimationManager(modelName);
-       // modelConverter = new ModelConverter(animationManager);
+
+        animationManager = new ModelAnimationManager(modelName);
+        modelConverter = new ModelConverter(animationManager);
 
         currentMove = CharacterMove.NONE;
 
@@ -93,17 +101,28 @@ public class Character implements Disposable {
         if(!animating) {
             Debug.log("moveTo");
 
+            this.animationManager.setAnimation("WALK");
+
             animating = true;
             currentMove = characterMove;
 
-            if(characterMove == CharacterMove.LEFT)
-                cellPos.x -= 1;
-            else if(characterMove == CharacterMove.RIGHT)
-                cellPos.x += 1;
-            else if(characterMove == CharacterMove.UP)
-                cellPos.y += 1;
-            else if(characterMove == CharacterMove.DOWN)
-                cellPos.y -= 1;
+            switch (characterMove) {
+                case CharacterMove.LEFT:
+                    cellPos.x -= 1;
+                    animationManager.setRotation(270);
+                    break;
+                case CharacterMove.RIGHT:
+                    cellPos.x += 1;
+                    animationManager.setRotation(90);
+                    break;
+                case CharacterMove.UP:
+                    cellPos.y += 1;
+                    animationManager.setRotation(180);
+                    break;
+                case CharacterMove.DOWN:
+                    cellPos.y -= 1;
+                    animationManager.setRotation(0);
+            }
 
             Debug.vector("realPos", realPos);
             Debug.vector("cellPos", cellPos);
@@ -166,6 +185,8 @@ public class Character implements Disposable {
 
         realPos.x = cellPos.x;
         realPos.y = cellPos.y;
+
+        this.animationManager.setAnimation("STOPPED");
     }
 
     public Rectangle getRectangle() {
@@ -181,16 +202,13 @@ public class Character implements Disposable {
         return zone;
     }
 
-   /* public ModelAnimationManager getAnimationManager() {
+    public ModelAnimationManager getAnimationManager() {
         return animationManager;
     }
-*/
 
-/*
     public ModelConverter getModelConverter() {
         return modelConverter;
     }
-*/
 
     public SpriteBatch getBatch() {
         return batch;
@@ -198,8 +216,8 @@ public class Character implements Disposable {
 
     @Override
     public void dispose() {
-      //  modelConverter.dispose();
-      //  animationManager.dispose();
+        modelConverter.dispose();
+        animationManager.dispose();
     }
 
     public void setRealPos(Vector2 realPos) {
@@ -242,24 +260,43 @@ public class Character implements Disposable {
     }
 
     private void update(float delta) {
-       // modelConverter.update(delta);
+        modelConverter.update(delta);
+
         updatePlayerZone();
     }
 
-    public void render(float delta) {
+    public void render(float delta, OrthographicCamera orthographicCamera) {
         this.update(delta);
-       // modelConverter.render();
+
+        modelConverter.render();
 
         moveTransition();
 
         if (debug)
             drawDebug();
 
+        /*
+        SpriteBatch spriteBatch = new SpriteBatch();
+        spriteBatch.setTransformMatrix(IsoTransform.getIsoTransform());
+        spriteBatch.setProjectionMatrix(orthographicCamera.combined);
+        spriteBatch.begin();
+        spriteBatch.draw(modelConverter.getCurrentTexture(), getRectangle().x, getRectangle().y);
+        spriteBatch.end();
+        */
+
+        //Matrix4 save = getBatch().getProjectionMatrix();
+        //Matrix4 transform = getBatch().getTransformMatrix();
+
+        Vector3 modelPos = modelConverter.getPos(getRealPos());
+
         getBatch().begin();
         //TODO : calc the best pos ! Cneter of frame buffer = center perso, locate center and draw to center of cell.
-       // getBatch().draw(modelConverter.getCurrentTexture(), getRectangle().x, getRectangle().y);
-        getBatch().end();
+        getBatch().draw(modelConverter.getCurrentTexture(), modelPos.x-45, modelPos.y+32);
+        //getBatch().draw(modelConverter.getCurrentTexture(), getRectangle().x, getRectangle().y);
+        //getBatch().setTransformMatrix(transform);
+        //getBatch().setProjectionMatrix(save);
 
+        getBatch().end();
     }
 
     protected void drawDebug() {

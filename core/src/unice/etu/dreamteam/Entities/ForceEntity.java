@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.JsonValue;
 /**
  * Created by Dylan on 12/01/2017.
  */
-public class ForceEntity extends Entity {
+public abstract class ForceEntity extends Entity {
     private int powerful;
     private Boolean isDefault;
 
@@ -23,4 +23,6 @@ public class ForceEntity extends Entity {
     public Boolean isDefault() {
         return isDefault;
     }
+
+    public abstract void render();
 }

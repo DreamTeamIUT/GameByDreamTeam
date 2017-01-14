@@ -3,7 +3,7 @@ package unice.etu.dreamteam.Entities.Characters.Mobs.Forces;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.Characters.OnCharacterEventListener;
 import unice.etu.dreamteam.Entities.ForceEntity;
-import unice.etu.dreamteam.Entities.Weapons.WeaponHolder;
+import unice.etu.dreamteam.Entities.Weapons.Weapon;
 import unice.etu.dreamteam.Entities.Weapons.Weapons;
 
 /**
@@ -14,7 +14,7 @@ public class ForceMobHolder extends ForceEntity {
     private int proximityRange;
     private int detectionRange;
 
-    private String weaponId;
+    private Weapon.Graphic weapon;
 
     private OnCharacterEventListener onCharacterEventListener;
 
@@ -25,7 +25,7 @@ public class ForceMobHolder extends ForceEntity {
         proximityRange = value.getInt("proximity-range", 0);
         detectionRange = value.getInt("detection-range", 0);
 
-        weaponId = value.getString("weapon-id");
+        //weapon = Weapons.getInstance().get(value.getString("weapon-id")).create();
     }
 
     public float getSpeed() {
@@ -40,8 +40,8 @@ public class ForceMobHolder extends ForceEntity {
         return detectionRange;
     }
 
-    public WeaponHolder getWeapon() {
-        return Weapons.getInstance().get(weaponId);
+    public Weapon.Graphic getWeapon() {
+        return weapon;
     }
 
     public void onKill() {
@@ -54,5 +54,10 @@ public class ForceMobHolder extends ForceEntity {
 
     public void setOnCharacterEventListener(OnCharacterEventListener onCharacterEventListener) {
         this.onCharacterEventListener = onCharacterEventListener;
+    }
+
+    @Override
+    public void render() {
+
     }
 }

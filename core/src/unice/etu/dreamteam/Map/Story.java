@@ -9,12 +9,14 @@ import unice.etu.dreamteam.Entities.Bullets.Bullets;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Characters.Players.Players;
 import unice.etu.dreamteam.Entities.Gates.Gates;
+import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Items.Items;
 import unice.etu.dreamteam.Entities.Maps.Maps;
 import unice.etu.dreamteam.Entities.Sounds.Sounds;
-import unice.etu.dreamteam.Entities.Weapons.Graphics.Weapon;
+import unice.etu.dreamteam.Entities.Weapons.Weapon;
 import unice.etu.dreamteam.Entities.Weapons.Weapons;
 import unice.etu.dreamteam.Entities.Zones.Zones;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
@@ -29,7 +31,6 @@ public class Story {
     private Gates gates;
     private Sounds sounds;
     private Maps maps;
-    private Items items;
     private String name;
     private String packageName;
     private int minimumLevel;
@@ -116,12 +117,11 @@ public class Story {
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
-        story.setItems(Items.loadFromDir());
         story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
 
         Bullets.getInstance().add(jsonStory.get("bullets").iterator());
         Weapons.getInstance().add(jsonStory.get("weapons").iterator());
-
+        Items.getInstance().loadFromDir();
 
         return story;
     }
@@ -142,11 +142,15 @@ public class Story {
         return minimumLevel;
     }
 
-    public Items getItems() {
-        return items;
+    public Bullets getBullets() {
+        return Bullets.getInstance();
     }
 
-    public void setItems(Items items) {
-        this.items = items;
+    public Weapons getWeaponds() {
+        return Weapons.getInstance();
+    }
+
+    public Items getItems() {
+        return Items.getInstance();
     }
 }

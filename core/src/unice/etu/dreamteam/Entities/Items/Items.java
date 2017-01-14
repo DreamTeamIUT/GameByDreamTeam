@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Created by Dylan on 01/10/2016.
  */
 public class Items extends EntitiesHolder<Item> {
-
+    private static Items items;
     private ArrayList<ArrayList<Item.ItemInstance>> itemInstances = new ArrayList<>();
 
     public Items() {
@@ -28,7 +28,6 @@ public class Items extends EntitiesHolder<Item> {
     public Items(JsonValue.JsonIterator jsonValues) {
         super(jsonValues);
     }
-
 
     @Override
     public Boolean add(JsonValue value) {
@@ -85,9 +84,8 @@ public class Items extends EntitiesHolder<Item> {
         return null;
     }
 
-    public static Items loadFromDir() {
+    public void loadFromDir() {
         File directory = new File(GameInformation.getGamePackage().getPackagePath() + "/items/");
-        Items items = new Items();
 
         File[] fList = directory.listFiles();
 
@@ -95,9 +93,14 @@ public class Items extends EntitiesHolder<Item> {
             if (file.isFile() && file.getName().endsWith(".json")) {
                 FileHandle itemData = Gdx.files.internal(file.getPath());
                 JsonValue jsonValue = new JsonReader().parse(itemData.readString());
-                items.add(new Item(jsonValue));
+                add(new Item(jsonValue));
             }
         }
+    }
+
+    public static Items getInstance() {
+        if(items == null)
+            items = new Items();
 
         return items;
     }

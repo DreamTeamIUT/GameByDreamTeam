@@ -4,8 +4,10 @@
     {
       "name": "NORMAL",
       "powerful": 1,
+      "default": true,
       "speed-reload": 5,
-      "bullet-id": "bullet01"
+      "bullet-id": "bullet01",
+      "tile": "weapon01.png"
     }
   ]
 }

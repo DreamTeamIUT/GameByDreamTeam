@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Entities.Characters.Mobs.Graphics;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.JsonValue;
 import org.xguzm.pathfinding.grid.GridCell;
@@ -38,8 +39,8 @@ public class Mob extends Character {
     }
 
     @Override
-    public void render(float delta) {
-        super.render(delta);
+    public void render(float delta, OrthographicCamera orthographicCamera) {
+        super.render(delta, orthographicCamera);
 
         if(currentMove == CharacterMove.NONE && ready) {
             if(!detectionRange() || proximityRange())

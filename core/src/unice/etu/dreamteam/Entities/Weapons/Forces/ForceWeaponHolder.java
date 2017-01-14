@@ -7,20 +7,20 @@ import unice.etu.dreamteam.Entities.ForceEntity;
  * Created by Dylan on 12/01/2017.
  */
 public class ForceWeaponHolder extends ForceEntity {
-    private float speed;
+    private float speedReload;
     private int range;
     private int damage;
 
     public ForceWeaponHolder(JsonValue value) {
         super(value);
 
-        speed = value.getFloat("speed");
+        speedReload = value.getFloat("speed-reload");
         range = value.getInt("range", 0);
         damage = value.getInt("damage", 0);
     }
 
-    public float getSpeed() {
-        return speed;
+    public float getSpeedReload() {
+        return speedReload;
     }
 
     public int getRange() {
@@ -29,5 +29,10 @@ public class ForceWeaponHolder extends ForceEntity {
 
     public int getDamage() {
         return damage;
+    }
+
+    @Override
+    public void render() {
+
     }
 }

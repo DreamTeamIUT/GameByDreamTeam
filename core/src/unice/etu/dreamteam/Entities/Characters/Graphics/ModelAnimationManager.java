@@ -22,6 +22,7 @@ public class ModelAnimationManager implements Disposable {
     private ArrayList<AnimationController.AnimationDesc> animations;
     private AssetManager assetManager;
     private String modelName;
+    private float angle;
 
     public ModelAnimationManager(String modelName) {
         init(modelName);
@@ -30,7 +31,7 @@ public class ModelAnimationManager implements Disposable {
     private void init(String modelName) {
         this.modelName = modelName;
         assetManager = new AssetManager();
-        FileHandle file = Gdx.files.internal("assets/" + GameInformation.getGamePackage().getPackagePath() + "/models/" + modelName + "/info.json");
+        FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/models/" + modelName + "/info.json");
         JsonValue dat = new JsonReader().parse(file.readString());
 
         controllers = new ArrayList<AnimationController>();
@@ -55,11 +56,13 @@ public class ModelAnimationManager implements Disposable {
 
         Debug.log(callList.toString());
         setAnimation(callList.get(0));
+
+        angle = 0;
     }
 
 
     private String getFilePath(String file) {
-        return "assets/" + GameInformation.getGamePackage().getPackagePath() + "/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
+        return GameInformation.getGamePackage().getPackagePath() + "/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
     }
 
 
@@ -124,6 +127,23 @@ public class ModelAnimationManager implements Disposable {
         for (ModelInstance instance : instances) {
             instance.transform.rotate(Vector3.Y, angle);
         }
+    }
+
+    public void setRotation(float angle) {
+        //if (angle == 0)
+            //angle = 360;
+
+        //float oldAngle = this.angle;
+        //this.angle = (360 - (oldAngle - angle)) + angle;
+        //this.angle = angle - this.angle;
+
+        //Debug.log("Angle", String.valueOf(angle));
+        //Debug.log("Angle", String.valueOf(this.angle));
+
+        for (ModelInstance instance : instances)
+            instance.transform.rotate(Vector3.Y, angle - this.angle);
+
+        this.angle = angle;
     }
 
     @Override

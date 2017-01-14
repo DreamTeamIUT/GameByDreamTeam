@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import unice.etu.dreamteam.Entities.Characters.Graphics.ModelAnimationManager;
 
 /**
@@ -21,6 +23,7 @@ public class ModelConverter {
     private final ModelBatch modelBatch;
     private FrameBuffer frameBuffer;
     private Texture texture;
+    private Vector3 vector3;
 
     public ModelConverter(ModelAnimationManager modelAnimationManager) {
         this.modelAnimationManager = modelAnimationManager;
@@ -42,7 +45,7 @@ public class ModelConverter {
 
         modelBatch = new ModelBatch();
 
-
+        vector3 = new Vector3();
     }
 
     public void resize() {
@@ -83,6 +86,12 @@ public class ModelConverter {
             return textureRegion;
         }
         return null;
+    }
+
+    public Vector3 getPos(Vector2 pos) {
+        vector3.set(pos.x * 32, pos.y * 32, 0);
+
+        return vector3.mul(IsoTransform.getIsoTransform());
     }
 
     public void dispose() {

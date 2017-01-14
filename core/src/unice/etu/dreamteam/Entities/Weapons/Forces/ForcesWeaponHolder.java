@@ -11,6 +11,12 @@ public class ForcesWeaponHolder extends ForceEntitiesHolder<ForceWeaponHolder> {
         super();
     }
 
+    public ForcesWeaponHolder(JsonValue.JsonIterator jsonIterator) {
+        super();
+
+        add(jsonIterator);
+    }
+
     @Override
     public Boolean add(JsonValue value) {
         return add(new ForceWeaponHolder(value));

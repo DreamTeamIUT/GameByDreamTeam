@@ -34,16 +34,12 @@ public class MobHolder extends CharacterHolder {
     }
 
     public ForceMobHolder getForce() {
-        if(forces.areEnough())
-            return forces.get(currentPowerful);
-
-        return null;
+        return forces.areEnough() ? forces.get(currentPowerful) : null;
     }
 
     public void setForce(int powerful) {
-        if(forces.existPowerful(powerful)) {
+        if(forces.existPowerful(powerful))
             currentPowerful = powerful;
-        }
         else
             Debug.log("MobHolder", "Error powerful with forces : " + String.valueOf(powerful));
     }

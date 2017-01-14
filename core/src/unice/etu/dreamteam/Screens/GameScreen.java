@@ -36,6 +36,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private Map map;
     private OrthographicCamera orthoCamera;
     private SpriteBatch spriteBatch;
+    private SpriteBatch entitiesSpriteBatch;
     private ShapeRenderer shapeRenderer;
     private CollisionsManager collisionsManager;
     private Story story;
@@ -87,6 +88,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         orthoCamera = (OrthographicCamera) getCamera();
 
         this.spriteBatch = new SpriteBatch();
+        this.entitiesSpriteBatch = new SpriteBatch();
+
         this.shapeRenderer = new ShapeRenderer();
 
         playerList = new ArrayList<>();
@@ -110,7 +113,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         orthoCamera.update();
         Debug.log("debug");
 
-
         GamePackage gamePackage = GameInformation.getGamePackage();
 
 
@@ -128,6 +130,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(0,0));
         i.onThrown(map);
 
+        playerList.get(0).getAnimationManager().setAnimation("RUN");
 
         parseActionContainer();
     }
@@ -169,11 +172,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         orthoCamera.update();
 
-        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
-        shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
-
         collisionsManager.update(delta);
 
+        entitiesSpriteBatch.setProjectionMatrix(orthoCamera.combined);
+        entitiesSpriteBatch.setTransformMatrix(IsoTransform.getIsoTransform());
+
+        shapeRenderer.setProjectionMatrix(orthoCamera.combined);
+        shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         map.getRenderer().setView(orthoCamera);
         map.render(delta);
@@ -183,10 +188,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map.getRenderer().render(map.getLayerManager().getBeforeLayers());
 
         for (Player p : playerList)
-            p.render(delta);
+            p.render(delta, orthoCamera);
 
         for (Mob m : mobList)
-            m.render(delta);
+            m.render(delta, orthoCamera);
 
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
@@ -253,9 +258,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-       /* for (Player p : playerList)
+
+        for (Player p : playerList)
             p.getModelConverter().resize();
-        */
     }
 
 

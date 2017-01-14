@@ -1,7 +1,6 @@
 package unice.etu.dreamteam.Entities;
 
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Entities.Forces.Force;
 
 /**
  * Created by Dylan on 12/01/2017.
