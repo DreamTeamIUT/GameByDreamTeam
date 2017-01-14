@@ -3,6 +3,7 @@ package unice.etu.dreamteam.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -41,15 +42,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private Story story;
 
     private List<Integer> keyCodes;
+    private Preferences prefs;
 
     public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        if (type == TYPE_STORY)
-        {
+        if (type == TYPE_STORY) {
             story = Story.load(storyFile);
             map = story.getMaps().getDefaultMap().load();
-        }
-        else if (type == TYPE_MAP){
+        } else if (type == TYPE_MAP) {
             try {
                 story = Story.getStory();
             } catch (LoadException e) {
@@ -59,27 +59,33 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
             Debug.log(storyFile);
             map = story.getMaps().get(storyFile).load();
-        }
-        else {
+        } else {
             Debug.log("You should pass a valid type !");
             Gdx.app.exit();
         }
     }
 
-    public GameScreen(String storyFile, String mapName){
+    public GameScreen(String storyFile, String mapName) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         story = Story.load(storyFile);
         map = story.getMaps().get(mapName).load();
     }
 
-    public GameScreen(String storyFile, int type, ActionContainer container ){
+    public GameScreen(String storyFile, int type, ActionContainer container) {
         this(storyFile, type);
         actionContainer = container;
+    }
+
+    public GameScreen(Story story) {
+        this.story = story;
+        map = this.story.getMaps().getDefaultMap().load();
     }
 
 
     @Override
     public void buildStage() {
+        prefs = Gdx.app.getPreferences("GameSettings");
+
         keyCodes = new ArrayList<>();
 
         Gdx.input.setInputProcessor(this);
@@ -93,7 +99,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         mobList = new ArrayList<>();
 
         if (map == null)
-            map =  story.getMaps().getDefaultMap().load();
+            map = story.getMaps().getDefaultMap().load();
 
         map.getLayerManager().setLayersOpacity(0.3f);
         map.setSpriteBatch(spriteBatch);
@@ -139,7 +145,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         if (actionContainer.moveTo != null)
             playerList.get(0).setCellPos(actionContainer.moveTo);
 
-        if (actionContainer.moveToGate != null){
+        if (actionContainer.moveToGate != null) {
             RectangleMapObject obj = (RectangleMapObject) map.getLayerManager().getCurrentGateLayer().getObjects().get(actionContainer.moveToGate);
             Vector2 v = Map.pixelToCell(obj.getRectangle().getX(), obj.getRectangle().getY());
             playerList.get(0).setCellPos(v);
@@ -148,11 +154,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     public void center_camera(Player p) {
-        Vector3 pos = new Vector3(p.getRealPos().x * map.getTileHeight(), p.getRealPos().y * map.getTileHeight() , 0);
+        Vector3 pos = new Vector3(p.getRealPos().x * map.getTileHeight(), p.getRealPos().y * map.getTileHeight(), 0);
         orthoCamera.position.set(pos.mul(IsoTransform.getIsoTransform()));
     }
 
-    public Map getMap(){
+    public Map getMap() {
         return map;
     }
 
@@ -190,11 +196,62 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
-        if(keyCodes.size() > 0) {
-            Player p = playerList.get(0);
+        final int keyUp = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSUP);
+        final int keyDown = prefs.getInteger(Settings.KEY_DOWN, Settings.DEFAULTSETTINGSDOWN);
+        final int keyleft = prefs.getInteger(Settings.KEY_LEFT, Settings.DEFAULTSETTINGSLEFT);
+        final int keyRight = prefs.getInteger(Settings.KEY_RIGHT, Settings.DEFAULTSETTINGSRIGHT);
 
-            for(int i = 0; i < keyCodes.size(); i++) {
-                switch (keyCodes.get(i)) {
+        Debug.log(keyUp + "");
+
+        if (keyCodes.size() > 0) {
+            Player p = playerList.get(0);
+            for (int i = 0; i < keyCodes.size(); i++) {
+                if (keyCodes.get(i) == Input.Keys.ESCAPE){
+                    if (!Settings.isOpen)
+                        addActor(Settings.createWindow(getViewport()));
+                }
+                else if (keyCodes.get(i) == keyRight){
+                    Debug.log("D");
+                    if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)) {
+                        //p.setCellPos(p.moveToRight());
+                        p.moveTo(CharacterMove.RIGHT);
+                        collisionsManager.findActionFor(p);
+
+                        getMobsPathToPlayer();
+                    }
+                }
+                else if (keyCodes.get(i) == keyleft){
+                    Debug.log("Q");
+                    if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)) {
+                        //p.setCellPos(p.moveToLeft());
+                        p.moveTo(CharacterMove.LEFT);
+                        collisionsManager.findActionFor(p);
+
+                        getMobsPathToPlayer();
+                    }
+                }
+                else if (keyCodes.get(i) == keyUp){
+                    Debug.log("Z");
+                    Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
+                    if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)) {
+                        //p.setCellPos(p.moveToUp());
+                        p.moveTo(CharacterMove.UP);
+                        collisionsManager.findActionFor(p);
+
+                        getMobsPathToPlayer();
+                    }
+                }
+                else if (keyCodes.get(i) == keyDown){
+                    if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)) {
+                        //p.setCellPos(p.moveToDown());
+                        p.moveTo(CharacterMove.DOWN);
+                        collisionsManager.findActionFor(p);
+
+                        getMobsPathToPlayer();
+                    }
+                }
+
+                /*switch (keyCodes.get(i)) {
                     case Input.Keys.ESCAPE:
                         if (!Settings.isOpen)
                             addActor(Settings.createWindow(getViewport()));
@@ -202,7 +259,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     case Input.Keys.D:
                         Debug.log("D");
                         p.setView(CharacterMove.RIGHT);
-                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)){
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)) {
                             //p.setCellPos(p.moveToRight());
                             p.moveTo(CharacterMove.RIGHT);
                             collisionsManager.findActionFor(p);
@@ -213,7 +270,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     case Input.Keys.S:
                         Debug.log("S");
                         p.setView(CharacterMove.DOWN);
-                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)){
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)) {
                             //p.setCellPos(p.moveToDown());
                             p.moveTo(CharacterMove.DOWN);
                             collisionsManager.findActionFor(p);
@@ -224,7 +281,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     case Input.Keys.Q:
                         Debug.log("Q");
                         p.setView(CharacterMove.LEFT);
-                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)){
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)) {
                             //p.setCellPos(p.moveToLeft());
                             p.moveTo(CharacterMove.LEFT);
                             collisionsManager.findActionFor(p);
@@ -236,7 +293,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                         p.setView(CharacterMove.UP);
                         Debug.log("Z");
                         Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
-                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)){
+                        if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)) {
                             //p.setCellPos(p.moveToUp());
                             p.moveTo(CharacterMove.UP);
                             collisionsManager.findActionFor(p);
@@ -244,13 +301,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                             getMobsPathToPlayer();
                         }
                         break;
-                }
+                }*/
             }
         }
     }
 
     public void getMobsPathToPlayer() {
-        for(Mob m : mobList)
+        for (Mob m : mobList)
             m.setPathToPlayer(map.getNavigationGrid(), playerList.get(0));
     }
 
@@ -278,7 +335,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean keyDown(int keyCode) {
-        if(keyCodes.indexOf(keyCode) < 0)
+        if (keyCodes.indexOf(keyCode) < 0)
             keyCodes.add(keyCode);
 
         Debug.log("KEY DOWN", keyCodes.toString());
@@ -288,7 +345,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public boolean keyUp(int keyCode) {
-        if(keyCodes.indexOf(keyCode) >= 0)
+        if (keyCodes.indexOf(keyCode) >= 0)
             keyCodes.remove(keyCodes.indexOf(keyCode));
 
         Debug.log("KEY UP", keyCodes.toString());

@@ -1,6 +1,7 @@
 package unice.etu.dreamteam.Ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,14 +23,21 @@ public class Settings {
 
     public static Preferences prefs = Gdx.app.getPreferences("GameSettings");
     public static boolean isOpen;
-    public static int COLSPANPARAMETER = 4;
-    public static String DEFAULTSETTINGSUP = "Z";
-    public static String DEFAULTSETTINGSDOWN = "S";
-    public static String DEFAULTSETTINGSLEFT = "Q";
-    public static String DEFAULTSETTINGSRIGHT = "D";
 
-    public static boolean isValid(String valueToCompare, String defaultSettings1, String defaultSettings2, String defaultSettings3 ,Viewport viewport) {
-        ArrayList<String> list = new ArrayList<>();
+    public static final String KEY_RIGHT = "right";
+    public static final String KEY_DOWN = "down";
+    public static final String KEY_LEFT = "left";
+    public static final String KEY_UP = "up";
+
+    public static int COLSPANPARAMETER = 4;
+    public static int DEFAULTSETTINGSUP = Input.Keys.Z;
+    public static int DEFAULTSETTINGSDOWN = Input.Keys.S;
+    public static int DEFAULTSETTINGSLEFT = Input.Keys.Q;
+    public static int DEFAULTSETTINGSRIGHT = Input.Keys.D;
+
+
+    public static boolean isValid(int valueToCompare, int defaultSettings1, int defaultSettings2, int defaultSettings3 ,Viewport viewport) {
+        ArrayList<Integer> list = new ArrayList<>();
         list.add(defaultSettings1);
         list.add(defaultSettings2);
         list.add(defaultSettings3);
@@ -42,19 +50,19 @@ public class Settings {
 
         final Window dialog = new Window("Settings", UiManager.getInstance().getSkin());
 
-        final TextField field_right = new TextField(prefs.getString("right", DEFAULTSETTINGSRIGHT), UiManager.getInstance().getSkin());
+        final TextField field_right = new TextField(Input.Keys.toString(prefs.getInteger(KEY_RIGHT, DEFAULTSETTINGSRIGHT)), UiManager.getInstance().getSkin());
         field_right.setAlignment(Align.center);
         field_right.setMaxLength(1);
 
-        final TextField field_down = new TextField(prefs.getString("down", DEFAULTSETTINGSDOWN), UiManager.getInstance().getSkin());
+        final TextField field_down = new TextField(Input.Keys.toString(prefs.getInteger(KEY_DOWN, DEFAULTSETTINGSDOWN)), UiManager.getInstance().getSkin());
         field_down.setAlignment(Align.center);
         field_down.setMaxLength(1);
 
-        final TextField field_up = new TextField(prefs.getString("up", DEFAULTSETTINGSUP), UiManager.getInstance().getSkin());
+        final TextField field_up = new TextField(Input.Keys.toString(prefs.getInteger(KEY_UP, DEFAULTSETTINGSUP)), UiManager.getInstance().getSkin());
         field_up.setAlignment(Align.center);
         field_up.setMaxLength(1);
 
-        final TextField field_left = new TextField(prefs.getString("left", DEFAULTSETTINGSLEFT), UiManager.getInstance().getSkin());
+        final TextField field_left = new TextField(Input.Keys.toString(prefs.getInteger(KEY_LEFT, DEFAULTSETTINGSLEFT)), UiManager.getInstance().getSkin());
         field_left.setAlignment(Align.center);
         field_left.setMaxLength(1);
 
@@ -80,51 +88,51 @@ public class Settings {
 
         dialog.row().expand();
         dialog.add(field_up).top();
-        final String field_up1 = field_up.getText();
+        final int field_up1 = Input.Keys.valueOf(field_up.getText());
         field_up.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Debug.log("up", field_up.getText());
-                prefs.putString("up", field_up.getText());
-                if (!isValid(field_up.getText(),field_down.getText(), field_right.getText(), field_left.getText(), viewport)){
-                    prefs.putString("up", field_up1);
+                Debug.log(KEY_UP, field_up.getText());
+                prefs.putInteger(KEY_UP, Input.Keys.valueOf(field_up.getText()));
+                if (!isValid(Input.Keys.valueOf(field_up.getText()),Input.Keys.valueOf(field_down.getText()), Input.Keys.valueOf(field_right.getText()), Input.Keys.valueOf(field_left.getText()), viewport)){
+                    prefs.putInteger(KEY_UP, field_up1);
                 }
             }
         });
         dialog.add(field_down).top();
         Debug.log(field_down.getMessageText());
-        final String field_down1 = field_down.getText();
+        final int field_down1 = Input.Keys.valueOf(field_down.getText());
         field_down.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Debug.log("Down", field_down.getText());
-                prefs.putString("down", field_down.getText());
-                if (!isValid(field_down.getText(),field_up.getText(), field_right.getText(), field_left.getText(), viewport)){
-                    prefs.putString("down", field_down1);
+                Debug.log(KEY_DOWN, field_down.getText());
+                prefs.putInteger(KEY_DOWN, Input.Keys.valueOf(field_down.getText()));
+                if (!isValid(Input.Keys.valueOf(field_down.getText()),Input.Keys.valueOf(field_up.getText()), Input.Keys.valueOf(field_right.getText()), Input.Keys.valueOf(field_left.getText()), viewport)){
+                    prefs.putInteger(KEY_DOWN, field_down1);
                 }
             }
         });
         dialog.add(field_left).top();
-        final String field_left1 = field_left.getText();
+        final int field_left1 = Input.Keys.valueOf(field_left.getText());
         field_left.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Debug.log("Down", field_left.getText());
-                prefs.putString("left", field_left.getText());
-                if (!isValid(field_left.getText(),field_down.getText(), field_right.getText(), field_up.getText(), viewport)){
-                    prefs.putString("left", field_left1);
+                Debug.log(KEY_DOWN, field_left.getText());
+                prefs.putInteger(KEY_LEFT, Input.Keys.valueOf(field_left.getText()));
+                if (!isValid(Input.Keys.valueOf(field_left.getText()),Input.Keys.valueOf(field_down.getText()), Input.Keys.valueOf(field_right.getText()), Input.Keys.valueOf(field_up.getText()), viewport)){
+                    prefs.putInteger(KEY_LEFT, field_left1);
                 }
             }
         });
         dialog.add(field_right).top();
-        final String field_right1 = field_right.getText();
+        final int field_right1 = Input.Keys.valueOf(field_right.getText());
         field_right.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Debug.log("Down", field_right.getText());
-                prefs.putString("right", field_right.getText());
-                if (!isValid(field_right.getText(),field_down.getText(), field_up.getText(), field_left.getText(), viewport)){
-                    prefs.putString("right", field_right1);
+                Debug.log(KEY_DOWN, field_right.getText());
+                prefs.putInteger(KEY_RIGHT, Input.Keys.valueOf(field_right.getText()));
+                if (!isValid(Input.Keys.valueOf(field_right.getText()),Input.Keys.valueOf(field_down.getText()), Input.Keys.valueOf(field_up.getText()), Input.Keys.valueOf(field_left.getText()), viewport)){
+                    prefs.putInteger(KEY_RIGHT, field_right1);
                 }
             }
         });

@@ -15,6 +15,7 @@ import unice.etu.dreamteam.Entities.Sounds.Sounds;
 import unice.etu.dreamteam.Entities.Weapons.Graphics.Weapon;
 import unice.etu.dreamteam.Entities.Weapons.Weapons;
 import unice.etu.dreamteam.Entities.Zones.Zones;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
@@ -103,6 +104,8 @@ public class Story {
 
     public static Story load(String storyFile) {
 
+        Debug.log("STORY FILE ", storyFile);
+
         story = new Story();
 
         FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/stories/" + storyFile);
@@ -111,6 +114,9 @@ public class Story {
 
         story.setPackageName(GameInformation.getGamePackage().getName());
         story.setName(jsonStory.getString("name", ""));
+
+        Debug.log("MAPS " , Debug.iteratorToString(jsonStory.get("maps").iterator()));
+
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
         story.setMobs(new Mobs(jsonStory.get("mobs").iterator()));
         story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
