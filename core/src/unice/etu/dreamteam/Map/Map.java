@@ -28,6 +28,8 @@ public class Map {
     private IsometricTiledMapRenderer renderer;
     private MapHolder mapInfo;
     private NavigationGrid<GridCell> navigationGrid;
+    private boolean gridUpdate;
+    private CollisionsManager collisionsManager;
 
     public Map(MapHolder mapInfo) {
         this.mapInfo = mapInfo;
@@ -68,6 +70,8 @@ public class Map {
     }
 
     public void calculateGridCell(CollisionsManager collisionsManager) {
+        this.collisionsManager = collisionsManager;
+
         GridCell[][] gridCells = new GridCell[mapWidth][mapHeight];
 
         for (int x = 0; x < getMapWidth(); x++) {
@@ -104,7 +108,11 @@ public class Map {
     }
 
     public void render(float delta) {
-
+        if (gridUpdate) {
+            Debug.log("UPDATE", "update grid ! ");
+            calculateGridCell(this.collisionsManager);
+            setGridUpdate(false);
+        }
     }
 
     public void dispose() {
@@ -153,5 +161,9 @@ public class Map {
 
     public NavigationGrid<GridCell> getNavigationGrid() {
         return navigationGrid;
+    }
+
+    public void setGridUpdate(boolean gridUpdate) {
+        this.gridUpdate = gridUpdate;
     }
 }

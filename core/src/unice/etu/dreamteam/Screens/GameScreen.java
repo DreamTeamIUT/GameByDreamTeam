@@ -200,8 +200,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         final int keyDown = prefs.getInteger(Settings.KEY_DOWN, Settings.DEFAULTSETTINGSDOWN);
         final int keyleft = prefs.getInteger(Settings.KEY_LEFT, Settings.DEFAULTSETTINGSLEFT);
         final int keyRight = prefs.getInteger(Settings.KEY_RIGHT, Settings.DEFAULTSETTINGSRIGHT);
-
-        Debug.log(keyUp + "");
+        final int keyGrab = prefs.getInteger(Settings.KEY_GRAB, Settings.DEFAULTSETTINGSGRAB);
 
         if (keyCodes.size() > 0) {
             Player p = playerList.get(0);
@@ -253,6 +252,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
                         getMobsPathToPlayer();
                     }
+                }
+                else if (keyCodes.get(i) == keyGrab){
+                    collisionsManager.doGrab(p);
                 }
 
                 /*switch (keyCodes.get(i)) {

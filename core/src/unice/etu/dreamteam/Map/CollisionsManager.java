@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Gates.Gate;
@@ -89,6 +90,19 @@ public class CollisionsManager {
                 return false;
         }
 
+        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
+            Gate g = story.getGates().get(gateObject.getName());
+            if (g == null) {
+                Debug.log("GATE", gateObject.getName() + " not exist !");
+                continue;
+            }
+
+            if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
+                if (!g.isOpen())
+                    return false;
+            }
+        }
+
         for (RectangleMapObject rectangleObject : map.getLayerManager().getCurrentObjectLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (Intersector.overlaps(rectangleObject.getRectangle(), p.getRectangleAt(cells))) {
                 return false;
@@ -112,19 +126,6 @@ public class CollisionsManager {
             }
         }
 
-        for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
-            Gate g = story.getGates().get(gateObject.getName());
-            if (g == null)
-            {
-                Debug.log("GATE", gateObject.getName() + " not exist !");
-                continue;
-            }
-
-            if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
-                if (!g.isOpen())
-                    return false;
-            }
-        }
 
         return true;
     }
@@ -134,11 +135,13 @@ public class CollisionsManager {
     }
 
     public Boolean canGoTo(Vector2 cells) {
-        if (cells.x >= map.getMapHeight() || cells.y >= map.getMapWidth() || cells.x < 0 || cells.y < 0)
+
+        if (!inMap(cells))
             return false;
 
-        if (map.getLayerManager().getCurrentTileLayers().get(0).getCell((int) cells.x, (int) cells.y) == null)
+        if (cellEmpty(cells))
             return false;
+
 
         TiledMapTileLayer.Cell c = map.getLayerManager().getCurrentTileLayers().get(1).getCell((int) cells.x, (int) cells.y);
         if (c != null) {
@@ -238,5 +241,45 @@ public class CollisionsManager {
             }
         }
 
+    }
+
+    public void doGrab(Player p) {
+        Debug.log("GRAB", "Try grab ...");
+        Vector2 pos = new Vector2();
+        pos.x = p.getCellPos().x;
+        pos.y = p.getCellPos().y;
+        switch (p.getView()) {
+            case CharacterMove.DOWN:
+                pos.y -= 1;
+                break;
+            case CharacterMove.RIGHT:
+                pos.x += 1;
+                break;
+            case CharacterMove.UP:
+                pos.y += 1;
+                break;
+            case CharacterMove.LEFT:
+                pos.x -= 1;
+                break;
+        }
+
+        if (inMap(pos) && !cellEmpty(pos)) {
+            Debug.log("CHeck instace d");
+            Item.ItemInstance instance = story.getItems().getInstanceAt(pos);
+            if (instance != null) {
+                instance.onGrab(new MapEvent(p, map, story, game));
+                map.setGridUpdate(true);
+            }
+        }
+    }
+
+
+    public Boolean inMap(Vector2 cells){
+        return !(cells.x >= map.getMapHeight() || cells.y >= map.getMapWidth() || cells.x < 0 || cells.y < 0);
+       /* */
+    }
+
+    public Boolean cellEmpty(Vector2 cells){
+        return map.getLayerManager().getCurrentTileLayers().get(0).getCell((int) cells.x, (int) cells.y) == null;
     }
 }

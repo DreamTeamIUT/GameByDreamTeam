@@ -316,4 +316,8 @@ public class Character implements Disposable {
     public void setView(int view) {
         this.currentView = view;
     }
+
+    public int getView() {
+        return currentView;
+    }
 }

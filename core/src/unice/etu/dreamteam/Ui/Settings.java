@@ -28,12 +28,16 @@ public class Settings {
     public static final String KEY_DOWN = "down";
     public static final String KEY_LEFT = "left";
     public static final String KEY_UP = "up";
+    public static final java.lang.String KEY_GRAB = "grab";
+
 
     public static int COLSPANPARAMETER = 4;
     public static int DEFAULTSETTINGSUP = Input.Keys.Z;
     public static int DEFAULTSETTINGSDOWN = Input.Keys.S;
     public static int DEFAULTSETTINGSLEFT = Input.Keys.Q;
     public static int DEFAULTSETTINGSRIGHT = Input.Keys.D;
+    public static final int DEFAULTSETTINGSGRAB = Input.Keys.E;
+
 
 
     public static boolean isValid(int valueToCompare, int defaultSettings1, int defaultSettings2, int defaultSettings3 ,Viewport viewport) {
