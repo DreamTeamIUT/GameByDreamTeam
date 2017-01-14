@@ -194,10 +194,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map.getRenderer().render(map.getLayerManager().getBeforeLayers());
 
         for (Player p : playerList)
-            p.render(delta, orthoCamera);
+            p.render(delta);
 
         for (Mob m : mobList)
-            m.render(delta, orthoCamera);
+            m.render(delta);
 
         map.getRenderer().render(map.getLayerManager().getAfterLayers());
 

@@ -265,7 +265,7 @@ public class Character implements Disposable {
         updatePlayerZone();
     }
 
-    public void render(float delta, OrthographicCamera orthographicCamera) {
+    public void render(float delta) {
         this.update(delta);
 
         modelConverter.render();

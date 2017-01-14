@@ -39,8 +39,8 @@ public class Mob extends Character {
     }
 
     @Override
-    public void render(float delta, OrthographicCamera orthographicCamera) {
-        super.render(delta, orthographicCamera);
+    public void render(float delta) {
+        super.render(delta);
 
         if(currentMove == CharacterMove.NONE && ready) {
             if(!detectionRange() || proximityRange())
