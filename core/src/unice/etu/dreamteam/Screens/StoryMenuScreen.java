@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -26,18 +27,20 @@ public class StoryMenuScreen extends AbstractScreen {
     @Override
     public void buildStage() {
 
+        Debug.log(GameInformation.getGamePackage().getName());
+
         ArrayList<Story> stories = GameInformation.getGamePackage().getStories();
 
         Table table = new Table();
         table.setFillParent(true);
         table.defaults().pad(10);
-        for (Story story : stories) {
+        for (final Story story : stories) {
             TextButton btn = UiManager.getInstance().createCustomButton(story.getName());
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     AudioManager.getInstance().createSound("assets/audio/sound/clic.mp3");
-                    ScreenManager.getInstance().showScreen(ScreenList.GAME);
+                    ScreenManager.getInstance().showScreen(ScreenList.GAME, story , GameScreen.TYPE_STORY);
                 }
 
             });

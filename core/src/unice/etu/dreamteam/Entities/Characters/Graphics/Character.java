@@ -23,6 +23,7 @@ public class Character implements Disposable {
     protected Vector2 realPos;
     protected Boolean animating = false;
     protected int currentMove;
+    protected int currentView;
     protected Float speed = 0.07f;
 
     protected Rectangle playerZone;
@@ -43,6 +44,7 @@ public class Character implements Disposable {
         modelConverter = new ModelConverter(animationManager);
 
         currentMove = CharacterMove.NONE;
+        currentView = CharacterMove.NONE;
 
         updatePlayerZone();
     }
@@ -98,13 +100,14 @@ public class Character implements Disposable {
     }
 
     public void moveTo(int characterMove) {
-        if(!animating) {
+        if (!animating) {
             Debug.log("moveTo");
 
             this.animationManager.setAnimation("WALK");
 
             animating = true;
             currentMove = characterMove;
+            currentView = characterMove;
 
             switch (characterMove) {
                 case CharacterMove.LEFT:
@@ -135,13 +138,13 @@ public class Character implements Disposable {
         Debug.vector("realPos", realPos);
         Debug.vector("cellPos", cellPos);
 
-        if(characterMove == CharacterMove.LEFT)
+        if (characterMove == CharacterMove.LEFT)
             return new Vector2(cellPos.x - 1, cellPos.y);
-        else if(characterMove == CharacterMove.RIGHT)
+        else if (characterMove == CharacterMove.RIGHT)
             return new Vector2(cellPos.x + 1, cellPos.y);
-        else if(characterMove == CharacterMove.UP)
+        else if (characterMove == CharacterMove.UP)
             return new Vector2(cellPos.x, cellPos.y + 1);
-        else if(characterMove == CharacterMove.DOWN)
+        else if (characterMove == CharacterMove.DOWN)
             return new Vector2(cellPos.x, cellPos.y - 1);
         else
             return new Vector2(cellPos.x, cellPos.y);
@@ -149,27 +152,24 @@ public class Character implements Disposable {
 
     private void moveTransition() {
         if (animating) {
-            if(currentMove == CharacterMove.LEFT) {
-                if(realPos.x < cellPos.x)
+            if (currentMove == CharacterMove.LEFT) {
+                if (realPos.x < cellPos.x)
                     stopAnimating();
                 else
                     realPos.x -= speed;
-            }
-            else if(currentMove == CharacterMove.RIGHT) {
+            } else if (currentMove == CharacterMove.RIGHT) {
                 Debug.vector(cellPos);
-                if(realPos.x > cellPos.x)
+                if (realPos.x > cellPos.x)
                     stopAnimating();
                 else
                     realPos.x += speed;
-            }
-            else if(currentMove == CharacterMove.UP) {
-                if(realPos.y > cellPos.y)
+            } else if (currentMove == CharacterMove.UP) {
+                if (realPos.y > cellPos.y)
                     stopAnimating();
                 else
                     realPos.y += speed;
-            }
-            else if(currentMove == CharacterMove.DOWN) {
-                if(realPos.y < cellPos.y)
+            } else if (currentMove == CharacterMove.DOWN) {
+                if (realPos.y < cellPos.y)
                     stopAnimating();
                 else
                     realPos.y -= speed;
@@ -193,7 +193,7 @@ public class Character implements Disposable {
         return playerZone;
     }
 
-    public Rectangle getRectangleAt(Vector2 cellPos){
+    public Rectangle getRectangleAt(Vector2 cellPos) {
         Rectangle zone = new Rectangle();
         zone.width = 32;
         zone.height = 32;
@@ -305,7 +305,37 @@ public class Character implements Disposable {
         shapeRenderer.rect(getRectangle().x - 16, getRectangle().y + 16, getRectangle().getWidth(), getRectangle().getHeight());
         shapeRenderer.setColor(0, 0, 1f, 1);
         shapeRenderer.rect(getRectangle().x - 16 - 2 * 16, getRectangle().y + 16 + 2 * 16, getRectangle().getWidth(), getRectangle().getHeight());
+        drawLineforMove();
         shapeRenderer.end();
+    }
+
+    public void drawLineforMove(){
+        Vector2 center = new Vector2();
+        getRectangle().getCenter(center);
+        shapeRenderer.setColor(0,1f,0f,1);
+        center.x = center.x - 16 - 2 * 16;
+        center.y = center.y + 16 + 2*16 ;
+
+        Vector2 extrem = new Vector2();
+        extrem.x = center.x;
+        extrem.y = center.y;
+        switch (currentView){
+            case CharacterMove.DOWN:
+                extrem.y = center.y - 16;
+                break;
+            case CharacterMove.LEFT:
+                extrem.x = center.x - 16;
+                break;
+            case CharacterMove.RIGHT:
+                extrem.x = center.x + 16;
+                break;
+            case CharacterMove.UP:
+                extrem.y = center.y + 16;
+                break;
+        }
+
+        shapeRenderer.line(center.x, center.y, extrem.x, extrem.y);
+
     }
 
     public void setDebug(Boolean debug) {
@@ -320,4 +350,11 @@ public class Character implements Disposable {
         this.batch = batch;
     }
 
+    public void setView(int view) {
+        this.currentView = view;
+    }
+
+    public int getView() {
+        return currentView;
+    }
 }

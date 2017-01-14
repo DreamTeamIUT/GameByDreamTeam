@@ -1,7 +1,18 @@
 {
-  "name": "Story 01",
+  "name": "Story 02",
   "minimum-level": 10,
-  "map": "map01.tmx",
+  "default-map" : "map02",
+  "maps": [
+    "map02.json",
+    "map01.json",
+    "maison01.json"
+  ],
+  "weapons": [
+    "weapon01.json"
+  ],
+  "bullets": [
+    "bullet01.json"
+  ],
   "mobs": [
     "mob01.json"
   ],
@@ -17,23 +28,34 @@
     "ZONE1": {
       "attack": [
         {
-          "modId": "mob01",
+          "mobName": "mob01",
           "force": "1",
           "count": "10"
         }
       ],
+      "spawnitems": [
+        {
+          "type": "border-left",
+          "rotate": 0,
+          "item": "fence"
+        }
+      ],
       "sound": "ENTER_ZONE",
-      "onetime": true,
-      "canExit" : true
+      "maxEnter": 2,
+      "maxExecute": 2,
+      "general": true,
+      "blocked": "false",
+      "maxRevive": 2,
+      "time":600
     }
   },
   "gates": {
     "GATE01": {
-      "goto": "GATE02",
+      "goto": "maison01:GATE02",
       "isOpen" : true
     },
     "GATE02":{
-      "goto" : "GATE01",
+      "goto" : "map02:GATE01",
       "isOpen" : true
     }
   }
