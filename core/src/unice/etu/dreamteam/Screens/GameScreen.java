@@ -212,6 +212,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 }
                 else if (keyCodes.get(i) == keyRight){
                     Debug.log("D");
+                    p.setView(CharacterMove.RIGHT);
                     if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.RIGHT), p)) {
                         //p.setCellPos(p.moveToRight());
                         p.moveTo(CharacterMove.RIGHT);
@@ -222,6 +223,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 }
                 else if (keyCodes.get(i) == keyleft){
                     Debug.log("Q");
+                    p.setView(CharacterMove.LEFT);
                     if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.LEFT), p)) {
                         //p.setCellPos(p.moveToLeft());
                         p.moveTo(CharacterMove.LEFT);
@@ -233,6 +235,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 else if (keyCodes.get(i) == keyUp){
                     Debug.log("Z");
                     Debug.log("canGo : " + collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p));
+                    p.setView(CharacterMove.UP);
                     if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.UP), p)) {
                         //p.setCellPos(p.moveToUp());
                         p.moveTo(CharacterMove.UP);
@@ -242,6 +245,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     }
                 }
                 else if (keyCodes.get(i) == keyDown){
+                    p.setView(CharacterMove.DOWN);
                     if (collisionsManager.canGoTo(p.moveToCheck(CharacterMove.DOWN), p)) {
                         //p.setCellPos(p.moveToDown());
                         p.moveTo(CharacterMove.DOWN);
