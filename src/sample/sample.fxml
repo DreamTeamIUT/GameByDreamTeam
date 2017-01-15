@@ -5,19 +5,34 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Main">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Pane id="contain1" fx:id="contain1" layoutY="32.0" prefHeight="468.0" prefWidth="600.0" visible="false">
+      <Pane id="contain1" fx:id="contain1" layoutY="32.0" prefHeight="468.0" prefWidth="600.0">
          <children>
-            <TextField />
+            <Text fontSmoothingType="LCD" layoutX="110.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur PackageManagement, logiciel de création de packages, vous pouvez créer vos propres packages pour Fallen Land." textAlignment="JUSTIFY" wrappingWidth="379.6630859375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="110.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous aurez la possibilité de customiser votre propre package en y ajoutant des Maps, des Stories, des Characters, des images et des items." textAlignment="JUSTIFY" wrappingWidth="379.6630918979645">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="110.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour ce faire, vous pouvez commencer à créer votre package en cliquant sur File puis new File." textAlignment="JUSTIFY" wrappingWidth="379.6630909200758">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
-      <Pane id="contain2" fx:id="contain2" layoutY="32.0" prefHeight="468.0" prefWidth="600.0">
+      <Pane id="contain2" fx:id="contain2" layoutY="32.0" prefHeight="468.0" prefWidth="600.0" visible="false">
          <children>
             <Accordion prefHeight="468.0" prefWidth="202.0">
               <panes>
@@ -76,20 +91,20 @@
             </Menu>
           <Menu id="menuMap" fx:id="menuMap" disable="true" mnemonicParsing="false" text="Maps">
             <items>
-              <MenuItem id="addMap" fx:id="addMap" mnemonicParsing="false" onAction="#onActionMenuAddMap" onMenuValidation="#onActionMenuAddMap" text="Add Map" />
-                  <MenuItem fx:id="addMap2" mnemonicParsing="false" text="Delete Map" />
+              <MenuItem id="addMap" fx:id="addMap" mnemonicParsing="false" onAction="#onActionMenuAddMap" onMenuValidation="#onActionMenuAddMap" text="Add New Map" />
+                  <MenuItem fx:id="addMap2" mnemonicParsing="false" onAction="#onActionMenuSelectMap" onMenuValidation="#onActionMenuSelectMap" text="Add Map" />
             </items>
           </Menu>
           <Menu id="menuStories" fx:id="menuStories" disable="true" mnemonicParsing="false" text="Stories">
             <items>
-              <MenuItem id="addStories" fx:id="addStories" mnemonicParsing="false" onAction="#onActionMenuAddStory" onMenuValidation="#onActionMenuAddStory" text="Add Story" />
-                  <MenuItem mnemonicParsing="false" text="Delete Story" />
+              <MenuItem id="addStories" fx:id="addStories" mnemonicParsing="false" onAction="#onActionMenuAddStory" onMenuValidation="#onActionMenuAddStory" text="Add New Story" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectStory" onMenuValidation="#onActionMenuSelectStory" text="Add Story" />
             </items>
           </Menu>
           <Menu id="menuCharacter" fx:id="menuCharacter" disable="true" mnemonicParsing="false" text="Characters">
             <items>
-              <MenuItem id="addCharacters" fx:id="addCharacters" mnemonicParsing="false" onAction="#onActionMenuAddCharacters" onMenuValidation="#onActionMenuAddCharacters" text="Add Character" />
-                  <MenuItem mnemonicParsing="false" text="Delete Character" />
+              <MenuItem id="addCharacters" fx:id="addCharacters" mnemonicParsing="false" onAction="#onActionMenuAddCharacters" onMenuValidation="#onActionMenuAddCharacters" text="Add New Character" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectCharacters" onMenuValidation="#onActionMenuSelectCharacters" text="Add Character" />
             </items>
           </Menu>
             <Menu id="menuImages" fx:id="menuImages" disable="true" mnemonicParsing="false" text="Images">
@@ -100,8 +115,8 @@
             </Menu>
             <Menu id="menuItems" fx:id="menuItems" disable="true" mnemonicParsing="false" text="Items">
                <items>
-                  <MenuItem fx:id="addItems" mnemonicParsing="false" onAction="#onActionMenuAddItems" onMenuValidation="#onActionMenuAddItems" text="Add Items" />
-                  <MenuItem mnemonicParsing="false" text="Delete Items" />
+                  <MenuItem fx:id="addItems" mnemonicParsing="false" onAction="#onActionMenuAddItems" onMenuValidation="#onActionMenuAddItems" text="Add New Items" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectItems" onMenuValidation="#onActionMenuSelectItems" text="Add Items" />
                </items>
             </Menu>
             <Menu id="menuHelp" mnemonicParsing="false" text="Help">
