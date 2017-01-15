@@ -202,6 +202,7 @@ public class Controller implements Initializable {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
                 else_dialog.setTitle("Error");
                 else_dialog.setHeaderText("Erreur dans la selection de la story");
+                else_dialog.setContentText("Vous êtes obligé de selectionner une story si vous souhaitez ajouter");
                 else_dialog.showAndWait();
             }
         }
