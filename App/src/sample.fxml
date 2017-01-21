@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <Pane id="contain1" fx:id="contain1" layoutY="32.0" prefHeight="468.0" prefWidth="600.0">
@@ -28,7 +37,7 @@
          <children>
             <Accordion prefHeight="468.0" prefWidth="202.0">
               <panes>
-                <TitledPane id="mapsPreview" fx:id="mapsPreview" animated="false" prefHeight="383.0" prefWidth="202.0" text="Maps Preview">
+                <TitledPane id="mapsPreview" fx:id="mapsPreview" animated="false" prefHeight="383.0" prefWidth="202.0" text="Maps preview">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -36,15 +45,7 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane id="StoriesPreview" fx:id="storiesPreview" animated="false" layoutX="10.0" layoutY="72.0" text="Stories Preview">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <ListView id="list_stories" fx:id="list_stories" prefHeight="316.0" prefWidth="202.0" />
-                           </children></AnchorPane>
-                     </content>
-                  </TitledPane>
-                  <TitledPane id="charactersPreview" fx:id="charactersPreview" animated="false" layoutX="10.0" layoutY="103.0" text="Characters Preview">
+                  <TitledPane id="charactersPreview" fx:id="charactersPreview" animated="false" layoutX="10.0" layoutY="103.0" text="Characters preview">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -52,24 +53,52 @@
                            </children></AnchorPane>
                      </content>
                   </TitledPane>
-                <TitledPane id="imagesPreview" fx:id="imagesPreview" animated="false" text="Images Preview">
+                <TitledPane id="weaponsPreview" fx:id="weaponsPreview" animated="false" text="Weapons preview">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView id="list_images" fx:id="list_images" prefHeight="316.0" prefWidth="202.0" />
+                              <ListView id="list_weapons" fx:id="list_weapons" prefHeight="316.0" prefWidth="202.0" />
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                <TitledPane id="itemsPreview" fx:id="itemsPreview" animated="false" text="Items Preview">
+                <TitledPane id="mobsPreview" fx:id="mobsPreview" animated="false" text="Mobs preview">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView id="list_mobs" fx:id="list_mobs" prefHeight="316.0" prefWidth="202.0" />
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
+                  <TitledPane id="itemsPreview" fx:id="itemsPreview" animated="false" layoutX="10.0" layoutY="134.0" text="Items Preview">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <ListView id="list_items" fx:id="list_items" prefHeight="316.0" prefWidth="202.0" />
-                           </children></AnchorPane>
-                  </content>
-                </TitledPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane id="soundsPreview" fx:id="soundsPreview" animated="false" layoutX="10.0" layoutY="447.0" text="sounds preview">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView id="list_sound" fx:id="list_sound" prefHeight="316.0" prefWidth="202.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane id="StoriesPreview" fx:id="storiesPreview" animated="false" layoutX="10.0" layoutY="72.0" text="Stories preview">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView id="list_stories" fx:id="list_stories" prefHeight="316.0" prefWidth="202.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
               </panes>
             </Accordion>
+            <Button id="buttonStory" fx:id="buttonStory" layoutX="497.0" layoutY="436.0" mnemonicParsing="false" onAction="#onActionMenuCreateStory" prefHeight="32.0" prefWidth="103.0" text="Create Story" />
          </children>
       </Pane>
       <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="600.0">
@@ -87,23 +116,22 @@
                   <MenuItem fx:id="addMap2" mnemonicParsing="false" onAction="#onActionMenuSelectMap" onMenuValidation="#onActionMenuSelectMap" text="Add Map" />
             </items>
           </Menu>
-          <Menu id="menuStories" fx:id="menuStories" disable="true" mnemonicParsing="false" text="Stories">
-            <items>
-              <MenuItem id="addStories" fx:id="addStories" mnemonicParsing="false" onAction="#onActionMenuAddStory" onMenuValidation="#onActionMenuAddStory" text="Add New Story" />
-                  <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectStory" onMenuValidation="#onActionMenuSelectStory" text="Add Story" />
-                  <MenuItem mnemonicParsing="false" onAction="#onActionMenuCreateStory" onMenuValidation="#onActionMenuCreateStory" text="Create Story" />
-            </items>
-          </Menu>
           <Menu id="menuCharacter" fx:id="menuCharacter" disable="true" mnemonicParsing="false" text="Characters">
             <items>
               <MenuItem id="addCharacters" fx:id="addCharacters" mnemonicParsing="false" onAction="#onActionMenuAddCharacters" onMenuValidation="#onActionMenuAddCharacters" text="Add New Character" />
                   <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectCharacters" onMenuValidation="#onActionMenuSelectCharacters" text="Add Character" />
             </items>
           </Menu>
-            <Menu id="menuImages" fx:id="menuImages" disable="true" mnemonicParsing="false" text="Images">
+            <Menu id="menuWeapons" fx:id="menuWeapons" disable="true" mnemonicParsing="false" text="weapons">
                <items>
-                  <MenuItem id="addImages" fx:id="addImages" mnemonicParsing="false" text="Add image" />
-                  <MenuItem mnemonicParsing="false" text="Delete image" />
+                  <MenuItem id="addWeapons" fx:id="addWeapons" mnemonicParsing="false" onAction="#onActionMenuAddWeapons" onMenuValidation="#onActionMenuAddWeapons" text="Add new weapons" />
+                  <MenuItem id="selectWeapons" fx:id="selectWeapons" mnemonicParsing="false" onAction="#onActionMenuSelectWeapon" onMenuValidation="#onActionMenuSelectWeapon" text="Add Weapons" />
+               </items>
+            </Menu>
+            <Menu id="menuMobs" fx:id="menuMobs" disable="true" mnemonicParsing="false" text="mobs">
+               <items>
+                  <MenuItem id="addMobs" fx:id="addMobs" mnemonicParsing="false" onAction="#onActionMenuAddMobs" onMenuValidation="#onActionMenuAddMobs" text="Add new mob" />
+                  <MenuItem id="selectMobs" fx:id="selectMobs" mnemonicParsing="false" onAction="#onActionMenuSelectMob" onMenuValidation="#onActionMenuSelectMob" text="Add mob" />
                </items>
             </Menu>
             <Menu id="menuItems" fx:id="menuItems" disable="true" mnemonicParsing="false" text="Items">
@@ -112,15 +140,10 @@
                   <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectItems" onMenuValidation="#onActionMenuSelectItems" text="Add Items" />
                </items>
             </Menu>
-            <Menu id="menuHelp" mnemonicParsing="false" text="Help">
+            <Menu id="menuSound" fx:id="menuSound" disable="true" mnemonicParsing="false" text="sounds">
                <items>
-                  <MenuItem mnemonicParsing="false" text="dommage, on a pas prévu d'aide." />
-               </items>
-            </Menu>
-            <Menu id="menuImages" fx:id="menuImages1" disable="true" mnemonicParsing="false" text="Images">
-               <items>
-                  <MenuItem id="addImages" fx:id="addImages1" mnemonicParsing="false" text="Add image" />
-                  <MenuItem mnemonicParsing="false" text="Delete image" />
+                  <MenuItem id="addSounds" fx:id="addSounds" mnemonicParsing="false" onAction="#onActionMenuAddSounds" onMenuValidation="#onActionMenuAddSounds" text="Add new sound" />
+                  <MenuItem id="selectSounds" fx:id="selectSounds" mnemonicParsing="false" onAction="#onActionMenuSelectSound" onMenuValidation="#onActionMenuSelectSound" text="Add sound" />
                </items>
             </Menu>
         </menus>
