@@ -75,7 +75,7 @@ public class Mob extends Character {
     }
 
     private boolean detectionRange() {
-        return  gridCells.size() <= detectionRange;
+        return gridCells.size() <= detectionRange;
     }
 
     public void setPathToPlayer(NavigationGrid navigationGrid, Player p) {
