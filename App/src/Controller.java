@@ -1,4 +1,5 @@
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -81,28 +82,31 @@ public class Controller implements Initializable {
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/" + list_map.getSelectionModel().getSelectedItem() + ".tmx");
                 list_map.getItems().remove(list_map.getSelectionModel().getSelectedItem());
+                canCreateStory();
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase() + "/" + list_characters.getSelectionModel().getSelectedItem() + ".json");
                 list_characters.getItems().remove(list_characters.getSelectionModel().getSelectedItem());
+                canCreateStory();
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase() + "/" + list_items.getSelectionModel().getSelectedItem() + ".json");
                 list_items.getItems().remove(list_items.getSelectionModel().getSelectedItem());
+                canCreateStory();
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/stories/" + list_stories.getSelectionModel().getSelectedItem() + ".json");
                 list_stories.getItems().remove(list_stories.getSelectionModel().getSelectedItem());
+                canCreateStory();
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/" + list_mobs.getSelectionModel().getSelectedItem() + ".json");
                 list_mobs.getItems().remove(list_mobs.getSelectionModel().getSelectedItem());
+                canCreateStory();
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/" + list_sound.getSelectionModel().getSelectedItem() + ".mp3");
                 list_sound.getItems().remove(list_sound.getSelectionModel().getSelectedItem());
+                canCreateStory();
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/" + list_weapons.getSelectionModel().getSelectedItem() + ".json");
                 list_weapons.getItems().remove(list_weapons.getSelectionModel().getSelectedItem());
-
                 canCreateStory();
-
-
             }
         });
 
@@ -113,6 +117,8 @@ public class Controller implements Initializable {
         list_mobs.setContextMenu(contextMenu);
         list_weapons.setContextMenu(contextMenu);
         list_sound.setContextMenu(contextMenu);
+
+        canCreateStory();
     }
 
     public void deleteFile(String path) {
@@ -137,18 +143,19 @@ public class Controller implements Initializable {
         String[] filesName = new String[files.length];
 
         for (int i = 0; i < files.length; i++) {
-            filesName[i] = files[i].getName().replace(".tmx", "").replace(".json", "").replace("mp3", "");
+            filesName[i] = files[i].getName().replace(".tmx", "").replace(".json", "").replace(".mp3", "");
         }
         return filesName;
     }
 
     private boolean isEmpty(String[] tab) {
         for (int i = 0; i < tab.length; i++) {
-            if (tab[i] != null) {
-                return false;
+            System.out.println(tab[i]);
+            if (tab[i] == null || tab[i].equals("")) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean compareArray(String[] array, String[] ArrayToCompare){
@@ -205,12 +212,16 @@ public class Controller implements Initializable {
 
         TextField storyName = new TextField();
         storyName.setPromptText("StoryName");
-        TextField defaultMap = new TextField();
-        defaultMap.setPromptText("Default Map");
-        TextField runSound = new TextField();
-        runSound.setPromptText("run Sound");
-        TextField enterZoneSound = new TextField();
-        enterZoneSound.setPromptText("enter zone sound");
+        //TextField defaultMap = new TextField();
+        ChoiceBox<String> defaultMap = new ChoiceBox<>(FXCollections.observableArrayList(returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/")));
+        ChoiceBox<String> runSound = new ChoiceBox<>(FXCollections.observableArrayList(returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/")));
+        ChoiceBox<String> enterZoneSound = new ChoiceBox<>(FXCollections.observableArrayList(returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/")));
+
+        //defaultMap.setPromptText("Default Map");
+        //TextField runSound = new TextField();
+        //runSound.setPromptText("run Sound");
+        //TextField enterZoneSound = new TextField();
+        //enterZoneSound.setPromptText("enter zone sound");
         TextField minimumLevel = new TextField();
         minimumLevel.setPromptText("minimum level");
 
@@ -234,7 +245,7 @@ public class Controller implements Initializable {
 // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == CreateButtonType) {
-                String[] array = new String[]{storyName.getText(), minimumLevel.getText(), defaultMap.getText(), runSound.getText(), enterZoneSound.getText()};
+                String[] array = new String[]{storyName.getText(), minimumLevel.getText(), defaultMap.getValue(), runSound.getValue(), enterZoneSound.getValue()};
                 System.out.println(Arrays.toString(array));
                 return array;
             }
@@ -242,33 +253,33 @@ public class Controller implements Initializable {
         });
 
         Optional<String[]> result = dialog.showAndWait();
-        String[] array = {defaultMap.getText().replace(".tmx","").replace(".json", "").replace(".mp3", ""), runSound.getText().replace(".tmx","").replace(".json", "").replace(".mp3", ""), enterZoneSound.getText().replace(".tmx","").replace(".json", "").replace(".mp3", "")};
+        //String[] array = {defaultMap.getText().replace(".tmx","").replace(".json", "").replace(".mp3", ""), runSound.getText().replace(".tmx","").replace(".json", "").replace(".mp3", ""), enterZoneSound.getText().replace(".tmx","").replace(".json", "").replace(".mp3", "")};
         ArrayList<String> array_data = new ArrayList<String>();
 
-        copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase()+ "/"));
+        /*copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase()+ "/"));
         copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase()+ "/"));
         copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase()+ "/"));
         copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase()+ "/"));
         copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase()+ "/"));
-        copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase()+ "/"));
+        copyArray(array_data, returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase()+ "/"));*/
 
-        System.out.println("A: " + array_data.get(0) );
+        /*System.out.println("A: " + array_data.get(0) );
         System.out.println("B: " + array_data.get(1) );
         System.out.println("C: " + array_data.get(2) );
-        System.out.println("D: " + array_data.get(3) );
+        System.out.println("D: " + array_data.get(3) );*/
 
 
         String[] arrayData = new String[array_data.size()];
         arrayData = array_data.toArray(arrayData);
 
         if (!isEmpty(result.get())) {
-            if (!compareArray(arrayData, array)) {
+            /*if (!compareArray(arrayData, array)) {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
                 else_dialog.setTitle("Error");
                 else_dialog.setHeaderText("Erreur dans la saisie des informations");
                 else_dialog.setContentText("Vous avez surement rentré de mauvaises informations, verifiez que vous les avez bien ajouté dans le package");
-                else_dialog.showAndWait();
-            } else {
+                else_dialog.showAndWait();*/
+            //} else {
                 JSONObject obj = new JSONObject();
                 JSONObject sounds = new JSONObject();
                 JSONObject soundsRun = new JSONObject();
@@ -299,27 +310,28 @@ public class Controller implements Initializable {
                 String[] mobsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
 
                 for (int i = 0; i < mapsArray.length; i++) {
-                    list_map.add(mapsArray[i]);
+                    list_map.add(mapsArray[i] + ".json");
                 }
 
                 obj.put("maps", list_map);
 
                 for (int i = 0; i < weaponsArray.length; i++) {
-                    list_weapons.add(weaponsArray[i]);
+                    list_weapons.add(weaponsArray[i] + ".json");
                 }
 
                 obj.put("weapons", list_weapons);
 
                 for (int i = 0; i < mobsArray.length; i++) {
-                    list_mobs.add(mobsArray[i]);
+                    list_mobs.add(mobsArray[i] + ".json");
                 }
 
                 obj.put("mobs", list_mobs);
+                list_bullets.add("bullet01.json");
                 obj.put("bullets", list_bullets);
 
 
-                soundsRun.put("src", runSound.getText() + ".mp3");
-                soundsEnterZone.put("src", enterZoneSound.getText() + ".mp3");
+                soundsRun.put("src", runSound.getValue() + ".mp3");
+                soundsEnterZone.put("src", enterZoneSound.getValue() + ".mp3");
                 sounds.put("RUN", soundsRun);
                 sounds.put("ENTER_ZONE", soundsEnterZone);
                 obj.put("sounds", sounds);
@@ -373,7 +385,14 @@ public class Controller implements Initializable {
 
                 System.out.print(obj);
 
-            }
+            //}
+        }
+        else {
+            Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+            else_dialog.setTitle("Error");
+            else_dialog.setHeaderText("Erreur dans la saisie des informations");
+            else_dialog.setContentText("Vous avez surement rentré de mauvaises informations, verifiez que vous les avez bien ajouté dans le package");
+            else_dialog.showAndWait();
         }
     }
     public void onActionMenuSelectMap() {
@@ -553,7 +572,7 @@ public class Controller implements Initializable {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/");
-                this.list_sound.getItems().add(result.get().replace(".tmx","").replace(".json",""));
+                this.list_sound.getItems().add(result.get().replace(".tmx","").replace(".json","").replace(".mp3", ""));
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
@@ -571,7 +590,7 @@ public class Controller implements Initializable {
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.setTitle("Add Map");
         dialog.setHeaderText("Ajouter une map en cliquant sur parcourir");
-        dialog.setContentText("Rappel : Fichiers d'extension tmtx pour ce type d'élement.");
+        dialog.setContentText("Rappel : Fichiers d'extension tmx pour ce type d'élement.");
         ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
         ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
@@ -735,7 +754,7 @@ public class Controller implements Initializable {
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.setTitle("Add sound");
         dialog.setHeaderText("Ajouter une musique en cliquant sur parcourir");
-        dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
+        dialog.setContentText("Rappel : Fichiers d'extension mp3 pour ce type d'élement");
         ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
         ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
