@@ -24,6 +24,7 @@ public class LayerManager {
     private static final Color DEBUG_GATE_COLOR = Color.valueOf("4742d8ff");
 
     private int currentFloor = 1;
+    private int currentSubLayer = 1;
     private ArrayList<TiledMapTileLayer> tiledLayers;
 
 
@@ -31,6 +32,7 @@ public class LayerManager {
     private int beforeLayers[];
     private int afterLayers[];
     private int maxTiledLayer;
+    private int maxSubLayer;
     private float opacity = 1;
 
     private int zoneLayerIndex;
@@ -49,12 +51,15 @@ public class LayerManager {
 
         if (currentFloor == -1)
             currentFloor = 1;
+        if (currentSubLayer == -1)
+            currentSubLayer = 1;
 
         for (MapLayer l : map.getLayers()) {
             if (l.getName().contains(currentFloor + "_T"))
                 tiledLayers.add((TiledMapTileLayer) l);
         }
 
+        maxSubLayer = (getCurrentTileLayers().size() -1);
 
         if (map.getLayers().get(currentFloor + "_O") == null)
             addEmptyObjectLayer(currentFloor + "_O");
@@ -68,10 +73,12 @@ public class LayerManager {
 
         ArrayList<String> orderedLayers = getOrderedLayersList(map.getLayers());
 
-        int index = currentFloor == maxTiledLayer ? currentFloor : currentFloor + 1;
+        int index = currentFloor == maxTiledLayer ? currentFloor : currentFloor ;
+        int indexSubLayer = currentSubLayer == maxSubLayer? currentSubLayer : currentSubLayer + 1;
 
-        List<String> before = orderedLayers.subList(0, orderedLayers.indexOf(index + "_T1"));
-        List<String> after = orderedLayers.subList(orderedLayers.indexOf(index + "_T1"), orderedLayers.size());
+
+        List<String> before = orderedLayers.subList(0, orderedLayers.indexOf(index + "_T" + indexSubLayer ));
+        List<String> after = orderedLayers.subList(orderedLayers.indexOf(index + "_T" + indexSubLayer ), orderedLayers.size());
 
         Debug.log(before.toString());
         Debug.log(after.toString());
@@ -79,8 +86,8 @@ public class LayerManager {
         beforeLayers = convertLayerNameToId(before);
         afterLayers = convertLayerNameToId(after);
 
-        Debug.log(Arrays.toString(beforeLayers));
-        Debug.log(Arrays.toString(afterLayers));
+        Debug.log("BEFOR",Arrays.toString(beforeLayers));
+        Debug.log("AFTER",Arrays.toString(afterLayers));
 
 
     }
@@ -160,8 +167,22 @@ public class LayerManager {
 
     }
 
+    public void jumptToNextSubLayer() {
+        currentSubLayer = (currentSubLayer == maxSubLayer) ? maxSubLayer : currentSubLayer + 1;
+        updateData();
+        setLayersOpacity(opacity);
+
+    }
+
     public void jumpToPrevious() {
         currentFloor = (currentFloor == 1) ? currentFloor : currentFloor - 1;
+        updateData();
+        setLayersOpacity(opacity);
+    }
+
+
+    public void jumpToPreviousSubLayer() {
+        currentSubLayer = (currentSubLayer == 1) ? currentSubLayer : currentSubLayer - 1;
         updateData();
         setLayersOpacity(opacity);
     }
@@ -179,7 +200,7 @@ public class LayerManager {
         ArrayList<String> layerList = new ArrayList<String>();
 
         for (MapLayer layer : layers) {
-            if (layer.getName().split("_").length == 2) {
+            if (layer.getName().split("_T").length == 2) {
                 layerList.add(layer.getName());
             }
         }
