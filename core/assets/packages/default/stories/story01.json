@@ -1,11 +1,13 @@
 {
   "name": "Story 02",
   "minimum-level": 10,
-  "default-map" : "map02",
+  "default-map" : "MainTown",
   "maps": [
     "map02.json",
     "map01.json",
-    "maison01.json"
+    "maison01.json",
+    "inside.json",
+    "MainTown.json"
   ],
   "weapons": [
     "weapon01.json"
@@ -50,12 +52,33 @@
     }
   },
   "gates": {
-    "GATE01": {
-      "goto": "maison01:GATE02",
+    "PM1": {
+      "goto": "Inside:To_Outside",
       "isOpen" : true
     },
-    "GATE02":{
-      "goto" : "map02:GATE01",
+    "PM2": {
+      "goto": "Inside:To_Outside",
+      "isOpen" : true
+    },
+    "Observatory1": {
+      "goto": "Inside:To_Outside",
+      "isOpen" : true
+    },
+    "Clock1": {
+      "goto": "Inside:To_Outside",
+      "isOpen" : true
+    },
+    "PM3": {
+      "goto": "Inside:To_Outside",
+      "isOpen" : true
+    },
+    "PM4": {
+      "goto": "Inside:To_Outside",
+      "isOpen" : true
+    },
+
+    "To_Outside":{
+      "goto" : "MainTown:Toilet1",
       "isOpen" : true
     }
   }

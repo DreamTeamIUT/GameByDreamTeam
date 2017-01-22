@@ -126,15 +126,15 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
-        mobList.get(0).setCellPos(1, 1);
+        //  mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+        //mobList.get(0).setCellPos(1, 1);
 
-        story.getItems().clearInstances(map);
+        //story.getItems().clearInstances(map);
 
-        story.getItems().addInstances(map.getLayerManager().getTilePrositionWithProperty("type", "ITEM"));
+       // story.getItems().addInstances(map.getLayerManager().getTilePrositionWithProperty("type", "ITEM"));
 
-        Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(0,0));
-        i.onThrown(map);
+       // Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(0,0));
+       // i.onThrown(map);
 
         playerList.get(0).getAnimationManager().setAnimation("RUN");
 
@@ -149,6 +149,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             playerList.get(0).setCellPos(actionContainer.moveTo);
 
         if (actionContainer.moveToGate != null) {
+            Debug.log("MOVETOGATE", actionContainer.moveToGate);
+            Debug.log("GATESMOVETO", Debug.iteratorToString(map.getLayerManager().getCurrentGateLayer().getObjects().iterator()));
             RectangleMapObject obj = (RectangleMapObject) map.getLayerManager().getCurrentGateLayer().getObjects().get(actionContainer.moveToGate);
             Vector2 v = Map.pixelToCell(obj.getRectangle().getX(), obj.getRectangle().getY());
             playerList.get(0).setCellPos(v);

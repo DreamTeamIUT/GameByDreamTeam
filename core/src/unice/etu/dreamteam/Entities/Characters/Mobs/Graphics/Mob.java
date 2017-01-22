@@ -87,6 +87,7 @@ public class Mob extends Character {
 
         Debug.log("------------------ find path ----------");
         Debug.log(Debug.iteratorToString(gridCells.iterator()));
+
     }
 
     @Override
