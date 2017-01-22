@@ -16,7 +16,7 @@
    <children>
       <Pane id="contain1" fx:id="contain1" layoutY="32.0" prefHeight="468.0" prefWidth="600.0">
          <children>
-            <Text fontSmoothingType="LCD" layoutX="110.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur PackageManagement, logiciel de création de packages, vous pouvez créer vos propres packages pour Fallen Land." textAlignment="JUSTIFY" wrappingWidth="379.6630859375">
+            <Text fontSmoothingType="LCD" layoutX="110.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur PackageCreator, logiciel de création de packages, vous pouvez créer vos propres packages pour Fallen Land." textAlignment="JUSTIFY" wrappingWidth="379.6630859375">
                <font>
                   <Font size="16.0" />
                </font>
@@ -69,7 +69,7 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane id="itemsPreview" fx:id="itemsPreview" animated="false" layoutX="10.0" layoutY="134.0" text="Items Preview">
+                  <TitledPane id="itemsPreview" fx:id="itemsPreview" animated="false" layoutX="10.0" layoutY="134.0" text="Items preview">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -78,7 +78,7 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane id="soundsPreview" fx:id="soundsPreview" animated="false" layoutX="10.0" layoutY="447.0" text="sounds preview">
+                  <TitledPane id="soundsPreview" fx:id="soundsPreview" animated="false" layoutX="10.0" layoutY="447.0" text="Sounds preview">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -122,13 +122,13 @@
                   <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectCharacters" onMenuValidation="#onActionMenuSelectCharacters" text="Add Character" />
             </items>
           </Menu>
-            <Menu id="menuWeapons" fx:id="menuWeapons" disable="true" mnemonicParsing="false" text="weapons">
+            <Menu id="menuWeapons" fx:id="menuWeapons" disable="true" mnemonicParsing="false" text="Weapons">
                <items>
                   <MenuItem id="addWeapons" fx:id="addWeapons" mnemonicParsing="false" onAction="#onActionMenuAddWeapons" onMenuValidation="#onActionMenuAddWeapons" text="Add new weapons" />
                   <MenuItem id="selectWeapons" fx:id="selectWeapons" mnemonicParsing="false" onAction="#onActionMenuSelectWeapon" onMenuValidation="#onActionMenuSelectWeapon" text="Add Weapons" />
                </items>
             </Menu>
-            <Menu id="menuMobs" fx:id="menuMobs" disable="true" mnemonicParsing="false" text="mobs">
+            <Menu id="menuMobs" fx:id="menuMobs" disable="true" mnemonicParsing="false" text="Mobs">
                <items>
                   <MenuItem id="addMobs" fx:id="addMobs" mnemonicParsing="false" onAction="#onActionMenuAddMobs" onMenuValidation="#onActionMenuAddMobs" text="Add new mob" />
                   <MenuItem id="selectMobs" fx:id="selectMobs" mnemonicParsing="false" onAction="#onActionMenuSelectMob" onMenuValidation="#onActionMenuSelectMob" text="Add mob" />
@@ -140,7 +140,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#onActionMenuSelectItems" onMenuValidation="#onActionMenuSelectItems" text="Add Items" />
                </items>
             </Menu>
-            <Menu id="menuSound" fx:id="menuSound" disable="true" mnemonicParsing="false" text="sounds">
+            <Menu id="menuSound" fx:id="menuSound" disable="true" mnemonicParsing="false" text="Sounds">
                <items>
                   <MenuItem id="addSounds" fx:id="addSounds" mnemonicParsing="false" onAction="#onActionMenuAddSounds" onMenuValidation="#onActionMenuAddSounds" text="Add new sound" />
                   <MenuItem id="selectSounds" fx:id="selectSounds" mnemonicParsing="false" onAction="#onActionMenuSelectSound" onMenuValidation="#onActionMenuSelectSound" text="Add sound" />

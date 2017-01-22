@@ -94,7 +94,7 @@ public class Controller implements Initializable {
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/" + list_mobs.getSelectionModel().getSelectedItem() + ".json");
                 list_mobs.getItems().remove(list_mobs.getSelectionModel().getSelectedItem());
 
-                deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/" + list_sound.getSelectionModel().getSelectedItem() + ".json");
+                deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/" + list_sound.getSelectionModel().getSelectedItem() + ".mp3");
                 list_sound.getItems().remove(list_sound.getSelectionModel().getSelectedItem());
 
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/" + list_weapons.getSelectionModel().getSelectedItem() + ".json");
@@ -572,8 +572,8 @@ public class Controller implements Initializable {
         dialog.setTitle("Add Map");
         dialog.setHeaderText("Ajouter une map en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension tmtx pour ce type d'élement.");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
@@ -594,7 +594,7 @@ public class Controller implements Initializable {
                 else_dialog.showAndWait();
             }
         } else {
-            //user chose close
+            dialog.close();
         }
     }
 
@@ -605,8 +605,8 @@ public class Controller implements Initializable {
         dialog.setTitle("Add Characters");
         dialog.setHeaderText("Ajouter un personnage en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
@@ -638,8 +638,8 @@ public class Controller implements Initializable {
         dialog.setTitle("Add Items");
         dialog.setHeaderText("Ajouter un Item en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
@@ -671,8 +671,8 @@ public class Controller implements Initializable {
         dialog.setTitle("Add Story");
         dialog.setHeaderText("Ajouter une histoire en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
@@ -704,8 +704,8 @@ public class Controller implements Initializable {
         dialog.setTitle("Add weapon");
         dialog.setHeaderText("Ajouter une arme en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
@@ -736,15 +736,15 @@ public class Controller implements Initializable {
         dialog.setTitle("Add sound");
         dialog.setHeaderText("Ajouter une musique en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
             String fileName = file.getName();
-            if (fileName.endsWith(".json")) {
+            if (fileName.endsWith(".mp3")) {
                 addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/");
                 this.list_sound.getItems().add(fileName.substring(0, fileName.length() - 5));
                 canCreateStory();
@@ -754,7 +754,7 @@ public class Controller implements Initializable {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
                 else_dialog.setTitle("Error");
                 else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
+                else_dialog.setContentText("Seuls les fichiers audio sont acceptés : fichier d'extension .mp3");
                 else_dialog.showAndWait();
             }
         } else {
@@ -769,8 +769,8 @@ public class Controller implements Initializable {
         dialog.setTitle("Add mob");
         dialog.setHeaderText("Ajouter un monstre en cliquant sur parcourir");
         dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
-        ButtonType parcourir = new ButtonType("Parcourir");
-        ButtonType close = new ButtonType("Close");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
         dialog.getButtonTypes().setAll(parcourir, close);
 
         Optional<ButtonType> result = dialog.showAndWait();
