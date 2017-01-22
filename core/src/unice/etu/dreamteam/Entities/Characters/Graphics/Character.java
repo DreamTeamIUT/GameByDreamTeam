@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
+import unice.etu.dreamteam.Entities.Weapons.Weapon;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.IsoTransform;
 import unice.etu.dreamteam.Utils.ModelConverter;
@@ -33,6 +34,8 @@ public class Character implements Disposable {
     protected Boolean debug;
     protected ShapeRenderer shapeRenderer;
 
+    private Weapon.Graphic weapon;
+
     public Character(CharacterHolder holder) {
         Debug.log("Load character");
         this.name = holder.getName();
@@ -51,52 +54,6 @@ public class Character implements Disposable {
 
     private void updatePlayerZone() {
         playerZone = getRectangleAt(this.getRealPos());
-    }
-
-    /*
-    public Vector2 moveToLeft() {
-        return new Vector2(cellPos.x-1, cellPos.y);
-    }
-
-    public Vector2 moveToRight() {
-        return new Vector2(cellPos.x+1, cellPos.y);
-    }
-
-    public Vector2 moveToUp() {
-        return new Vector2(cellPos.x, cellPos.y+1);
-    }
-
-    public Vector2 moveToDown() {
-        return new Vector2(cellPos.x, cellPos.y-1);
-    }
-    */
-
-    public Vector2 moveToLeft() {
-        //animating = true;
-        cellPos.x -= 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
-    }
-
-    public Vector2 moveToRight() {
-        //animating = true;
-        cellPos.x += 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
-    }
-
-    public Vector2 moveToUp() {
-        //animating = true;
-        cellPos.y += 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
-    }
-
-    public Vector2 moveToDown() {
-        //animating = true;
-        cellPos.y -= 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
     }
 
     public void moveTo(int characterMove) {
@@ -214,6 +171,10 @@ public class Character implements Disposable {
         return batch;
     }
 
+    public ShapeRenderer getShapeRender() {
+        return shapeRenderer;
+    }
+
     @Override
     public void dispose() {
         modelConverter.dispose();
@@ -297,6 +258,9 @@ public class Character implements Disposable {
         //getBatch().setProjectionMatrix(save);
 
         getBatch().end();
+
+        if(weapon != null)
+            weapon.render(delta);
     }
 
     protected void drawDebug() {
@@ -335,7 +299,6 @@ public class Character implements Disposable {
         }
 
         shapeRenderer.line(center.x, center.y, extrem.x, extrem.y);
-
     }
 
     public void setDebug(Boolean debug) {
@@ -356,5 +319,17 @@ public class Character implements Disposable {
 
     public int getView() {
         return currentView;
+    }
+
+    public Weapon.Graphic getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon, int powerful) {
+        this.weapon = weapon.create(getBatch(), getShapeRender(), powerful);
+    }
+
+    public void setWeapon(Weapon weapon) {
+        setWeapon(weapon, -1);
     }
 }

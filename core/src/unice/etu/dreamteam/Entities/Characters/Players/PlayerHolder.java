@@ -18,13 +18,15 @@ import java.util.ArrayList;
  */
 public class PlayerHolder extends CharacterHolder {
     private String realName;
-    private ArrayList<Weapon.Graphic> weapons;
+    private ArrayList<Weapon> weapons;
 
     private OnCharacterEventListener onCharacterEventListener;
 
     public PlayerHolder(JsonValue value){
         super(value);
         this.realName = value.getString("real-name");
+
+        loadWeapons(value.get("weapons").iterator());
     }
 
     @Override
@@ -40,6 +42,17 @@ public class PlayerHolder extends CharacterHolder {
 
     public String getRealName() {
         return realName;
+    }
+
+    private void loadWeapons(JsonValue.JsonIterator valueWeapons) {
+        weapons = new ArrayList<>();
+
+        for (JsonValue value : valueWeapons)
+            weapons.add(Weapons.getInstance().get(value.toString()));
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
     }
 
     @Override

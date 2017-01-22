@@ -10,7 +10,6 @@ import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
  * Created by Guillaume on 27/12/2016.
  */
 public abstract class CharacterHolder extends Entity {
-
     private String modelName;
 
     public CharacterHolder(JsonValue value){

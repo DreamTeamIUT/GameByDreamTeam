@@ -1,5 +1,6 @@
 {
   "name": "player02",
   "real-name": "Player 02",
-  "model-name": "Knight"
+  "model-name": "Knight",
+  "weapons": ["weapon01"]
 }
