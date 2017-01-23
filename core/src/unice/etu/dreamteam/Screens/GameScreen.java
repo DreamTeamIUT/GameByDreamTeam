@@ -16,6 +16,7 @@ import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 import unice.etu.dreamteam.Entities.Items.Item;
+import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
@@ -59,6 +60,12 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             }
 
             Debug.log(storyFile);
+            Debug.log(String.valueOf(story.getMaps().size()));
+            Debug.log(story.getName());
+            for (MapHolder mdkdd : story.getMaps()){
+                Debug.log("MAPS_NAMES", mdkdd.getName());
+            }
+
             map = story.getMaps().get(storyFile).load();
         } else {
             Debug.log("You should pass a valid type !");
@@ -126,17 +133,17 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        //  mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
-        //mobList.get(0).setCellPos(1, 1);
+       /* mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+        mobList.get(0).setPos(map.getMapInfo().getStartPoint());*/
 
-        //story.getItems().clearInstances(map);
+        story.getItems().clearInstances(map);
 
-       // story.getItems().addInstances(map.getLayerManager().getTilePrositionWithProperty("type", "ITEM"));
+        story.getItems().addInstances(map.getLayerManager().getTilePrositionWithProperty("type", "ITEM"));
 
-       // Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(0,0));
-       // i.onThrown(map);
+        Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(157,148));
+        i.onThrown(map);
 
-        playerList.get(0).getAnimationManager().setAnimation("RUN");
+        playerList.get(0).getAnimationManager().setAnimation("STOPPED");
 
         parseActionContainer();
     }
