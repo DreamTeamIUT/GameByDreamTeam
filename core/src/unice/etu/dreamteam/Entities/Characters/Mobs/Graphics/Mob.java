@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
 import unice.etu.dreamteam.Entities.Characters.Mobs.MobHolder;
+import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.PathFinder;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;

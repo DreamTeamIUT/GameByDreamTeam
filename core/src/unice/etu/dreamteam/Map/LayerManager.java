@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.*;
@@ -59,7 +60,7 @@ public class LayerManager {
                 tiledLayers.add((TiledMapTileLayer) l);
         }
 
-        maxSubLayer = (getCurrentTileLayers().size() -1);
+        maxSubLayer = (getCurrentTileLayers().size() - 1);
 
         if (map.getLayers().get(currentFloor + "_O") == null)
             addEmptyObjectLayer(currentFloor + "_O");
@@ -73,12 +74,12 @@ public class LayerManager {
 
         ArrayList<String> orderedLayers = getOrderedLayersList(map.getLayers());
 
-        int index = currentFloor == maxTiledLayer ? currentFloor : currentFloor ;
-        int indexSubLayer = currentSubLayer == maxSubLayer? currentSubLayer : currentSubLayer + 1;
+        int index = currentFloor == maxTiledLayer ? currentFloor : currentFloor;
+        int indexSubLayer = currentSubLayer == maxSubLayer ? currentSubLayer : currentSubLayer + 1;
 
 
-        List<String> before = orderedLayers.subList(0, orderedLayers.indexOf(index + "_T" + indexSubLayer ));
-        List<String> after = orderedLayers.subList(orderedLayers.indexOf(index + "_T" + indexSubLayer ), orderedLayers.size());
+        List<String> before = orderedLayers.subList(0, orderedLayers.indexOf(index + "_T" + indexSubLayer));
+        List<String> after = orderedLayers.subList(orderedLayers.indexOf(index + "_T" + indexSubLayer), orderedLayers.size());
 
         Debug.log(before.toString());
         Debug.log(after.toString());
@@ -86,8 +87,8 @@ public class LayerManager {
         beforeLayers = convertLayerNameToId(before);
         afterLayers = convertLayerNameToId(after);
 
-        Debug.log("BEFOR",Arrays.toString(beforeLayers));
-        Debug.log("AFTER",Arrays.toString(afterLayers));
+        Debug.log("BEFOR", Arrays.toString(beforeLayers));
+        Debug.log("AFTER", Arrays.toString(afterLayers));
 
 
     }
@@ -108,7 +109,7 @@ public class LayerManager {
                         Object valueProperty = c.getTile().getProperties().get(property);
                         if (valueProperty != null) {
                             if (String.valueOf(valueProperty).equals(value))
-                                selectedTiles.put(new Vector2(x,y), c.getTile().getProperties().get("name", null, String.class));
+                                selectedTiles.put(new Vector2(x, y), c.getTile().getProperties().get("name", null, String.class));
                         }
                     }
                 }
@@ -118,11 +119,10 @@ public class LayerManager {
         return selectedTiles;
     }
 
-    public TiledMapTileLayer getLayerForTypeAt(String type, Vector2 at){
-        for (int i=0; i< getCurrentTileLayers().size(); i++){
-            TiledMapTileLayer.Cell c = getCurrentTileLayers().get(i).getCell((int)at.x, (int)at.y);
-            if (c != null)
-            {
+    public TiledMapTileLayer getLayerForTypeAt(String type, Vector2 at) {
+        for (int i = 0; i < getCurrentTileLayers().size(); i++) {
+            TiledMapTileLayer.Cell c = getCurrentTileLayers().get(i).getCell((int) at.x, (int) at.y);
+            if (c != null) {
                 if (c.getTile().getProperties().get("type", "", String.class).equals(type))
                     return getCurrentTileLayers().get(i);
             }
@@ -254,7 +254,6 @@ public class LayerManager {
             shapeRenderer.rect(r.getX() - 16, r.getY() + 16, r.getWidth(), r.getHeight());
         }
 
-
         shapeRenderer.setColor(DEBUG_GATE_COLOR);
 
         obj = this.getCurrentGateLayer().getObjects();
@@ -289,5 +288,44 @@ public class LayerManager {
                 Integer.valueOf(colorStr.substring(1, 3), 16),
                 Integer.valueOf(colorStr.substring(3, 5), 16),
                 Integer.valueOf(colorStr.substring(5, 7), 16), 1);
+    }
+
+    public ArrayList<ArrayList<TiledMapTileLayer>> getLayersForPlayer(ArrayList list, Player c) {
+
+        ArrayList<TiledMapTileLayer> backgrounds = new ArrayList<>();
+        ArrayList<TiledMapTileLayer> foregrounds = new ArrayList<>();
+
+
+        for (int i : this.getAfterLayers()) {
+            TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(i);
+            if (!l.isVisible())
+                continue;
+
+            TiledMapTileLayer background = new TiledMapTileLayer(l.getWidth(), l.getHeight(), (int) l.getTileWidth(), (int) l.getTileHeight());
+            background.setName(l.getName() + "-B");
+            TiledMapTileLayer foreground = new TiledMapTileLayer(l.getWidth(), l.getHeight(), (int) l.getTileWidth(), (int) l.getTileHeight());
+            foreground.setName(l.getName() + "-F");
+
+
+            for (int x = 0; x < c.getCellPos().x; x++) {
+                for (int y = 0; y < l.getHeight(); y++) {
+                    background.setCell(x, y, l.getCell(x, y));
+                }
+            }
+
+            for (int x = (int) c.getCellPos().x; x < l.getWidth(); x++) {
+                for (int y = 0; y < l.getHeight(); y++) {
+                    foreground.setCell(x, y, l.getCell(x, y));
+                }
+            }
+
+            backgrounds.add(background);
+            foregrounds.add(foreground);
+        }
+
+        list.add(backgrounds);
+        list.add(foregrounds);
+
+        return list;
     }
 }

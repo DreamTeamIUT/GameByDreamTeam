@@ -189,19 +189,20 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         map.getRenderer().setView(orthoCamera);
-        map.render(delta);
+        map.render(delta, playerList.get(0));
 
         collisionsManager.debug(shapeRenderer);
 
-        map.getRenderer().render(map.getLayerManager().getBeforeLayers());
+      //  map.getRenderer().render(map.getLayerManager().getBeforeLayers());
 
-        for (Player p : playerList)
-            p.render(delta);
+
+      /*  for (Player p : playerList)
+            p.render(delta, map);
 
         for (Mob m : mobList)
-            m.render(delta);
+            m.render(delta, map);*/
 
-        map.getRenderer().render(map.getLayerManager().getAfterLayers());
+      //  map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
         final int keyUp = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSUP);
         final int keyDown = prefs.getInteger(Settings.KEY_DOWN, Settings.DEFAULTSETTINGSDOWN);
