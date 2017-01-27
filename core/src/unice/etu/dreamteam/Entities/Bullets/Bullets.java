@@ -23,6 +23,6 @@ public class Bullets extends EntitiesHolder<Bullet> {
 
     @Override
     public Boolean add(JsonValue value) {
-        return null;
+        return this.add(new Bullet(loadDependencies(path, value.toString())));
     }
 }

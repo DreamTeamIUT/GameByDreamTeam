@@ -265,8 +265,8 @@ public class Character implements Disposable {
 
         getBatch().end();
 
-        if(weapon != null)
-            weapon.render(delta);
+        if(this.weapon != null)
+            this.weapon.render(delta);
     }
 
     protected void drawDebug() {
@@ -328,6 +328,8 @@ public class Character implements Disposable {
     }
 
     public Weapon.Graphic getWeapon() {
+        weapon.setElementPosition(getCellPos());
+
         return weapon;
     }
 

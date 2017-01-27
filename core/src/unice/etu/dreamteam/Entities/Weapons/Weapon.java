@@ -23,19 +23,17 @@ public class Weapon extends Entity {
     public Weapon(JsonValue value) {
         super(value);
 
+        Debug.log("Entity", value.toString());
+        Debug.log("Entity", "name : " + value.getString("name"));
+
         Debug.log("Weapon", "new");
 
         forces = new ForcesWeaponHolder(value.get("forces").iterator());
     }
 
     public Graphic create(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, int powerful) {
-        if(forces.areEnough()) {
-            Graphic graphic = new Graphic(getForce(powerful));
-            graphic.setSpriteBatch(spriteBatch);
-            graphic.setShapeRenderer(shapeRenderer);
-
-            return graphic;
-        }
+        if(forces.areEnough())
+            return new Graphic(spriteBatch, shapeRenderer, getForce(powerful));
 
         return null;
     }
@@ -55,27 +53,33 @@ public class Weapon extends Entity {
         private SpriteBatch spriteBatch;
         private ShapeRenderer shapeRenderer;
 
-        private Vector2 positions;
+        private Vector2 elementPosition;
+        private Vector2 position;
 
         private ForceWeaponHolder forceWeaponHolder;
 
         private ArrayList<Bullet.Graphic> bullets;
 
-        public Graphic(ForceWeaponHolder forceWeaponHolder) {
-            this.positions = new Vector2(0, 0);
+        public Graphic(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, ForceWeaponHolder forceWeaponHolder) {
+            this.spriteBatch = spriteBatch;
+            this.shapeRenderer = shapeRenderer;
+
+            this.position = new Vector2(0, 0);
             this.forceWeaponHolder = forceWeaponHolder;
+
+            bullets = new ArrayList<>();
         }
 
         public void render(float delta) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(1, 0, 1f, 1);
-            shapeRenderer.rect(positions.x - 16, positions.y + 16, 20, 20);
+            shapeRenderer.rect(position.x - 16, position.y + 16, 20, 20);
             shapeRenderer.setColor(0, 0, 1f, 1);
-            shapeRenderer.rect(positions.x - 16 - 2 * 16, positions.y + 16 + 2 * 16, 20, 20);
+            shapeRenderer.rect(position.x - 16 - 2 * 16, position.y + 16 + 2 * 16, 20, 20);
             shapeRenderer.end();
 
             for (Bullet.Graphic bullet : bullets) {
-                bullet.render(getSpriteBatch(), delta);
+                bullet.render(getSpriteBatch(), shapeRenderer, delta);
 
                 if (bullet.isFinished()) {
                     bullet.dispose();
@@ -96,9 +100,13 @@ public class Weapon extends Entity {
             this.shapeRenderer = shapeRenderer;
         }
 
+        public void setElementPosition(Vector2 elementPosition) {
+            this.elementPosition = elementPosition;
+        }
+
         public void setPositions(float x, float y) {
-            this.positions.x = x + getForce().getShift().x;
-            this.positions.y = y + getForce().getShift().y;
+            this.position.x = x + getForce().getShift().x;
+            this.position.y = y + getForce().getShift().y;
         }
 
         public ForceWeaponHolder getForce() {
@@ -106,7 +114,18 @@ public class Weapon extends Entity {
         }
 
         public void shoot(Character source, Character destination) {
-            bullets.add(Bullets.getInstance().get(getForce().getBulletId()).create(source.getCellPos(), destination.getCellPos()));
+            shoot(source.getCellPos(), destination.getCellPos());
+        }
+
+        public void shoot(Vector2 source, Vector2 destination) {
+            Debug.log("Weapon", "shoot");
+            Debug.log("Weapon", String.valueOf(Bullets.getInstance().size()));
+
+            bullets.add(Bullets.getInstance().get(getForce().getBulletId()).create(source, destination));
+        }
+
+        public void shoot(Vector2 destination) {
+            shoot(this.elementPosition, destination);
         }
     }
 }

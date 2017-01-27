@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Entity;
-import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
-import unice.etu.dreamteam.Entities.Weapons.Weapon;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
@@ -29,7 +28,7 @@ public class Bullet extends Entity {
         range = value.getInt("range", 0);
         damage = value.getInt("damage", 0);
 
-        texture = new Texture(Gdx.files.internal(GameInformation.getGamePackage().getPackagePath("images") + value.get("tile").getString("src")));
+        texture = new Texture(Gdx.files.internal(GameInformation.getGamePackage().getPackagePath("images/bullets") + value.get("tile").getString("src")));
     }
 
     public Bullet.Graphic create(Vector2 source, Vector2 destination) {
@@ -54,7 +53,7 @@ public class Bullet extends Entity {
 
     public class Graphic {
         private Bullet bullet;
-        private Vector2 positions;
+        private Vector2 position;
 
         private float coefficient;
         private float intercept;
@@ -65,7 +64,7 @@ public class Bullet extends Entity {
 
         public Graphic(Bullet bullet, Vector2 source, Vector2 destination) {
             this.bullet = bullet;
-            this.positions = new Vector2(source.x, source.y);
+            this.position = new Vector2(source.x, source.y);
             this.finished = false;
 
             textureRegion = new TextureRegion(bullet.getTexture());
@@ -79,8 +78,8 @@ public class Bullet extends Entity {
         }
 
         private void updatePositions() {
-            this.positions.x += bullet.getSpeed();
-            this.positions.y = this.coefficient * this.positions.x + this.intercept;
+            this.position.x += bullet.getSpeed();
+            this.position.y = this.coefficient * this.position.x + this.intercept;
         }
 
         public Bullet getInformations() {
@@ -91,25 +90,34 @@ public class Bullet extends Entity {
             return finished;
         }
 
-        public void render(SpriteBatch spriteBatch, float delta) {
-            updatePositions();
+        public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, float delta) {
+            Debug.log("Weapon.Graphic", "render");
+            Debug.log("Weapon.Graphic", this.position.toString());
+            //updatePositions();
 
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(1, 0, 1f, 1);
+            shapeRenderer.rect(position.x - 50, position.y + 50, 20, 20);
+            shapeRenderer.end();
+
+            /*
             spriteBatch.begin();
-            spriteBatch.draw(this.textureRegion, this.positions.x, this.positions.y);
+            spriteBatch.draw(this.textureRegion, this.position.x, this.position.y);
             spriteBatch.end();
+            */
         }
 
         public void dispose() {
 
         }
 
-        public Vector2 getPositions() {
-            return positions;
+        public Vector2 getPosition() {
+            return position;
         }
 
-        public void setPositions(float x, float y) {
-            this.positions.x = x;
-            this.positions.y = y;
+        public void setPosition(float x, float y) {
+            this.position.x = x;
+            this.position.y = y;
         }
     }
 }

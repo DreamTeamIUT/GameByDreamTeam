@@ -115,6 +115,12 @@ public class Story {
         story.setPackageName(GameInformation.getGamePackage().getName());
         story.setName(jsonStory.getString("name", ""));
 
+        Debug.log("Story", String.valueOf(jsonStory.get("bullets").toString()));
+
+        Bullets.getInstance().add(jsonStory.get("bullets").iterator());
+        Weapons.getInstance().add(jsonStory.get("weapons").iterator());
+        Items.getInstance().loadFromDir();
+
         Debug.log("MAPS " , Debug.iteratorToString(jsonStory.get("maps").iterator()));
 
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
@@ -123,10 +129,6 @@ public class Story {
         story.setZones(new Zones(jsonStory.get("zones").iterator()));
         story.setGates(new Gates(jsonStory.get("gates").iterator()));
         story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
-
-        Bullets.getInstance().add(jsonStory.get("bullets").iterator());
-        Weapons.getInstance().add(jsonStory.get("weapons").iterator());
-        Items.getInstance().loadFromDir();
 
         return story;
     }

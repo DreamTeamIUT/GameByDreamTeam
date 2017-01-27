@@ -46,6 +46,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private List<Integer> keyCodes;
     private Preferences prefs;
 
+    private Boolean leftClick;
+    private Boolean leftClickUsed;
+
     public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         if (type == TYPE_STORY) {
@@ -95,6 +98,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         prefs = Gdx.app.getPreferences("GameSettings");
 
         keyCodes = new ArrayList<>();
+
+        leftClick = false;
+        leftClickUsed = false;
 
         Gdx.input.setInputProcessor(this);
 
@@ -210,6 +216,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             m.render(delta, map);*/
 
       //  map.getRenderer().render(map.getLayerManager().getAfterLayers());
+
+        if(leftClick && !leftClickUsed) {
+            leftClickUsed = true;
+            playerList.get(0).getWeapon().shoot(new Vector2(0, 0));
+        }
 
         final int keyUp = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSUP);
         final int keyDown = prefs.getInteger(Settings.KEY_DOWN, Settings.DEFAULTSETTINGSDOWN);
@@ -370,6 +381,21 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             keyCodes.remove(keyCodes.indexOf(keyCode));
 
         Debug.log("KEY UP", keyCodes.toString());
+
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        leftClick = true;
+        leftClickUsed = false;
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        leftClick = false;
 
         return true;
     }

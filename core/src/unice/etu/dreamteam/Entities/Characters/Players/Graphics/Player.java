@@ -22,16 +22,19 @@ public class Player extends Character {
     private void setWeapon(String name, int powerful) {
         Boolean found = false;
 
-        for (Weapon weapon : weapons) {
-            Debug.log(weapon.getName());
-            if (weapon.getName().equals(name)) {
-                found = true;
-                setWeapon(weapon, powerful);
+        if (weapons != null) {
+            for (Weapon weapon : weapons) {
+                if (weapon != null && weapon.getName().equals(name)) {
+                    found = true;
+                    setWeapon(weapon, powerful);
+                }
             }
-        }
 
-        if (!found)
-            setWeapon(weapons.get(0), powerful);
+            if (!found)
+                setWeapon(weapons.get(0), powerful);
+        }
+        else
+            Debug.log("Player", "Empty weapons");
     }
 
     public void setWeapon(String name) {

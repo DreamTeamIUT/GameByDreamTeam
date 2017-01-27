@@ -36,7 +36,7 @@ public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E> {
     }
 
     public E get(String name){
-        for (E e : this){
+        for (E e : this) {
             if (e.getName().equals(name))
                 return e;
         }
