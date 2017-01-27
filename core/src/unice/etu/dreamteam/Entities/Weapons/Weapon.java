@@ -10,6 +10,7 @@ import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Entity;
 import unice.etu.dreamteam.Entities.Weapons.Forces.ForceWeaponHolder;
 import unice.etu.dreamteam.Entities.Weapons.Forces.ForcesWeaponHolder;
+import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,8 @@ public class Weapon extends Entity {
 
     public Weapon(JsonValue value) {
         super(value);
+
+        Debug.log("Weapon", "new");
 
         forces = new ForcesWeaponHolder(value.get("forces").iterator());
     }

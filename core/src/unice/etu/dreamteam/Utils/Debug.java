@@ -7,28 +7,36 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.Iterator;
 
 public class Debug { //que du statique, raccourci debug.
+    private static final Boolean isDebug = true;
+
     public static void log(String tag, String message) {
-        Gdx.app.log(tag, message); //syntaxe pour debug libgdx
+        if(isDebug)
+            Gdx.app.log(tag, message); //syntaxe pour debug libgdx
     }
 
     public static void log(String message) {
-        Gdx.app.log("Logger", message);
+        if(isDebug)
+            Gdx.app.log("Logger", message);
     }
 
     public static void error(String tag, String message) {
-        Gdx.app.error(tag, message);
+        if(isDebug)
+            Gdx.app.error(tag, message);
     }
 
     public static void error(String message) {
-        Gdx.app.error("Error", message);
+        if(isDebug)
+            Gdx.app.error("Error", message);
     }
 
     public static void debug(String tag, String message) {
-        Gdx.app.debug(tag, message);
+        if(isDebug)
+            Gdx.app.debug(tag, message);
     }
 
     public static void debug(String message) {
-        Gdx.app.debug("Debug", message);
+        if(isDebug)
+            Gdx.app.debug("Debug", message);
     }
 
 

@@ -3,6 +3,7 @@ package unice.etu.dreamteam.Entities.Characters.Players.Graphics;
 import unice.etu.dreamteam.Entities.Characters.Players.PlayerHolder;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Weapons.Weapon;
+import unice.etu.dreamteam.Utils.Debug;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class Player extends Character {
         Boolean found = false;
 
         for (Weapon weapon : weapons) {
+            Debug.log(weapon.getName());
             if (weapon.getName().equals(name)) {
                 found = true;
                 setWeapon(weapon, powerful);

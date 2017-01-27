@@ -126,8 +126,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        //  mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
-        //mobList.get(0).setCellPos(1, 1);
+          mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+          mobList.get(0).setCellPos(1, 1);
 
         //story.getItems().clearInstances(map);
 
