@@ -1,0 +1,62 @@
+{
+  "name": "Story 02",
+  "minimum-level": 10,
+  "default-map" : "map02",
+  "maps": [
+    "map02.json",
+    "map01.json",
+    "maison01.json"
+  ],
+  "weapons": [
+    "weapon01.json"
+  ],
+  "bullets": [
+    "bullet01.json"
+  ],
+  "mobs": [
+    "mob01.json"
+  ],
+  "sounds": {
+    "RUN": {
+      "src": "sound01.mp3"
+    },
+    "ENTER_ZONE": {
+      "src": "sound02.mp3"
+    }
+  },
+  "zones": {
+    "ZONE1": {
+      "attack": [
+        {
+          "mobName": "mob01",
+          "force": "1",
+          "count": "10"
+        }
+      ],
+      "spawnitems": [
+        {
+          "type": "border-left",
+          "rotate": 0,
+          "item": "fence"
+        }
+      ],
+      "sound": "ENTER_ZONE",
+      "maxEnter": 2,
+      "maxExecute": 2,
+      "general": true,
+      "blocked": "false",
+      "maxRevive": 2,
+      "time":600
+    }
+  },
+  "gates": {
+    "GATE01": {
+      "goto": "maison01:GATE02",
+      "isOpen" : true
+    },
+    "GATE02":{
+      "goto" : "map02:GATE01",
+      "isOpen" : true
+    }
+  }
+}

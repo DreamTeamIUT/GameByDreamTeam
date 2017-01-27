@@ -26,8 +26,8 @@ public class Main extends Game {
 
         GameInformation.setGamePackage(GamePackages.getPackages().get("default"));
 
-        ScreenManager.getInstance().showScreen(ScreenList.GAME, "story01.json", GameScreen.TYPE_STORY);
-        //ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
+        //ScreenManager.getInstance().showScreen(ScreenList.GAME, "story01.json", GameScreen.TYPE_STORY);
+        ScreenManager.getInstance().showScreen(ScreenList.MAIN_MENU);
         AudioManager.initialize();
 
 

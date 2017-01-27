@@ -1,17 +1,18 @@
 package unice.etu.dreamteam.Map;
 
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
+import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
+
+import java.util.ArrayList;
 
 /**
  * Created by Guillaume on 31/10/2016.
@@ -107,12 +108,34 @@ public class Map {
         return layerManager;
     }
 
-    public void render(float delta) {
+    public void render(float delta, Player p) {
         if (gridUpdate) {
             Debug.log("UPDATE", "update grid ! ");
             calculateGridCell(this.collisionsManager);
             setGridUpdate(false);
         }
+
+        this.getRenderer().render(this.getLayerManager().getBeforeLayers());
+
+        ArrayList<ArrayList<TiledMapTileLayer>> layersToDraw = new ArrayList<>();
+        this.layerManager.getLayersForPlayer(layersToDraw, p);
+
+        ArrayList<TiledMapTileLayer> backgrounds = layersToDraw.get(0);
+        ArrayList<TiledMapTileLayer> foregrounds = layersToDraw.get(1);
+
+        this.getSpriteBatch().begin();
+        for (TiledMapTileLayer l : backgrounds) {
+            this.getRenderer().renderTileLayer(l);
+        }
+        this.getSpriteBatch().end();
+
+        p.render(delta);
+
+        this.getSpriteBatch().begin();
+        for (TiledMapTileLayer l : foregrounds)
+            this.getRenderer().renderTileLayer(l);
+        this.getSpriteBatch().end();
+
     }
 
     public void dispose() {
@@ -144,10 +167,10 @@ public class Map {
         return pos;
     }
 
-    public TiledMapTile getTileByName(String name){
-        for (TiledMapTileSet tiledMapTileSet : this.getData().getTileSets()){
-            for (TiledMapTile t : tiledMapTileSet){
-                if (t.getProperties().get("name", "", String.class).equals(name)){
+    public TiledMapTile getTileByName(String name) {
+        for (TiledMapTileSet tiledMapTileSet : this.getData().getTileSets()) {
+            for (TiledMapTile t : tiledMapTileSet) {
+                if (t.getProperties().get("name", "", String.class).equals(name)) {
                     return t;
                 }
             }
