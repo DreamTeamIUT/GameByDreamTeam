@@ -108,7 +108,7 @@ public class Story {
 
         story = new Story();
 
-        FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/stories/" + storyFile);
+        FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath("stories") + storyFile);
 
         JsonValue jsonStory = new JsonReader().parse(file.readString());
 
@@ -117,17 +117,17 @@ public class Story {
 
         Debug.log("Story", String.valueOf(jsonStory.get("bullets").toString()));
 
+        Sounds.getInstance().add(jsonStory.get("sounds").iterator());
+        Gates.getInstance().add(jsonStory.get("gates").iterator());
+        Zones.getInstance().add(jsonStory.get("zones").iterator());
         Bullets.getInstance().add(jsonStory.get("bullets").iterator());
         Weapons.getInstance().add(jsonStory.get("weapons").iterator());
+        Mobs.getInstance().add(jsonStory.get("mobs").iterator());
         Items.getInstance().loadFromDir();
 
         Debug.log("MAPS " , Debug.iteratorToString(jsonStory.get("maps").iterator()));
 
         story.setMaps(new Maps(jsonStory.get("maps").iterator() ,jsonStory.getString("default-map")));
-        story.setMobs(new Mobs(jsonStory.get("mobs").iterator()));
-        story.setSounds(new Sounds(jsonStory.get("sounds").iterator()));
-        story.setZones(new Zones(jsonStory.get("zones").iterator()));
-        story.setGates(new Gates(jsonStory.get("gates").iterator()));
         story.setMinimumLevel(jsonStory.getInt("minimum-level", 0));
 
         return story;

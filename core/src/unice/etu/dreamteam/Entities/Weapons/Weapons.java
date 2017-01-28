@@ -35,9 +35,10 @@ public class Weapons extends EntitiesHolder<Weapon> {
 
     @Override
     public Boolean add(JsonValue value) {
-        return add(new Weapon(value));
+        return add(new Weapon(loadDependencies(path, value.toString())));
     }
 
+    /*
     @Override
     public void add(JsonValue.JsonIterator jsonIterator) {
         for (JsonValue entity : jsonIterator) {
@@ -47,4 +48,5 @@ public class Weapons extends EntitiesHolder<Weapon> {
                 this.add(new Weapon(loadDependencies(path, entity.toString())));
         }
     }
+    */
 }

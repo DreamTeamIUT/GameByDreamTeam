@@ -4,41 +4,52 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Debug { //que du statique, raccourci debug.
     private static final Boolean isDebug = true;
 
+    private static final String[] allowedTags = {"ZONE", "SoundEntity"};
+
     public static void log(String tag, String message) {
-        if(isDebug)
+        if(isDebug && allowedTag(tag))
             Gdx.app.log(tag, message); //syntaxe pour debug libgdx
     }
 
     public static void log(String message) {
-        if(isDebug)
-            Gdx.app.log("Logger", message);
+        log("Logger", message);
     }
 
     public static void error(String tag, String message) {
-        if(isDebug)
+        if(isDebug && allowedTag(tag))
             Gdx.app.error(tag, message);
     }
 
     public static void error(String message) {
-        if(isDebug)
-            Gdx.app.error("Error", message);
+        error("Error", message);
     }
 
     public static void debug(String tag, String message) {
-        if(isDebug)
+        if(isDebug && allowedTag(tag))
             Gdx.app.debug(tag, message);
     }
 
     public static void debug(String message) {
-        if(isDebug)
-            Gdx.app.debug("Debug", message);
+        debug("Debug", message);
     }
 
+    private static Boolean allowedTag(String tag) {
+        if(allowedTags.length < 1)
+            return true;
+
+        for (String allowedTag : allowedTags) {
+            if(allowedTag.equals(tag))
+                return true;
+        }
+
+        return false;
+    }
 
     public static void position(String tag, float... positions) {
         String message = "";

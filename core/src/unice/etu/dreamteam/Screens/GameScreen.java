@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
@@ -20,6 +21,7 @@ import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.ActionContainer;
 import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
@@ -106,6 +108,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         orthoCamera = (OrthographicCamera) getCamera();
 
+        TextButton btn = UiManager.getInstance().createCustomButton("test");
+        btn.setPosition(10, 10);
+        addActor(btn);
+
         this.spriteBatch = new SpriteBatch();
         this.entitiesSpriteBatch = new SpriteBatch();
 
@@ -122,7 +128,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
         collisionsManager = new CollisionsManager(map, this);
-        collisionsManager.addStory(story);
+        collisionsManager.setStory(story);
 
         map.calculateGridCell(collisionsManager);
 
@@ -202,7 +208,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         map.getRenderer().setView(orthoCamera);
-        map.render(delta, playerList.get(0));
+        map.render(delta, playerList.get(0), mobList);
 
         collisionsManager.debug(shapeRenderer);
 

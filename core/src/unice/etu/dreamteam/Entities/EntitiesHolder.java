@@ -30,9 +30,17 @@ public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E> {
 
     public abstract Boolean add(JsonValue value);
 
-    public void add(JsonValue.JsonIterator jsonIterator) {
-        for (JsonValue entity : jsonIterator)
+    public void add(JsonValue.JsonIterator jsonIterator, Boolean jsonFile) {
+        for (JsonValue entity : jsonIterator) {
+            if(jsonFile && !entity.toString().endsWith(".json"))
+                continue;
+
             this.add(entity);
+        }
+    }
+
+    public void add(JsonValue.JsonIterator jsonIterator) {
+        add(jsonIterator, false);
     }
 
     public E get(String name){
@@ -42,6 +50,10 @@ public abstract class EntitiesHolder<E extends Entity> extends ArrayList<E> {
         }
         //throw new NoSuchElementException("l'élément " + name + " n'est pas trouvable !");
         return null;
+    }
+
+    public Boolean exist(String name) {
+        return this.get(name) != null || name == null;
     }
 
     protected JsonValue loadDependencies(String path, String fileName) {

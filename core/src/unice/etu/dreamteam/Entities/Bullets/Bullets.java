@@ -11,6 +11,9 @@ public class Bullets extends EntitiesHolder<Bullet> {
 
     private Bullets() {
         super();
+    }
+
+    {
         path = "bullets";
     }
 

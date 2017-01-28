@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
@@ -33,7 +34,6 @@ public class Character implements Disposable {
     protected int currentView;
     protected Float speed = 0.07f;
 
-    protected Rectangle playerZone;
     protected String modelName;
     protected String name;
     protected SpriteBatch batch;
@@ -54,12 +54,6 @@ public class Character implements Disposable {
 
         currentMove = CharacterMove.NONE;
         currentView = CharacterMove.NONE;
-
-        updatePlayerZone();
-    }
-
-    private void updatePlayerZone() {
-        playerZone = getRectangleAt(this.getRealPos());
     }
 
     public void moveTo(int characterMove) {
@@ -137,8 +131,6 @@ public class Character implements Disposable {
                 else
                     realPos.y -= speed;
             }
-
-            this.updatePlayerZone();
         }
     }
 
@@ -152,8 +144,12 @@ public class Character implements Disposable {
         this.animationManager.setAnimation("STOPPED");
     }
 
+    public Rectangle getRectangle(Boolean cell) {
+        return getRectangleAt(cell ? getCellPos() : getRealPos());
+    }
+
     public Rectangle getRectangle() {
-        return playerZone;
+        return getRectangle(false);
     }
 
     public Rectangle getRectangleAt(Vector2 cellPos) {
@@ -206,8 +202,6 @@ public class Character implements Disposable {
 
     public void setCellPos(Vector2 cellPos) {
         this.cellPos = cellPos;
-
-        this.updatePlayerZone();
     }
 
     public void setPos(Vector2 vector2) {
@@ -217,8 +211,6 @@ public class Character implements Disposable {
 
         this.cellPos = vector2;
         this.realPos = vector21;
-
-        this.updatePlayerZone();
     }
 
     public void setCellPos(int x, int y) {
@@ -228,8 +220,6 @@ public class Character implements Disposable {
 
     private void update(float delta) {
         modelConverter.update(delta);
-
-        updatePlayerZone();
     }
 
     public void render(float delta) {
@@ -328,6 +318,8 @@ public class Character implements Disposable {
     }
 
     public Weapon.Graphic getWeapon() {
+
+
         weapon.setElementPosition(getCellPos());
 
         return weapon;

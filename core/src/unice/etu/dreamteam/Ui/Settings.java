@@ -148,7 +148,7 @@ public class Settings {
         dialog.row().expand();
         CheckBox chkSound = new CheckBox("", UiManager.getInstance().getSkin());
         dialog.add(chkSound);
-        dialog.add(new Label("Sound", UiManager.getInstance().getSkin()));
+        dialog.add(new Label("SoundEntity", UiManager.getInstance().getSkin()));
         final Slider sldEffects = new Slider(0.0f, 1.0f, 0.1f, false, UiManager.getInstance().getSkin());
         dialog.add(sldEffects).colspan(COLSPANPARAMETER);
         sldEffects.addListener(new ChangeListener() {

@@ -51,8 +51,6 @@ public class StoryMenuScreen extends AbstractScreen {
 
         table.center();
         addActor(table);
-
-
     }
 
 

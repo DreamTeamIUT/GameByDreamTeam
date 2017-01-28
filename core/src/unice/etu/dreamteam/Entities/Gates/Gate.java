@@ -16,39 +16,28 @@ import unice.etu.dreamteam.Utils.ScreenManager;
  * Created by Guillaume on 31/10/2016.
  */
 public class Gate extends Entity {
-    private final String nextGate;
-    private final GateState gateState;
-    private final String nextMap;
+    private String nextGate;
+    private String nextMap;
 
-    //TODO : gates haves start point and a destination point
+    private int maxEnter;
+    private int countEnter;
+
+    private Boolean opened;
+
     //TODO : gates can be closed
     //TODO : gates can disapear
 
     public Gate(JsonValue value) {
         super(value);
-        Debug.log(this.getName());
-        String[] tmp = value.getString("goto").split(":");
-        nextGate = tmp[1];
-        nextMap = tmp[0];
 
-        gateState = new GateState();
-        gateState.isOpen = value.getBoolean("isOpen");
+        setGoto(value.getString("goto"));
+
+        maxEnter = value.getInt("max-enter", -1);
+        opened = value.getBoolean("opened");
     }
 
-    public Boolean isOpen() {
-        return getGateState().isOpen;
-    }
-
-    public Boolean isAlive() {
-        return false;
-    }
-
-    public long getRemainingTime() {
-        return 0;
-    }
-
-    public void onPass(MapEvent event) {
-        getGateState().countPass++;
+    public void onEnter(MapEvent event) {
+        countEnter++;
 
         if (event.getStory().getMaps().get(this.nextMap) != null) {
             Debug.log("lasdfsdfsdfdf");
@@ -70,12 +59,22 @@ public class Gate extends Entity {
         }
     }
 
-    public GateState getGateState() {
-        return gateState;
+    public Boolean canEnter() {
+        return countEnter < maxEnter || maxEnter < 0;
     }
 
-    public class GateState {
-        boolean isOpen = false;
-        int countPass = 0;
+    private void setGoto(String gotoValue) {
+        String[] tmp = gotoValue.split(":");
+
+        nextGate = tmp[1];
+        nextMap = tmp[0];
+    }
+
+    public Boolean isOpened() {
+        return opened;
+    }
+
+    public void setOpened(Boolean opened) {
+        this.opened = opened;
     }
 }

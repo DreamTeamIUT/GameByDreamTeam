@@ -113,14 +113,14 @@ public class AudioManager implements Disposable {
     }
 
     public void createSound(String path) {
-       /* sounds = new Array<Sound>();
+       /* sounds = new Array<SoundEntity>();
         sounds.add(Gdx.audio.newSound(Gdx.files.internal(path)));
 
         playSound(0);*/
     }
 
     private void playSound(int index) {
-       /* Sound sound = sounds.get(index);
+       /* SoundEntity sound = sounds.get(index);
         sound.play(volume);*/
     }
 

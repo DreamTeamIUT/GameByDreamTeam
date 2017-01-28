@@ -8,25 +8,25 @@ import unice.etu.dreamteam.Entities.EntitiesHolder;
  */
 
 public class Mobs extends EntitiesHolder<MobHolder> {
-    public Mobs() {
+    private static Mobs mobs;
+
+    private Mobs() {
         super();
     }
 
-    public Mobs(JsonValue.JsonIterator jsonIterator) {
-        super();
-        add(jsonIterator);
+    {
+        path = "characters";
+    }
+
+    public static Mobs getInstance() {
+        if(mobs == null)
+            mobs = new Mobs();
+
+        return mobs;
     }
 
     @Override
     public Boolean add(JsonValue value) {
-        return add(new MobHolder(value));
-    }
-
-    @Override
-    public void add(JsonValue.JsonIterator jsonIterator) {
-        for (JsonValue jsonValue : jsonIterator) {
-            if (jsonValue.toString().endsWith(".json"))
-                add(new MobHolder(loadDependencies("characters", jsonValue.toString())));
-        }
+        return add(new MobHolder(loadDependencies(path, value.toString())));
     }
 }
