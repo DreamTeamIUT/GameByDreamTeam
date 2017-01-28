@@ -35,15 +35,14 @@ public class Mob extends Character {
         speed = 0.05f;
     }
 
-    public void setForce() {
-
-    }
-
     @Override
     public void render(float delta) {
         super.render(delta);
 
         if(currentMove == CharacterMove.NONE && ready) {
+            if(gridCells == null)
+                return;
+
             if(!detectionRange() || proximityRange())
                 return;
 
@@ -87,8 +86,11 @@ public class Mob extends Character {
         ready = true;
 
         Debug.log("------------------ find path ----------");
-        Debug.log(Debug.iteratorToString(gridCells.iterator()));
 
+        if(gridCells != null)
+            Debug.log(Debug.iteratorToString(gridCells.iterator()));
+        else
+            Debug.log("No path found");
     }
 
     @Override

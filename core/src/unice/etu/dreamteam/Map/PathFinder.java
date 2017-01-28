@@ -14,20 +14,28 @@ import java.util.List;
  */
 public class PathFinder {
     public static PathFinder pathFinder;
+
     private AStarGridFinder<GridCell> finder;
+    private GridFinderOptions opt;
 
     public PathFinder() {
-        GridFinderOptions opt = new GridFinderOptions();
+        opt = new GridFinderOptions();
         opt.allowDiagonal = false;
 
         finder = new AStarGridFinder(GridCell.class, opt);
     }
 
-    public static PathFinder current() {
+    public static PathFinder current(Boolean allowDiagonal) {
         if(pathFinder == null)
             pathFinder = new PathFinder();
 
+        pathFinder.opt.allowDiagonal = allowDiagonal;
+
         return pathFinder;
+    }
+
+    public static PathFinder current() {
+        return current(false);
     }
 
     public List<GridCell> findPath(Vector2 m, Vector2 p, NavigationGrid navigationGrid) {

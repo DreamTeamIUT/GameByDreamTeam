@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
 import unice.etu.dreamteam.Map.Map;
+import unice.etu.dreamteam.Entities.Weapons.Weapon;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.IsoTransform;
 import unice.etu.dreamteam.Utils.ModelConverter;
@@ -32,12 +34,13 @@ public class Character implements Disposable {
     protected int currentView;
     protected Float speed = 0.07f;
 
-    protected Rectangle playerZone;
     protected String modelName;
     protected String name;
     protected SpriteBatch batch;
     protected Boolean debug;
     protected ShapeRenderer shapeRenderer;
+
+    private Weapon.Graphic weapon;
 
     public Character(CharacterHolder holder) {
         Debug.log("Load character");
@@ -51,58 +54,6 @@ public class Character implements Disposable {
 
         currentMove = CharacterMove.NONE;
         currentView = CharacterMove.NONE;
-
-        updatePlayerZone();
-    }
-
-    private void updatePlayerZone() {
-        playerZone = getRectangleAt(this.getRealPos());
-    }
-
-    /*
-    public Vector2 moveToLeft() {
-        return new Vector2(cellPos.x-1, cellPos.y);
-    }
-
-    public Vector2 moveToRight() {
-        return new Vector2(cellPos.x+1, cellPos.y);
-    }
-
-    public Vector2 moveToUp() {
-        return new Vector2(cellPos.x, cellPos.y+1);
-    }
-
-    public Vector2 moveToDown() {
-        return new Vector2(cellPos.x, cellPos.y-1);
-    }
-    */
-
-    public Vector2 moveToLeft() {
-        //animating = true;
-        cellPos.x -= 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
-    }
-
-    public Vector2 moveToRight() {
-        //animating = true;
-        cellPos.x += 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
-    }
-
-    public Vector2 moveToUp() {
-        //animating = true;
-        cellPos.y += 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
-    }
-
-    public Vector2 moveToDown() {
-        //animating = true;
-        cellPos.y -= 1;
-
-        return new Vector2(cellPos.x, cellPos.y);
     }
 
     public void moveTo(int characterMove) {
@@ -180,8 +131,6 @@ public class Character implements Disposable {
                 else
                     realPos.y -= speed;
             }
-
-            this.updatePlayerZone();
         }
     }
 
@@ -195,8 +144,12 @@ public class Character implements Disposable {
         this.animationManager.setAnimation("STOPPED");
     }
 
+    public Rectangle getRectangle(Boolean cell) {
+        return getRectangleAt(cell ? getCellPos() : getRealPos());
+    }
+
     public Rectangle getRectangle() {
-        return playerZone;
+        return getRectangle(false);
     }
 
     public Rectangle getRectangleAt(Vector2 cellPos) {
@@ -218,6 +171,10 @@ public class Character implements Disposable {
 
     public SpriteBatch getBatch() {
         return batch;
+    }
+
+    public ShapeRenderer getShapeRender() {
+        return shapeRenderer;
     }
 
     @Override
@@ -245,8 +202,6 @@ public class Character implements Disposable {
 
     public void setCellPos(Vector2 cellPos) {
         this.cellPos = cellPos;
-
-        this.updatePlayerZone();
     }
 
     public void setPos(Vector2 vector2) {
@@ -256,8 +211,6 @@ public class Character implements Disposable {
 
         this.cellPos = vector2;
         this.realPos = vector21;
-
-        this.updatePlayerZone();
     }
 
     public void setCellPos(int x, int y) {
@@ -267,8 +220,6 @@ public class Character implements Disposable {
 
     private void update(float delta) {
         modelConverter.update(delta);
-
-        updatePlayerZone();
     }
 
     public void render(float delta) {
@@ -303,6 +254,9 @@ public class Character implements Disposable {
         //getBatch().setProjectionMatrix(save);
 
         getBatch().end();
+
+        if(this.weapon != null)
+            this.weapon.render(delta);
     }
 
     protected void drawDebug() {
@@ -341,7 +295,6 @@ public class Character implements Disposable {
         }
 
         shapeRenderer.line(center.x, center.y, extrem.x, extrem.y);
-
     }
 
     public void setDebug(Boolean debug) {
@@ -362,5 +315,21 @@ public class Character implements Disposable {
 
     public int getView() {
         return currentView;
+    }
+
+    public Weapon.Graphic getWeapon() {
+
+
+        weapon.setElementPosition(getCellPos());
+
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon, int powerful) {
+        this.weapon = weapon.create(getBatch(), getShapeRender(), powerful);
+    }
+
+    public void setWeapon(Weapon weapon) {
+        setWeapon(weapon, -1);
     }
 }

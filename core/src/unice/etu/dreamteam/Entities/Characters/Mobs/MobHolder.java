@@ -38,10 +38,8 @@ public class MobHolder extends CharacterHolder {
     }
 
     public void setForce(int powerful) {
-        if(forces.existPowerful(powerful))
-            currentPowerful = powerful;
-        else
-            Debug.log("MobHolder", "Error powerful with forces : " + String.valueOf(powerful));
+        if(forces.areEnough())
+            currentPowerful = forces.existPowerful(powerful) ? powerful : forces.getDefaultPowerful();
     }
 
     @Override

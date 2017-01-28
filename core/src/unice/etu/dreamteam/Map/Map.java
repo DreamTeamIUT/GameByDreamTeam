@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
+import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
+import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.MobInstances;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Utils.Debug;
@@ -130,6 +132,9 @@ public class Map {
         this.getSpriteBatch().end();
 
         p.render(delta);
+
+        for (Mob mob : MobInstances.getInstance())
+            mob.render(delta);
 
         this.getSpriteBatch().begin();
         for (TiledMapTileLayer l : foregrounds)

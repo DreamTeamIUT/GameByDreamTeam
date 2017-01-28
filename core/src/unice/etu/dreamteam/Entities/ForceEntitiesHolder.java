@@ -33,6 +33,9 @@ public class ForceEntitiesHolder<E extends ForceEntity> extends EntitiesHolder<E
     }
 
     public Boolean existPowerful(int powerful) {
+        if(powerful < 0)
+            return false;
+
         for (E e : this) {
             if(e.getPowerful() == powerful)
                 return true;

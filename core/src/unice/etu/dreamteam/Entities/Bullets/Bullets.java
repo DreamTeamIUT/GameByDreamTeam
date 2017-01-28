@@ -6,11 +6,14 @@ import unice.etu.dreamteam.Entities.EntitiesHolder;
 /**
  * Created by Dylan on 12/01/2017.
  */
-public class Bullets extends EntitiesHolder<BulletHolder> {
+public class Bullets extends EntitiesHolder<Bullet> {
     private static Bullets bullets;
 
     private Bullets() {
         super();
+    }
+
+    {
         path = "bullets";
     }
 
@@ -23,6 +26,6 @@ public class Bullets extends EntitiesHolder<BulletHolder> {
 
     @Override
     public Boolean add(JsonValue value) {
-        return null;
+        return this.add(new Bullet(loadDependencies(path, value.toString())));
     }
 }

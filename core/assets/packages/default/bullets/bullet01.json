@@ -2,5 +2,8 @@
   "name": "bullet01",
   "speed": 0.2,
   "range": 10,
-  "damage": 10
+  "damage": 10,
+  "tile": {
+    "src": "bullet01.png"
+  }
 }

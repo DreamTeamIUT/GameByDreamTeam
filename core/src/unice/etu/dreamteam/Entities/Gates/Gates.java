@@ -7,12 +7,17 @@ import unice.etu.dreamteam.Entities.EntitiesHolder;
  * Created by Guillaume on 31/10/2016.
  */
 public class Gates extends EntitiesHolder<Gate> {
+    private static Gates gates;
+
     public Gates() {
         super();
     }
 
-    public Gates(JsonValue.JsonIterator jsonValues) {
-        super(jsonValues);
+    public static Gates getInstance() {
+        if(gates == null)
+            gates = new Gates();
+
+        return gates;
     }
 
     @Override

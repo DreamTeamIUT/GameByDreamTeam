@@ -35,6 +35,10 @@ public class GamePackage extends Entity {
         return packagePath;
     }
 
+    public String getPackagePath(String folder) {
+        return packagePath + folder + "/";
+    }
+
     public String getVersion() {
         return version;
     }

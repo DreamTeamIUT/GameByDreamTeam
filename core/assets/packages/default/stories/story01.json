@@ -20,66 +20,72 @@
   ],
   "sounds": {
     "RUN": {
+      "type": "effect",
       "src": "sound01.mp3"
     },
     "ENTER_ZONE": {
+      "type": "music",
       "src": "sound02.mp3"
     }
   },
   "zones": {
     "ZONE1": {
-      "attack": [
+      "attacks": [
         {
-          "mobName": "mob01",
+          "mob": "mob01",
           "force": "1",
           "count": "10"
         }
       ],
-      "spawnitems": [
+      "items": [
         {
           "type": "border-left",
           "rotate": 0,
           "item": "fence"
         }
       ],
-      "sound": "ENTER_ZONE",
-      "maxEnter": 2,
-      "maxExecute": 2,
+      "sounds": ["ENTER_ZONE"],
+      "max-enter": 2,
+      "max-execute": 2,
       "general": true,
-      "blocked": "false",
-      "maxRevive": 2,
-      "time":600
+      "blocked": false,
+      "max-revive": 2,
+      "time-in": 600,
+      "gates": {
+        "PM1": {"opened": true}
+      }
     }
   },
   "gates": {
     "PM1": {
       "goto": "Inside:To_Outside",
-      "isOpen" : true
+      "max-enter": 2,
+      "opened" : true
     },
     "PM2": {
       "goto": "Inside:To_Outside",
-      "isOpen" : true
+      "opened" : true
     },
     "Observatory1": {
       "goto": "Inside:To_Outside",
-      "isOpen" : true
+      "opened" : true
     },
     "Clock1": {
       "goto": "Inside:To_Outside",
-      "isOpen" : true
+      "opened" : true
     },
     "PM3": {
       "goto": "Inside:To_Outside",
-      "isOpen" : true
+      "opened" : true
     },
     "PM4": {
       "goto": "Inside:To_Outside",
-      "isOpen" : true
+      "opened" : true
     },
 
     "To_Outside":{
       "goto" : "MainTown:Toilet1",
-      "isOpen" : true
+      "opened" : true
     }
   }
 }

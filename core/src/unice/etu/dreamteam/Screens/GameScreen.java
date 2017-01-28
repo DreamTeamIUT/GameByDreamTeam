@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
@@ -20,6 +21,7 @@ import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Map.CollisionsManager;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.Story;
+import unice.etu.dreamteam.Ui.UiManager;
 import unice.etu.dreamteam.Utils.ActionContainer;
 import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.*;
@@ -45,6 +47,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     private List<Integer> keyCodes;
     private Preferences prefs;
+
+    private Boolean leftClick;
+    private Boolean leftClickUsed;
 
     public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -96,9 +101,16 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         keyCodes = new ArrayList<>();
 
+        leftClick = false;
+        leftClickUsed = false;
+
         Gdx.input.setInputProcessor(this);
 
         orthoCamera = (OrthographicCamera) getCamera();
+
+        TextButton btn = UiManager.getInstance().createCustomButton("test");
+        btn.setPosition(10, 10);
+        addActor(btn);
 
         this.spriteBatch = new SpriteBatch();
         this.entitiesSpriteBatch = new SpriteBatch();
@@ -116,7 +128,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
         collisionsManager = new CollisionsManager(map, this);
-        collisionsManager.addStory(story);
+        collisionsManager.setStory(story);
 
         map.calculateGridCell(collisionsManager);
 
@@ -133,8 +145,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-       /* mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
-        mobList.get(0).setPos(map.getMapInfo().getStartPoint());*/
+        //  mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
+        //mobList.get(0).setCellPos(1, 1);
 
         story.getItems().clearInstances(map);
 
@@ -210,6 +222,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             m.render(delta, map);*/
 
       //  map.getRenderer().render(map.getLayerManager().getAfterLayers());
+
+        if(leftClick && !leftClickUsed) {
+            leftClickUsed = true;
+            playerList.get(0).getWeapon().shoot(new Vector2(0, 0));
+        }
 
         final int keyUp = prefs.getInteger(Settings.KEY_UP, Settings.DEFAULTSETTINGSUP);
         final int keyDown = prefs.getInteger(Settings.KEY_DOWN, Settings.DEFAULTSETTINGSDOWN);
@@ -370,6 +387,21 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             keyCodes.remove(keyCodes.indexOf(keyCode));
 
         Debug.log("KEY UP", keyCodes.toString());
+
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        leftClick = true;
+        leftClickUsed = false;
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        leftClick = false;
 
         return true;
     }

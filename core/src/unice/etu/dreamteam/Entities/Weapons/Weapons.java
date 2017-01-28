@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.EntitiesHolder;
 import unice.etu.dreamteam.Entities.Items.Item;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
 import java.io.File;
@@ -34,14 +35,18 @@ public class Weapons extends EntitiesHolder<Weapon> {
 
     @Override
     public Boolean add(JsonValue value) {
-        return add(new Weapon(value));
+        return add(new Weapon(loadDependencies(path, value.toString())));
     }
 
+    /*
     @Override
     public void add(JsonValue.JsonIterator jsonIterator) {
         for (JsonValue entity : jsonIterator) {
+            Debug.log("Weapons", entity.toString());
+
             if(entity.toString().endsWith(".json"))
                 this.add(new Weapon(loadDependencies(path, entity.toString())));
         }
     }
+    */
 }

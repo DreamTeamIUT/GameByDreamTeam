@@ -1,6 +1,7 @@
 package unice.etu.dreamteam.Entities;
 
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Utils.Debug;
 
 
 public abstract class Entity {

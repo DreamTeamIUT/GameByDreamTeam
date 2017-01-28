@@ -10,8 +10,11 @@ import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Gates.Gate;
+import unice.etu.dreamteam.Entities.Gates.Gates;
 import unice.etu.dreamteam.Entities.Items.Item;
+import unice.etu.dreamteam.Entities.Items.Items;
 import unice.etu.dreamteam.Entities.Zones.Zone;
+import unice.etu.dreamteam.Entities.Zones.Zones;
 import unice.etu.dreamteam.Screens.GameScreen;
 import unice.etu.dreamteam.Utils.Debug;
 
@@ -91,14 +94,14 @@ public class CollisionsManager {
         }
 
         for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
-            Gate g = story.getGates().get(gateObject.getName());
+            Gate g = Gates.getInstance().get(gateObject.getName());
             if (g == null) {
                 Debug.log("GATE", gateObject.getName() + " not exist !");
                 continue;
             }
 
             if (Intersector.overlaps(p.getRectangleAt(cells), gateObject.getRectangle())) {
-                if (!g.isOpen())
+                if (!g.isOpened())
                     return false;
             }
         }
@@ -112,8 +115,8 @@ public class CollisionsManager {
         for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangleAt(cells))) {
 
-                if (story.getZones().exist(rectangleMapObject.getName())) {
-                    Zone z = story.getZones().get(rectangleMapObject.getName());
+                if (Zones.getInstance().exist(rectangleMapObject.getName())) {
+                    Zone z = Zones.getInstance().get(rectangleMapObject.getName());
 
                     //Debug.log(!z.canEnter() + " zone");
 
@@ -164,8 +167,8 @@ public class CollisionsManager {
         for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
             if (Intersector.overlaps(rectangleMapObject.getRectangle(), rectangle)) {
 
-                if (story.getZones().exist(rectangleMapObject.getName())) {
-                    Zone z = story.getZones().get(rectangleMapObject.getName());
+                if (Zones.getInstance().exist(rectangleMapObject.getName())) {
+                    Zone z = Zones.getInstance().get(rectangleMapObject.getName());
 
                     //Debug.log(!z.canEnter(true) + " zone");
 
@@ -176,7 +179,7 @@ public class CollisionsManager {
         }
 
         for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
-            if (Intersector.overlaps(rectangle, gateObject.getRectangle()) && story.getGates().get(gateObject.getName()) != null)
+            if (Intersector.overlaps(rectangle, gateObject.getRectangle()) && Gates.getInstance().get(gateObject.getName()) != null)
                 return false;
         }
 
@@ -197,7 +200,7 @@ public class CollisionsManager {
         this.characters = characters;
     }
 
-    public void addStory(Story s) {
+    public void setStory(Story s) {
         this.story = s;
     }
 
@@ -209,34 +212,36 @@ public class CollisionsManager {
 
     public void findActionFor(Character p) {
 
-       /* Item.ItemInstance instance = story.getItems().getInstanceAt(p.getCellPos());
+       /* Item.ItemInstance instance = Items.getInstance().getInstanceAt(p.getCellPos());
         if (instance != null){
             instance.onGrab(new MapEvent(p, map, story, game));
         }*/
 
         for (RectangleMapObject rectangleMapObject : map.getLayerManager().getCurrentZoneLayer().getObjects().getByType(RectangleMapObject.class)) {
-            if (story.getZones().exist(rectangleMapObject.getName())) {
-                Zone zone = story.getZones().get(rectangleMapObject.getName());
+            if (Zones.getInstance().exist(rectangleMapObject.getName())) {
+                Zone zone = Zones.getInstance().get(rectangleMapObject.getName());
+
+                Debug.log("ZONE", zone.getName() + ", isIn : " + String.valueOf(zone.isIn()));
 
                 if (zone.isIn()) {
-                    if (!Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canLeave()) {
+                    if (!Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle(true)) && zone.canLeave()) {
                         zone.onLeave();
                     }
                 } else {
-                    if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle()) && zone.canEnter()) {
-                        zone.onEnter();
+                    if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle(true)) && zone.canEnter()) {
+                        zone.onEnter(p.getBatch(), p.getShapeRender());
                     }
                 }
             }
         }
 
         for (RectangleMapObject gateObject : map.getLayerManager().getCurrentGateLayer().getObjects().getByType(RectangleMapObject.class)) {
-            Gate g = story.getGates().get(gateObject.getName());
+            Gate g = Gates.getInstance().get(gateObject.getName());
             if (g == null)
                 continue;
 
-            if (Intersector.overlaps(p.getRectangle(), gateObject.getRectangle()) && g.isOpen()) {
-                g.onPass(new MapEvent(p, map, story, game));
+            if (Intersector.overlaps(p.getRectangle(true), gateObject.getRectangle()) && g.isOpened()) {
+                g.onEnter(new MapEvent(p, map, story, game));
                 break;
             }
         }
@@ -265,7 +270,7 @@ public class CollisionsManager {
 
         if (inMap(pos) && !cellEmpty(pos)) {
             Debug.log("CHeck instace d");
-            Item.ItemInstance instance = story.getItems().getInstanceAt(pos);
+            Item.ItemInstance instance = Items.getInstance().getInstanceAt(pos);
             if (instance != null) {
                 instance.onGrab(new MapEvent(p, map, story, game));
                 map.setGridUpdate(true);

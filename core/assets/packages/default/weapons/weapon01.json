@@ -6,6 +6,10 @@
       "powerful": 1,
       "default": true,
       "speed-reload": 5,
+      "shift": {
+        "x": 0,
+        "y": 0
+      },
       "bullet-id": "bullet01",
       "tile": "weapon01.png"
     }
