@@ -36,7 +36,7 @@ public class GamePackage extends Entity {
     }
 
     public String getPackagePath(String folder) {
-        return packagePath + "/" + folder + "/";
+        return packagePath + folder + "/";
     }
 
     public String getVersion() {

@@ -1,7 +1,6 @@
 package unice.etu.dreamteam.Entities.Characters.Graphics;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.*;
 import unice.etu.dreamteam.Exceptions.ParameterException;
+import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
@@ -20,7 +20,6 @@ public class ModelAnimationManager implements Disposable {
     private ArrayList<Integer> currentInstance;
     private ArrayList<String> callList;
     private ArrayList<AnimationController.AnimationDesc> animations;
-    private AssetManager assetManager;
     private String modelName;
     private float angle;
 
@@ -30,7 +29,6 @@ public class ModelAnimationManager implements Disposable {
 
     private void init(String modelName) {
         this.modelName = modelName;
-        assetManager = new AssetManager();
         FileHandle file = Gdx.files.internal(GameInformation.getGamePackage().getPackagePath() + "/models/" + modelName + "/info.json");
         JsonValue dat = new JsonReader().parse(file.readString());
 
@@ -44,10 +42,8 @@ public class ModelAnimationManager implements Disposable {
 
             if (v.has("load")) {
                 if (v.getBoolean("load")) {
-                    assetManager.load(getFilePath(v.getString("file")), Model.class);
-                    assetManager.finishLoading();
                     callList.add(v.name());
-                    instances.add(new ModelInstance(assetManager.get(getFilePath(v.getString("file")), Model.class)));
+                    instances.add(new ModelInstance(Assets.getInstance().getResource(getFilePath(v.getString("file")), Model.class)));
                     controllers.add(new AnimationController(instances.get(instances.size() - 1)));
                     animations.add(controllers.get(controllers.size() - 1).setAnimation(v.getString("name"), -1));
                 }
@@ -62,7 +58,7 @@ public class ModelAnimationManager implements Disposable {
 
 
     private String getFilePath(String file) {
-        return GameInformation.getGamePackage().getPackagePath() + "/models/" + modelName + "/" + modelName + "@" + file + ".g3db";
+        return GameInformation.getGamePackage().getPackagePath() + "models/" + modelName + "/" + modelName + "@" + file + ".g3db";
     }
 
 
@@ -148,7 +144,7 @@ public class ModelAnimationManager implements Disposable {
 
     @Override
     public void dispose() {
-        assetManager.dispose();
+
     }
 
     private void clearArray(ArrayList<Integer> arrayList) {

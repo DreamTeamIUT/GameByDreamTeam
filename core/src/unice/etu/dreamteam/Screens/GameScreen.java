@@ -208,7 +208,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         map.getRenderer().setView(orthoCamera);
-        map.render(delta, playerList.get(0), mobList);
+        map.render(delta, playerList.get(0));
 
         collisionsManager.debug(shapeRenderer);
 
