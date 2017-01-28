@@ -56,8 +56,9 @@ public class LayerManager {
             currentSubLayer = 1;
 
         for (MapLayer l : map.getLayers()) {
-            if (l.getName().contains(currentFloor + "_T"))
+            if (l.getName().contains(currentFloor + "_T")){
                 tiledLayers.add((TiledMapTileLayer) l);
+            }
         }
 
         maxSubLayer = (getCurrentTileLayers().size() - 1);
@@ -159,7 +160,6 @@ public class LayerManager {
         return this.map.getLayers().get(gateLayerIndex);
     }
 
-
     public void jumptToNext() {
         currentFloor = (currentFloor == maxTiledLayer) ? maxTiledLayer : currentFloor + 1;
         updateData();
@@ -179,7 +179,6 @@ public class LayerManager {
         updateData();
         setLayersOpacity(opacity);
     }
-
 
     public void jumpToPreviousSubLayer() {
         currentSubLayer = (currentSubLayer == 1) ? currentSubLayer : currentSubLayer - 1;
@@ -303,8 +302,13 @@ public class LayerManager {
 
             TiledMapTileLayer background = new TiledMapTileLayer(l.getWidth(), l.getHeight(), (int) l.getTileWidth(), (int) l.getTileHeight());
             background.setName(l.getName() + "-B");
+            background.setOffsetX(l.getOffsetX());
+            background.setOffsetY(l.getOffsetY());
+
             TiledMapTileLayer foreground = new TiledMapTileLayer(l.getWidth(), l.getHeight(), (int) l.getTileWidth(), (int) l.getTileHeight());
             foreground.setName(l.getName() + "-F");
+            foreground.setOffsetX(l.getOffsetX());
+            foreground.setOffsetY(l.getOffsetY());
 
 
             for (int x = 0; x < c.getCellPos().x; x++) {

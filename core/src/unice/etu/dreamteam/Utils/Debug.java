@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Debug { //que du statique, raccourci debug.
     private static final Boolean isDebug = true;
 
-    private static final String[] allowedTags = {"ZONE", "SoundEntity"};
+    //private static final String[] allowedTags = {"ZONE", "SoundEntity"};
+    private static final String[] allowedTags = {};
 
     public static void log(String tag, String message) {
         if(isDebug && allowedTag(tag))
