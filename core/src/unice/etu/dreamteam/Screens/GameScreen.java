@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
+import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.MobInstances;
+import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 import unice.etu.dreamteam.Entities.Items.Item;
@@ -34,7 +36,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     public static final int TYPE_MAP = 5;
     public static final int TYPE_STORY = 8;
     private ActionContainer actionContainer;
-    private ArrayList<Mob> mobList;
     private ArrayList<Player> playerList;
     private ArrayList<Item> itemList;
     private Map map;
@@ -118,7 +119,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         this.shapeRenderer = new ShapeRenderer();
 
         playerList = new ArrayList<>();
-        mobList = new ArrayList<>();
 
         if (map == null)
             map = story.getMaps().getDefaultMap().load();
@@ -145,8 +145,12 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        //  mobList.add((Mob) story.getMobs().get("mob01").create(spriteBatch, shapeRenderer));
-        //mobList.get(0).setCellPos(1, 1);
+        /*
+        Mob mob = (Mob)Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
+        mob.setCellPos(157, 151);
+
+        MobInstances.getInstance().add(mob);
+        */
 
         story.getItems().clearInstances(map);
 
@@ -345,7 +349,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     public void getMobsPathToPlayer() {
-        for (Mob m : mobList)
+        for (Mob m : MobInstances.getInstance())
             m.setPathToPlayer(map.getNavigationGrid(), playerList.get(0));
     }
 
@@ -367,7 +371,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         for (Player p : playerList)
             p.dispose();
 
-        for (Mob m : mobList)
+        for (Mob m : MobInstances.getInstance())
             m.dispose();
     }
 

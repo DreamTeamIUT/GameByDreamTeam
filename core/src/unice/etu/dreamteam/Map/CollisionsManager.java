@@ -222,6 +222,7 @@ public class CollisionsManager {
                 Zone zone = Zones.getInstance().get(rectangleMapObject.getName());
 
                 Debug.log("ZONE", zone.getName() + ", isIn : " + String.valueOf(zone.isIn()));
+                Debug.log("ZONE", rectangleMapObject.getRectangle().toString());
 
                 if (zone.isIn()) {
                     if (!Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle(true)) && zone.canLeave()) {
@@ -229,7 +230,7 @@ public class CollisionsManager {
                     }
                 } else {
                     if (Intersector.overlaps(rectangleMapObject.getRectangle(), p.getRectangle(true)) && zone.canEnter()) {
-                        zone.onEnter(p.getBatch(), p.getShapeRender());
+                        zone.onEnter(rectangleMapObject.getRectangle(), p.getBatch(), p.getShapeRender());
                     }
                 }
             }

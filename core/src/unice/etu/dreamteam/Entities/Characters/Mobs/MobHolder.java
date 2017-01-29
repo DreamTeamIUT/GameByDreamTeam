@@ -55,10 +55,10 @@ public class MobHolder extends CharacterHolder {
         if(forces.areEnough()) {
             Mob mob = new Mob(this);
             mob.setBatch(batch);
-
             mob.setShapeRenderer(shapeRenderer);
             mob.setDebug(GameInformation.getDebugMode());
-            // mob.getAnimationManager().setAnimation("STOPPED");
+            mob.getAnimationManager().setAnimation("STOPPED");
+
             return mob;
         }
 

@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class Debug { //que du statique, raccourci debug.
     private static final Boolean isDebug = true;
 
-    private static final String[] allowedTags = {"ZONE", "SoundEntity"};
+    private static final String[] allowedTags = {"ZONE", "SoundEntity", "MobInstances"};
 
     public static void log(String tag, String message) {
         if(isDebug && allowedTag(tag))
@@ -64,7 +64,7 @@ public class Debug { //que du statique, raccourci debug.
     }
 
     public static void vector(String tag, Vector3 vector3) {
-        log(tag + "-Vector3", "x:" + vector3.x + " y:" + vector3.y + " z:" + vector3.z);
+        log(tag, "x:" + vector3.x + " y:" + vector3.y + " z:" + vector3.z);
     }
 
     public static void vector(Vector3 vector3) {
@@ -72,7 +72,7 @@ public class Debug { //que du statique, raccourci debug.
     }
 
     public static void vector(String tag, Vector2 vector2) {
-        log(tag + "-Vector2", "x:" + vector2.x + " y:" + vector2.y);
+        log(tag, "x:" + vector2.x + " y:" + vector2.y);
     }
 
     public static void vector(Vector2 vector2) {
