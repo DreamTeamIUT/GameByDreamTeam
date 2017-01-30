@@ -21,7 +21,9 @@ public class Main extends Application {
         c.setStage(primaryStage1);
 
         primaryStage1.setTitle("PackageCreator");
-        primaryStage1.setScene(new Scene(root, 600, 500, Color.BLACK));
+        primaryStage1.setScene(new Scene(root, 700, 600, Color.BLACK));
+        primaryStage1.setMaxHeight(600);
+        primaryStage1.setMaxWidth(700);
         primaryStage1.show();
 
         primaryStage = primaryStage1;

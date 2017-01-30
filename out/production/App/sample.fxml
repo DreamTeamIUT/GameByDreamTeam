@@ -12,30 +12,30 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <Pane id="contain1" fx:id="contain1" layoutY="32.0" prefHeight="468.0" prefWidth="600.0">
+      <Pane id="contain1" fx:id="contain1" layoutX="4.0" layoutY="30.0" prefHeight="492.0" prefWidth="700.0" visible="false">
          <children>
-            <Text fontSmoothingType="LCD" layoutX="110.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur PackageCreator, logiciel de création de packages, vous pouvez créer vos propres packages pour Fallen Land." textAlignment="JUSTIFY" wrappingWidth="379.6630859375">
+            <Text fontSmoothingType="LCD" layoutX="153.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur PackageCreator, logiciel de création de packages, vous pouvez créer vos propres packages pour Fallen Land." textAlignment="JUSTIFY" wrappingWidth="379.6630859375">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text layoutX="110.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous aurez la possibilité de customiser votre propre package en y ajoutant des Maps, des Stories, des Characters, des images et des items." textAlignment="JUSTIFY" wrappingWidth="379.6630918979645">
+            <Text layoutX="153.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous aurez la possibilité de customiser votre propre package en y ajoutant des Maps, des Stories, des Characters, des images et des items." textAlignment="JUSTIFY" wrappingWidth="379.6630918979645">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text layoutX="110.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour ce faire, vous pouvez commencer à créer votre package en cliquant sur File puis new File." textAlignment="JUSTIFY" wrappingWidth="379.6630909200758">
+            <Text layoutX="153.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour ce faire, vous pouvez commencer à créer votre package en cliquant sur File puis new File." textAlignment="JUSTIFY" wrappingWidth="379.6630909200758">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <Pane id="contain2" fx:id="contain2" layoutY="32.0" prefHeight="468.0" prefWidth="600.0" visible="false">
+      <Pane id="contain2" fx:id="contain2" layoutY="32.0" prefHeight="569.0" prefWidth="700.0">
          <children>
-            <Accordion prefHeight="468.0" prefWidth="202.0">
+            <Accordion prefHeight="569.0" prefWidth="202.0">
               <panes>
                 <TitledPane id="mapsPreview" fx:id="mapsPreview" animated="false" prefHeight="383.0" prefWidth="202.0" text="Maps preview">
                   <content>
@@ -87,21 +87,39 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane id="StoriesPreview" fx:id="storiesPreview" animated="false" layoutX="10.0" layoutY="72.0" text="Stories preview">
+                  <TitledPane id="soundsPreview" fx:id="modelsPreview" animated="false" layoutX="10.0" layoutY="165.0" text="Models preview">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView id="list_stories" fx:id="list_stories" prefHeight="316.0" prefWidth="202.0" />
+                              <ListView id="list_model" fx:id="list_model" prefHeight="316.0" prefWidth="202.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane id="bulletsPreview" fx:id="bulletsPreview" animated="false" layoutX="10.0" layoutY="196.0" text="Bullets preview">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView id="list_bullet" fx:id="list_bullet" prefHeight="316.0" prefWidth="202.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane id="StoriesPreview" fx:id="storiesPreview" animated="false" layoutX="10.0" layoutY="72.0" prefHeight="400.0" prefWidth="202.0" text="Stories preview">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ListView id="list_stories" fx:id="list_stories" prefHeight="319.0" prefWidth="202.0" />
                            </children>
                         </AnchorPane>
                      </content>
                   </TitledPane>
               </panes>
             </Accordion>
-            <Button id="buttonStory" fx:id="buttonStory" layoutX="497.0" layoutY="436.0" mnemonicParsing="false" onAction="#onActionMenuCreateStory" prefHeight="32.0" prefWidth="103.0" text="Create Story" />
+            <Button id="buttonStory" fx:id="buttonStory" layoutX="597.0" layoutY="535.0" mnemonicParsing="false" onAction="#onActionMenuCreateStory" prefHeight="32.0" prefWidth="103.0" text="Create Story" />
          </children>
       </Pane>
-      <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="600.0">
+      <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="700.0">
         <menus>
             <Menu id="MenuFile" fx:id="MenuMap1" mnemonicParsing="false" text="File">
                <items>
@@ -144,6 +162,18 @@
                <items>
                   <MenuItem id="addSounds" fx:id="addSounds" mnemonicParsing="false" onAction="#onActionMenuAddSounds" onMenuValidation="#onActionMenuAddSounds" text="Add new sound" />
                   <MenuItem id="selectSounds" fx:id="selectSounds" mnemonicParsing="false" onAction="#onActionMenuSelectSound" onMenuValidation="#onActionMenuSelectSound" text="Add sound" />
+               </items>
+            </Menu>
+            <Menu id="menuModels" fx:id="menuModels" disable="true" mnemonicParsing="false" text="Models">
+               <items>
+                  <MenuItem id="addModels" fx:id="addModels" mnemonicParsing="false" text="Add new model" />
+                  <MenuItem id="selectModels" fx:id="selectModels" mnemonicParsing="false" text="Add model" />
+               </items>
+            </Menu>
+            <Menu id="menuBullets" fx:id="menuBullets" disable="true" mnemonicParsing="false" text="Bullets">
+               <items>
+                  <MenuItem id="addBullets" fx:id="addBullets" mnemonicParsing="false" text="Add new bullet" />
+                  <MenuItem id="selectBullets" fx:id="selectBullets" mnemonicParsing="false" text="Add bullet" />
                </items>
             </Menu>
         </menus>

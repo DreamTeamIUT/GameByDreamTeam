@@ -8,20 +8,17 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,6 +45,11 @@ public class Controller implements Initializable {
     @FXML
     private Menu menuItems;
     @FXML
+    private Menu menuModels;
+    @FXML
+    private Menu menuBullets;
+
+    @FXML
     private ListView list_map;
     @FXML
     private ListView list_characters;
@@ -61,6 +63,11 @@ public class Controller implements Initializable {
     private ListView list_mobs;
     @FXML
     private ListView list_sound;
+    @FXML
+    private ListView list_bullet;
+    @FXML
+    private ListView list_model;
+
     @FXML
     private Button buttonStory;
 
@@ -107,6 +114,11 @@ public class Controller implements Initializable {
                 deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/" + list_weapons.getSelectionModel().getSelectedItem() + ".json");
                 list_weapons.getItems().remove(list_weapons.getSelectionModel().getSelectedItem());
                 canCreateStory();
+
+                deleteFile("Packages/" + primaryStage.getTitle() + "/" + menuBullets.getText().toLowerCase() + "/" + list_bullet.getSelectionModel().getSelectedItem() + ".json");
+                list_bullet.getItems().remove(list_bullet.getSelectionModel().getSelectedItem());
+                canCreateStory();
+
             }
         });
 
@@ -117,8 +129,8 @@ public class Controller implements Initializable {
         list_mobs.setContextMenu(contextMenu);
         list_weapons.setContextMenu(contextMenu);
         list_sound.setContextMenu(contextMenu);
-
-        canCreateStory();
+        list_bullet.setContextMenu(contextMenu);
+        list_model.setContextMenu(contextMenu);
     }
 
     public void deleteFile(String path) {
@@ -132,12 +144,27 @@ public class Controller implements Initializable {
 
         File[] fileList = contentDir.listFiles();
         for (int i = 0; i < fileList.length; i++) {
-            list.put(fileList[i].getName(), fileList[i]);
-            System.out.println(fileList[i].getName());
+            if (!fileList[i].getName().endsWith("png")) {
+                list.put(fileList[i].getName(), fileList[i]);
+                System.out.println(fileList[i].getName());
+            }
         }
     }
 
-    private String[] returnFiles (String directoryPath){
+    private void readDirForMaps(String path, HashMap<String, File> list) {
+
+        File contentDir = new File(path);
+
+        File[] fileList = contentDir.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (!fileList[i].getName().endsWith("json")) {
+                list.put(fileList[i].getName(), fileList[i]);
+                System.out.println(fileList[i].getName());
+            }
+        }
+    }
+
+    private String[] returnFiles(String directoryPath) {
         File file = new File(directoryPath);
         File[] files = file.listFiles();
         String[] filesName = new String[files.length];
@@ -158,7 +185,7 @@ public class Controller implements Initializable {
         return false;
     }
 
-    public boolean compareArray(String[] array, String[] ArrayToCompare){
+    public boolean compareArray(String[] array, String[] ArrayToCompare) {
         ArrayList<String> arrayStrings = new ArrayList<>();
 
         System.out.println(Arrays.toString(array));
@@ -166,18 +193,18 @@ public class Controller implements Initializable {
 
         Boolean found;
 
-        for(int i=0; i<array.length; i++){
+        for (int i = 0; i < array.length; i++) {
             found = false;
 
-            for(int j=0; j<ArrayToCompare.length;j++){
-                if(array[i].equals(ArrayToCompare[j]))
+            for (int j = 0; j < ArrayToCompare.length; j++) {
+                if (array[i].equals(ArrayToCompare[j]))
                     found = true;
             }
 
             if (found)
                 arrayStrings.add(array[i]);
 
-            System.out.println("Is found ? "+ found);
+            System.out.println("Is found ? " + found);
             System.out.println(arrayStrings.toString());
 
         }
@@ -185,12 +212,13 @@ public class Controller implements Initializable {
         return arrayStrings.size() >= ArrayToCompare.length;
     }
 
-    public void copyArray( ArrayList<String> arraylist, String[] arrayToCopy) {
+    public void copyArray(ArrayList<String> arraylist, String[] arrayToCopy) {
         int i;
         for (i = 0; i < arrayToCopy.length; i++) {
             arraylist.add(i, arrayToCopy[i]);
         }
     }
+
     public void onActionMenuCreateStory() {
         // Create the custom dialog.
         Dialog<String[]> dialog = new Dialog<>();
@@ -200,11 +228,9 @@ public class Controller implements Initializable {
 // Set the icon (must be included in the project).
         //dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
 
-// Set the button types.
         ButtonType CreateButtonType = new ButtonType("Create story", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(CreateButtonType, ButtonType.CANCEL);
 
-// Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -280,114 +306,135 @@ public class Controller implements Initializable {
                 else_dialog.setContentText("Vous avez surement rentré de mauvaises informations, verifiez que vous les avez bien ajouté dans le package");
                 else_dialog.showAndWait();*/
             //} else {
-                JSONObject obj = new JSONObject();
-                JSONObject sounds = new JSONObject();
-                JSONObject soundsRun = new JSONObject();
-                JSONObject soundsEnterZone = new JSONObject();
-                JSONObject zones = new JSONObject();
-                JSONObject zone1 = new JSONObject();
-                JSONObject attackObject = new JSONObject();
-                JSONObject spawnitemsObject = new JSONObject();
-                JSONObject gates = new JSONObject();
-                JSONObject gate01 = new JSONObject();
-                JSONObject gate02 = new JSONObject();
+            JSONObject obj = new JSONObject();
+            JSONObject sounds = new JSONObject();
+            JSONObject soundsRun = new JSONObject();
+            JSONObject soundsEnterZone = new JSONObject();
+            JSONObject zones = new JSONObject();
+            JSONObject zone1 = new JSONObject();
+            JSONObject attackObject = new JSONObject();
+            JSONObject spawnitemsObject = new JSONObject();
+            JSONObject gates = new JSONObject();
+            JSONObject gate01 = new JSONObject();
+            JSONObject gate02 = new JSONObject();
 
 
-                obj.put("name", result.get()[0]);
-                obj.put("minimum level", result.get()[1]);
-                obj.put("default-map", result.get()[2]);
+            obj.put("name", result.get()[0]);
+            obj.put("minimum level", result.get()[1]);
+            obj.put("default-map", result.get()[2]);
 
-                JSONArray list_map = new JSONArray();
-                JSONArray list_weapons = new JSONArray();
-                JSONArray list_bullets = new JSONArray();
-                JSONArray list_mobs = new JSONArray();
-                JSONArray list_sounds = new JSONArray();
-                JSONArray attack = new JSONArray();
-                JSONArray spawnitems = new JSONArray();
+            JSONArray list_map = new JSONArray();
+            JSONArray list_weapons = new JSONArray();
+            JSONArray list_bullets = new JSONArray();
+            JSONArray list_mobs = new JSONArray();
+            JSONArray list_sounds = new JSONArray();
+            JSONArray attack = new JSONArray();
+            JSONArray spawnitems = new JSONArray();
 
-                String[] mapsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
-                String[] weaponsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
-                String[] mobsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
+            String[] mapsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
+            String[] weaponsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
+            String[] mobsArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
 
-                for (int i = 0; i < mapsArray.length; i++) {
-                    list_map.add(mapsArray[i] + ".json");
-                }
+            for (int i = 0; i < mapsArray.length; i++) {
+                list_map.add(mapsArray[i] + ".json");
+            }
 
-                obj.put("maps", list_map);
+            obj.put("maps", list_map);
 
-                for (int i = 0; i < weaponsArray.length; i++) {
-                    list_weapons.add(weaponsArray[i] + ".json");
-                }
+            for (int i = 0; i < weaponsArray.length; i++) {
+                list_weapons.add(weaponsArray[i] + ".json");
+            }
 
-                obj.put("weapons", list_weapons);
+            obj.put("weapons", list_weapons);
 
-                for (int i = 0; i < mobsArray.length; i++) {
-                    list_mobs.add(mobsArray[i] + ".json");
-                }
+            for (int i = 0; i < mobsArray.length; i++) {
+                list_mobs.add(mobsArray[i] + ".json");
+            }
 
-                obj.put("mobs", list_mobs);
-                list_bullets.add("bullet01.json");
-                obj.put("bullets", list_bullets);
-
-
-                soundsRun.put("src", runSound.getValue() + ".mp3");
-                soundsEnterZone.put("src", enterZoneSound.getValue() + ".mp3");
-                sounds.put("RUN", soundsRun);
-                sounds.put("ENTER_ZONE", soundsEnterZone);
-                obj.put("sounds", sounds);
-
-                attackObject.put("mobName", "mob01");
-                attackObject.put("force", 1);
-                attackObject.put("count", 10);
-                spawnitemsObject.put("type", "border-left");
-                spawnitemsObject.put("rotate", 0);
-                spawnitemsObject.put("item", "fence");
-                attack.add(attackObject);
-                spawnitems.add(spawnitemsObject);
-                zone1.put("attack", attack);
-                zone1.put("spawnitems", spawnitems);
-                zone1.put("sound", "");
-                zone1.put("maxEnter", 2);
-                zone1.put("maxExecute", 2);
-                zone1.put("general", true);
-                zone1.put("blocked", false);
-                zone1.put("maxRevive", 2);
-                zone1.put("time", 600);
-                zones.put("ZONE1", zone1);
-                obj.put("zones", zones);
+            obj.put("mobs", list_mobs);
+            list_bullets.add("bullet01.json");
+            obj.put("bullets", list_bullets);
 
 
-                gate01.put("goto", "maison01:GATE02");
-                gate01.put("isOpen", true);
-                gate02.put("goto", "map02:GATE01");
-                gate02.put("isOpen", true);
-                gates.put("GATE01", gate01);
-                gates.put("GATE02", gate02);
-                obj.put("gates", gates);
+            soundsRun.put("src", runSound.getValue() + ".mp3");
+            soundsEnterZone.put("src", enterZoneSound.getValue() + ".mp3");
+            sounds.put("RUN", soundsRun);
+            sounds.put("ENTER_ZONE", soundsEnterZone);
+            obj.put("sounds", sounds);
 
-                //list.add("msg 1");
-                //list.add("msg 2");
-                //list.add("msg 3");
+            attackObject.put("mobName", "mob01");
+            attackObject.put("force", 1);
+            attackObject.put("count", 10);
+            spawnitemsObject.put("type", "border-left");
+            spawnitemsObject.put("rotate", 0);
+            spawnitemsObject.put("item", "fence");
+            attack.add(attackObject);
+            spawnitems.add(spawnitemsObject);
+            zone1.put("attack", attack);
+            zone1.put("spawnitems", spawnitems);
+            zone1.put("sound", "");
+            zone1.put("maxEnter", 2);
+            zone1.put("maxExecute", 2);
+            zone1.put("general", true);
+            zone1.put("blocked", false);
+            zone1.put("maxRevive", 2);
+            zone1.put("time", 600);
+            zones.put("ZONE1", zone1);
+            obj.put("zones", zones);
 
-                //obj.put("messages", list);
 
-                try {
+            gate01.put("goto", "maison01:GATE02");
+            gate01.put("isOpen", true);
+            gate02.put("goto", "map02:GATE01");
+            gate02.put("isOpen", true);
+            gates.put("GATE01", gate01);
+            gates.put("GATE02", gate02);
+            obj.put("gates", gates);
 
-                    FileWriter file = new FileWriter("Packages/" + primaryStage.getTitle() + "/stories/" + result.get()[0] + ".json");
-                    file.write(obj.toJSONString());
-                    file.flush();
-                    file.close();
-                    this.list_stories.getItems().add(result.get()[0]);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            //Edition fichier info.json.
+            JSONObject info = new JSONObject();
+            JSONArray player = new JSONArray();
 
-                System.out.print(obj);
+            String[] charactersArray = returnFiles("Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase() + "/");
+
+            info.put("name", primaryStage.getTitle());
+            info.put("displayName", primaryStage.getTitle());
+            info.put("creator", "packageCreator");
+            info.put("version", "0.0.0.0.1");
+            info.put("last-edit", "");
+            for (int i = 0; i < charactersArray.length; i++) {
+                player.add(charactersArray[i] + ".json");
+            }
+            info.put("player", player);
+
+            //list.add("msg 1");
+            //list.add("msg 2");
+            //list.add("msg 3");
+
+            //obj.put("messages", list);
+
+            try {
+
+                FileWriter file = new FileWriter("Packages/" + primaryStage.getTitle() + "/stories/" + result.get()[0] + ".json");
+                file.write(obj.toJSONString());
+                file.flush();
+                file.close();
+                this.list_stories.getItems().add(result.get()[0]);
+
+                FileWriter file_info = new FileWriter("Packages/" + primaryStage.getTitle() + "/" + "info.json");
+                file_info.write(info.toJSONString());
+                file.flush();
+                file.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.print(obj);
 
             //}
-        }
-        else {
+        } else {
             Alert else_dialog = new Alert(Alert.AlertType.ERROR);
             else_dialog.setTitle("Error");
             else_dialog.setHeaderText("Erreur dans la saisie des informations");
@@ -395,9 +442,10 @@ public class Controller implements Initializable {
             else_dialog.showAndWait();
         }
     }
+
     public void onActionMenuSelectMap() {
         HashMap<String, File> list = new HashMap<>();
-        readDir("Packages/DEFAULT/maps/", list);
+        readDirForMaps("Packages/DEFAULT/maps/", list);
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("", list.keySet());
         dialog.setTitle("Add map");
@@ -409,8 +457,18 @@ public class Controller implements Initializable {
         if (result.isPresent()) {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
-                addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
-                this.list_map.getItems().add(result.get().replace(".tmx","").replace(".json",""));
+                try {
+                    addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
+                    String image = list.get(result.get()).getName().replace(".tmx", ".json");
+                    File source = new File("Packages/DEFAULT/" + menuMap.getText().toLowerCase() + "/" + image);
+                    File dest = new File("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/" + image);
+
+                    Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    this.list_items.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
+                    canCreateStory();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
@@ -437,7 +495,7 @@ public class Controller implements Initializable {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase() + "/");
-                this.list_characters.getItems().add(result.get().replace(".tmx","").replace(".json",""));
+                this.list_characters.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
@@ -461,11 +519,23 @@ public class Controller implements Initializable {
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
+
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
-                addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase() + "/");
-                this.list_items.getItems().add(result.get().replace(".tmx","").replace(".json",""));
-                canCreateStory();
+                try {
+                    addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase() + "/");
+                    FileReader file;
+
+                    String image = list.get(result.get()).getName().replace(".json", ".png");
+                    File source = new File("Packages/DEFAULT/images/" + menuItems.getText().toLowerCase() + "/" + image);
+                    File dest = new File("Packages/" + primaryStage.getTitle() + "/images/" + menuItems.getText().toLowerCase() + "/" + image);
+
+                    Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    this.list_items.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
+                    canCreateStory();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
                 else_dialog.setTitle("Error");
@@ -491,7 +561,7 @@ public class Controller implements Initializable {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuStories.getText().toLowerCase() + "/");
-                this.list_stories.getItems().add(result.get().replace(".tmx","").replace(".json",""));
+                this.list_stories.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
@@ -518,7 +588,11 @@ public class Controller implements Initializable {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
-                this.list_weapons.getItems().add(result.get().replace(".tmx","").replace(".json",""));
+                File file = new File("Packages/DEFAULT/" + menuWeapons.getText().toLowerCase() + "/" + list.get(result.get()).getName().replace(".json", ".png"));
+                System.out.println("file : " + file);
+                System.out.println("fileName : " + file.getName());
+                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
+                this.list_weapons.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
@@ -544,8 +618,13 @@ public class Controller implements Initializable {
         if (result.isPresent()) {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
+                System.out.println();
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
-                this.list_mobs.getItems().add(result.get().replace(".tmx","").replace(".json",""));
+                File file = new File("Packages/DEFAULT/" + menuMobs.getText().toLowerCase() + "/" + list.get(result.get()).getName().replace(".json", ".png"));
+                System.out.println("file : " + file);
+                System.out.println("fileName : " + file.getName());
+                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
+                this.list_mobs.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
@@ -572,13 +651,78 @@ public class Controller implements Initializable {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/");
-                this.list_sound.getItems().add(result.get().replace(".tmx","").replace(".json","").replace(".mp3", ""));
+                this.list_sound.getItems().add(result.get().replace(".tmx", "").replace(".json", "").replace(".mp3", ""));
                 canCreateStory();
             } else {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
                 else_dialog.setTitle("Error");
                 else_dialog.setHeaderText("Erreur dans la selection de la musique");
                 else_dialog.setContentText("Vous êtes obligé de selectionner une musique si vous souhaitez ajouter");
+                else_dialog.showAndWait();
+            }
+        }
+    }
+
+    public void onActionMenuSelectModels() {
+        HashMap<String, File> list = new HashMap<>();
+        readDir("Packages/DEFAULT/models/", list);
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("", list.keySet());
+        dialog.setTitle("Add Models");
+        dialog.setHeaderText("Ajouter des modèles de personnage");
+        dialog.setContentText("Selectionnez:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            System.out.println("Your choice: " + result.get());
+            if (!result.get().equals("")) {
+                addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuModels.getText().toLowerCase() + "/");
+                this.list_model.getItems().add(result.get().replace(".tmx", "").replace(".json", "").replace(".mp3", ""));
+                canCreateStory();
+            } else {
+                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                else_dialog.setTitle("Error");
+                else_dialog.setHeaderText("Erreur dans la selection du model");
+                else_dialog.setContentText("Vous êtes obligé de selectionner un modèle si vous souhaitez ajouter");
+                else_dialog.showAndWait();
+            }
+        }
+    }
+
+    public void onActionMenuSelectBullets() {
+        HashMap<String, File> list = new HashMap<>();
+        readDir("Packages/DEFAULT/bullets/", list);
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("", list.keySet());
+        dialog.setTitle("Add Models");
+        dialog.setHeaderText("Ajouter des  de personnage");
+        dialog.setContentText("Selectionnez:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            System.out.println("Your choice: " + result.get());
+            if (!result.get().equals("")) {
+                try {
+                    addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuBullets.getText().toLowerCase() + "/");
+                    FileReader file;
+
+                    String image = list.get(result.get()).getName().replace(".json", ".png");
+                    File source = new File("Packages/DEFAULT/images/" + menuBullets.getText().toLowerCase() + "/" + image);
+                    File dest = new File("Packages/" + primaryStage.getTitle() + "/images/" + menuBullets.getText().toLowerCase() + "/" + image);
+
+                    Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    this.list_bullet.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
+                    canCreateStory();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                else_dialog.setTitle("Error");
+                else_dialog.setHeaderText("Erreur dans la selection du model");
+                else_dialog.setContentText("Vous êtes obligé de selectionner un modèle si vous souhaitez ajouter");
                 else_dialog.showAndWait();
             }
         }
@@ -598,19 +742,21 @@ public class Controller implements Initializable {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
-            String fileName = file.getName();
-            if (fileName.endsWith(".tmx")) {
-                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
-                this.list_map.getItems().add(fileName.substring(0, fileName.length() - 4));
-                canCreateStory();
-                // ... user chose OK
-            } else {
-                System.out.println("JAVSVSVSVSV");
-                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
-                else_dialog.setTitle("Error");
-                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers Tiled sont acceptés : fichiers d'extension .tmtx");
-                else_dialog.showAndWait();
+            if (file != null) {
+                String fileName = file.getName();
+                if (fileName.endsWith(".tmx")) {
+                    addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
+                    this.list_map.getItems().add(fileName.substring(0, fileName.length() - 4));
+                    canCreateStory();
+                    // ... user chose OK
+                } else {
+                    System.out.println("JAVSVSVSVSV");
+                    Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                    else_dialog.setTitle("Error");
+                    else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                    else_dialog.setContentText("Seuls les fichiers Tiled sont acceptés : fichiers d'extension .tmtx");
+                    else_dialog.showAndWait();
+                }
             }
         } else {
             dialog.close();
@@ -631,19 +777,21 @@ public class Controller implements Initializable {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
-            String fileName = file.getName();
-            if (fileName.endsWith(".json")) {
-                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase() + "/");
-                this.list_characters.getItems().add(fileName.substring(0, fileName.length() - 5));
-                canCreateStory();
-                // ... user chose OK
-            } else {
-                System.out.println("JAVSVSVSVSV");
-                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
-                else_dialog.setTitle("Error");
-                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichiers d'extension .json");
-                else_dialog.showAndWait();
+            if (file != null) {
+                String fileName = file.getName();
+                if (fileName.endsWith(".json")) {
+                    addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuCharacter.getText().toLowerCase() + "/");
+                    this.list_characters.getItems().add(fileName.substring(0, fileName.length() - 5));
+                    canCreateStory();
+                    // ... user chose OK
+                } else {
+                    System.out.println("JAVSVSVSVSV");
+                    Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                    else_dialog.setTitle("Error");
+                    else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                    else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichiers d'extension .json");
+                    else_dialog.showAndWait();
+                }
             }
         } else {
             //user chose close
@@ -664,19 +812,21 @@ public class Controller implements Initializable {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
-            String fileName = file.getName();
-            if (fileName.endsWith(".json")) {
-                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase() + "/");
-                this.list_items.getItems().add(fileName.substring(0, fileName.length() - 5));
-                canCreateStory();
-                // ... user chose OK
-            } else {
-                System.out.println("JAVSVSVSVSV");
-                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
-                else_dialog.setTitle("Error");
-                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
-                else_dialog.showAndWait();
+            if (file != null) {
+                String fileName = file.getName();
+                if (fileName.endsWith(".json")) {
+                    addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase() + "/");
+                    this.list_items.getItems().add(fileName.substring(0, fileName.length() - 5));
+                    canCreateStory();
+                    // ... user chose OK
+                } else {
+                    System.out.println("JAVSVSVSVSV");
+                    Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                    else_dialog.setTitle("Error");
+                    else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                    else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
+                    else_dialog.showAndWait();
+                }
             }
         } else {
             //user chose close
@@ -697,19 +847,21 @@ public class Controller implements Initializable {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
-            String fileName = file.getName();
-            if (fileName.endsWith(".json")) {
-                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuStories.getText().toLowerCase() + "/");
-                this.list_stories.getItems().add(fileName.substring(0, fileName.length() - 5));
-                canCreateStory();
-                // ... user chose OK
-            } else {
-                System.out.println("JAVSVSVSVSV");
-                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
-                else_dialog.setTitle("Error");
-                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
-                else_dialog.showAndWait();
+            if (file != null) {
+                String fileName = file.getName();
+                if (fileName.endsWith(".json")) {
+                    addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuStories.getText().toLowerCase() + "/");
+                    this.list_stories.getItems().add(fileName.substring(0, fileName.length() - 5));
+                    canCreateStory();
+                    // ... user chose OK
+                } else {
+                    System.out.println("JAVSVSVSVSV");
+                    Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                    else_dialog.setTitle("Error");
+                    else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                    else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
+                    else_dialog.showAndWait();
+                }
             }
         } else {
             //user chose close
@@ -730,18 +882,21 @@ public class Controller implements Initializable {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
-            String fileName = file.getName();
-            if (fileName.endsWith(".json")) {
-                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
-                this.list_weapons.getItems().add(fileName.substring(0, fileName.length() - 5));
-                canCreateStory();
-                // ... user chose OK
-            } else {
-                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
-                else_dialog.setTitle("Error");
-                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
-                else_dialog.showAndWait();
+            if (file != null) {
+                String fileName = file.getName();
+                if (fileName.endsWith(".json")) {
+                    addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
+                    this.list_weapons.getItems().add(fileName.substring(0, fileName.length() - 5));
+                    canCreateStory();
+                    // ... user chose OK
+                } else {
+                    Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                    else_dialog.setTitle("Error");
+                    else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                    else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
+                    else_dialog.showAndWait();
+
+                }
             }
         } else {
             //user chose close
@@ -762,22 +917,25 @@ public class Controller implements Initializable {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.get() == parcourir) {
             File file = fileChooser.showOpenDialog(primaryStage);
-            String fileName = file.getName();
-            if (fileName.endsWith(".mp3")) {
-                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/");
-                this.list_sound.getItems().add(fileName.substring(0, fileName.length() - 5));
-                canCreateStory();
-                // ... user chose OK
-            } else {
-                System.out.println("JAVSVSVSVSV");
-                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
-                else_dialog.setTitle("Error");
-                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
-                else_dialog.setContentText("Seuls les fichiers audio sont acceptés : fichier d'extension .mp3");
-                else_dialog.showAndWait();
+            if (file != null) {
+                String fileName = file.getName();
+
+                if (fileName.endsWith(".mp3")) {
+                    addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuSound.getText().toLowerCase() + "/");
+                    this.list_sound.getItems().add(fileName.substring(0, fileName.length() - 5));
+                    canCreateStory();
+                    // ... user chose OK
+                } else {
+                    System.out.println("JAVSVSVSVSV");
+                    Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                    else_dialog.setTitle("Error");
+                    else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                    else_dialog.setContentText("Seuls les fichiers audio sont acceptés : fichier d'extension .mp3");
+                    else_dialog.showAndWait();
+                }
             }
         } else {
-            //user chose close
+            dialog.close();
         }
     }
 
@@ -813,6 +971,70 @@ public class Controller implements Initializable {
         }
     }
 
+    public void onActionMenuAddModels() {
+
+        FileChooser fileChooser = new FileChooser();
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        dialog.setTitle("Add model");
+        dialog.setHeaderText("Ajouter un modèle en cliquant sur parcourir");
+        dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getButtonTypes().setAll(parcourir, close);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.get() == parcourir) {
+            File file = fileChooser.showOpenDialog(primaryStage);
+            String fileName = file.getName();
+            if (fileName.endsWith(".json")) {
+                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuModels.getText().toLowerCase() + "/");
+                this.list_model.getItems().add(fileName.substring(0, fileName.length() - 5));
+                canCreateStory();
+                // ... user chose OK
+            } else {
+                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                else_dialog.setTitle("Error");
+                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
+                else_dialog.showAndWait();
+            }
+        } else {
+            //user chose close
+        }
+    }
+
+    public void onActionMenuAddBullets() {
+
+        FileChooser fileChooser = new FileChooser();
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        dialog.setTitle("Add un projectile");
+        dialog.setHeaderText("Ajouter un projectile en cliquant sur parcourir");
+        dialog.setContentText("Rappel : Fichiers d'extension json pour ce type d'élement");
+        ButtonType parcourir = new ButtonType("Parcourir", ButtonBar.ButtonData.OK_DONE);
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getButtonTypes().setAll(parcourir, close);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.get() == parcourir) {
+            File file = fileChooser.showOpenDialog(primaryStage);
+            String fileName = file.getName();
+            if (fileName.endsWith(".json")) {
+                addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuBullets.getText().toLowerCase() + "/");
+                this.list_bullet.getItems().add(fileName.substring(0, fileName.length() - 5));
+                canCreateStory();
+                // ... user chose OK
+            } else {
+                Alert else_dialog = new Alert(Alert.AlertType.ERROR);
+                else_dialog.setTitle("Error");
+                else_dialog.setHeaderText("Erreur, mauvais format de fichier");
+                else_dialog.setContentText("Seuls les fichiers json sont acceptés : fichier d'extension .json");
+                else_dialog.showAndWait();
+            }
+        } else {
+            //user chose close
+        }
+    }
+
     public void addFiles(File file, String path) {
         try {
             File dest = new File(path + file.getName());
@@ -833,16 +1055,23 @@ public class Controller implements Initializable {
 
         if (result.isPresent()) {
             primaryStage.setTitle(String.valueOf(result).substring(9, String.valueOf(result).length() - 1));
-            this.list = new String[]{menuMap.getText().toLowerCase(), menuItems.getText().toLowerCase(), menuCharacter.getText().toLowerCase(), "stories", menuWeapons.getText().toLowerCase(), menuMobs.getText().toLowerCase(), menuSound.getText().toLowerCase()};
+            this.list = new String[]{menuMap.getText().toLowerCase(), menuItems.getText().toLowerCase(), menuCharacter.getText().toLowerCase(), "stories", menuWeapons.getText().toLowerCase(), menuMobs.getText().toLowerCase(), menuSound.getText().toLowerCase(), "images", menuBullets.getText().toLowerCase(), menuModels.getText().toLowerCase()};
+            String[] listDirOfImages = new String[]{"bullets", "home", "individual_tiles", "items"};
 
             for (int i = 0; i < this.list.length; i++) {
                 File f = new File("Packages/" + primaryStage.getTitle() + "/" + this.list[i]);
                 f.mkdirs();
             }
 
-            String fileName = "Packages/" + primaryStage.getTitle() + "/" + primaryStage.getTitle() + ".json";
+            for (int i = 0; i < listDirOfImages.length; i++) {
+                File f = new File("Packages/" + primaryStage.getTitle() + "/images/" + listDirOfImages[i]);
+                f.mkdirs();
+            }
+
+            String fileName = "Packages/" + primaryStage.getTitle() + "/" + "info.json";
             File file = new File(fileName);
             SaveFile(primaryStage.getTitle(), file);
+
 
             this.contain1.setVisible(false);
             this.contain2.setVisible(true);
@@ -871,11 +1100,10 @@ public class Controller implements Initializable {
 
     }
 
-    public void canCreateStory(){
-        if(this.list_weapons.getItems().size() >= 1 && this.list_characters.getItems().size() >= 1 && this.list_map.getItems().size() >= 1 && this.list_mobs.getItems().size() >= 1 && this.list_sound.getItems().size() >= 1 && this.list_items.getItems().size() >= 1){
+    public void canCreateStory() {
+        if (this.list_weapons.getItems().size() >= 1 && this.list_characters.getItems().size() >= 1 && this.list_map.getItems().size() >= 1 && this.list_mobs.getItems().size() >= 1 && this.list_sound.getItems().size() >= 1 && this.list_items.getItems().size() >= 1 && this.list_bullet.getItems().size() >= 1 && this.list_model.getItems().size() >= 1) {
             buttonStory.setDisable(false);
-        }
-        else{
+        } else {
             buttonStory.setDisable(true);
         }
     }
