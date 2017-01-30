@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.Entity;
+import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
@@ -28,7 +29,9 @@ public class Bullet extends Entity {
         range = value.getInt("range", 0);
         damage = value.getInt("damage", 0);
 
-        texture = new Texture(Gdx.files.internal(GameInformation.getGamePackage().getPackagePath("images/bullets") + value.get("tile").getString("src")));
+        texture = Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images/bullets") + value.get("tile").getString("src"), Texture.class);
+
+        Debug.log("BULLET", texture.getHeight() +" " + texture.getWidth());
     }
 
     public Bullet.Graphic create(Vector2 source, Vector2 destination) {
@@ -64,10 +67,12 @@ public class Bullet extends Entity {
 
         public Graphic(Bullet bullet, Vector2 source, Vector2 destination) {
             this.bullet = bullet;
-            this.position = new Vector2(source.x, source.y);
+            this.position = new Vector2(source.x * 32, source.y * 32);
             this.finished = false;
 
             textureRegion = new TextureRegion(bullet.getTexture());
+
+            Debug.log("BULLET", textureRegion.getRegionHeight() +" " + texture.getWidth());
 
             calculatePath(source, destination);
         }
@@ -95,16 +100,16 @@ public class Bullet extends Entity {
             Debug.log("Weapon.Graphic", this.position.toString());
             //updatePositions();
 
+            /*
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(1, 0, 1f, 1);
             shapeRenderer.rect(position.x - 50, position.y + 50, 20, 20);
             shapeRenderer.end();
-
-            /*
-            spriteBatch.begin();
-            spriteBatch.draw(this.textureRegion, this.position.x, this.position.y);
-            spriteBatch.end();
             */
+
+            spriteBatch.begin();
+            spriteBatch.draw(bullet.getTexture(), this.position.x, this.position.y);
+            spriteBatch.end();
         }
 
         public void dispose() {

@@ -5,14 +5,17 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
+import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
-import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.MobInstances;
+import unice.etu.dreamteam.Entities.Items.Items;
+import unice.etu.dreamteam.Map.GraphicalInstances;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Entity;
 import unice.etu.dreamteam.Entities.Gates.Gate;
 import unice.etu.dreamteam.Entities.Gates.Gates;
 import unice.etu.dreamteam.Entities.Sounds.Sounds;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.Timers;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,11 +29,13 @@ public class Zone extends Entity {
     private ArrayList<JsonValue> gates;
     private ArrayList<String> sounds;
 
-    public final int maxEnter;
-    public final int maxExecute;
+    public int maxEnter;
+    public int maxExecute;
 
-    public final Boolean general;
-    public final Boolean blocked;
+    public Boolean general;
+    public Boolean blocked;
+
+    public int timeIn;
 
     private ZoneState zoneState;
 
@@ -51,6 +56,8 @@ public class Zone extends Entity {
 
         this.general = zone.getBoolean("general", true);
         this.blocked = zone.getBoolean("blocked", false);
+
+        this.timeIn = zone.getInt("time-in", -1);
 
         this.zoneState = new ZoneState();
     }
@@ -120,18 +127,16 @@ public class Zone extends Entity {
                     if(value.has("force"))
                         Mobs.getInstance().get(value.getString("mob")).setForce(value.getInt("force", 0));
 
-                    //TODO : set pos to mob by finding cases of the zone
-
                     for (int i = 0; i < value.getInt("count", 1); i++) {
                         Mob mob = (Mob)Mobs.getInstance().get(value.getString("mob")).create(spriteBatch, shapeRenderer);
                         mob.setCellPos(getRandomPosition(rectangle));
 
-                        MobInstances.getInstance().add(mob);
+                        GraphicalInstances.getInstance().getMobs().add(mob);
                     }
                 }
             }
 
-            Debug.log("MobInstances", String.valueOf(MobInstances.getInstance().size()));
+            Debug.log("GraphicalInstances", String.valueOf(GraphicalInstances.getInstance().getMobs().size()));
         }
     }
 
@@ -183,6 +188,23 @@ public class Zone extends Entity {
             for (String sound : this.sounds)
                 Sounds.getInstance().get(sound).play();
         }
+    }
+
+    public void setTimeIn(final Character character) {
+        if (this.timeIn > 0) {
+            final Vector2 oldPositions = character.getBackPos();
+
+            Timers.getInstance().setTimer(new Timers.TimerFunction() {
+                @Override
+                public void run() {
+                    character.setCellPos(oldPositions);
+                }
+            }, this.timeIn);
+        }
+    }
+
+    public void drawItems(Rectangle rectangle) {
+        GraphicalInstances.getInstance().getItemInstances().add(Items.getInstance().get("item01").addInstance(getRandomPosition(rectangle)));
     }
 
     private class ZoneState {

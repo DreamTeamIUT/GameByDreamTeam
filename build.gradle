@@ -47,8 +47,6 @@ project(":desktop") {
          compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
          compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
  */
-
-        compile "com.github.xaguzman:pathfinding:0.2.6"
     }
 }
 
@@ -103,6 +101,7 @@ project(":core") {
         /*compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"*/
+        compile "com.github.xaguzman:pathfinding:0.2.6"
     }
 }
 

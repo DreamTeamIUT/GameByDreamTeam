@@ -2,6 +2,7 @@ package unice.etu.dreamteam.Entities.Characters.Graphics;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,9 +17,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
+import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Entities.Weapons.Weapon;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.IsoTransform;
 import unice.etu.dreamteam.Utils.ModelConverter;
 
@@ -29,6 +32,7 @@ public class Character implements Disposable {
 
     protected Vector2 cellPos;
     protected Vector2 realPos;
+    protected Vector2 backPos;
     protected Boolean animating = false;
     protected int currentMove;
     protected int currentView;
@@ -46,8 +50,10 @@ public class Character implements Disposable {
         Debug.log("Load character");
         this.name = holder.getName();
         this.modelName = holder.getModelName();
+
         cellPos = new Vector2(0, 0);
         realPos = new Vector2(0, 0);
+        backPos = new Vector2(0, 0);
 
         animationManager = new ModelAnimationManager(modelName);
         modelConverter = new ModelConverter(animationManager);
@@ -65,6 +71,8 @@ public class Character implements Disposable {
             animating = true;
             currentMove = characterMove;
             currentView = characterMove;
+
+            backPos = cellPos;
 
             switch (characterMove) {
                 case CharacterMove.LEFT:
@@ -218,6 +226,10 @@ public class Character implements Disposable {
         this.cellPos.y = y;
     }
 
+    public Vector2 getBackPos() {
+        return backPos;
+    }
+
     private void update(float delta) {
         modelConverter.update(delta);
     }
@@ -255,8 +267,10 @@ public class Character implements Disposable {
 
         getBatch().end();
 
-        if(this.weapon != null)
-            this.weapon.render(delta);
+        if(this.weapon != null) {
+            this.weapon.setPosition(getRealPos());
+            this.weapon.render(getBatch(), getShapeRender(), delta);
+        }
     }
 
     protected void drawDebug() {
@@ -318,15 +332,11 @@ public class Character implements Disposable {
     }
 
     public Weapon.Graphic getWeapon() {
-
-
-        weapon.setElementPosition(getCellPos());
-
         return weapon;
     }
 
     public void setWeapon(Weapon weapon, int powerful) {
-        this.weapon = weapon.create(getBatch(), getShapeRender(), powerful);
+        this.weapon = weapon.create(powerful);
     }
 
     public void setWeapon(Weapon weapon) {

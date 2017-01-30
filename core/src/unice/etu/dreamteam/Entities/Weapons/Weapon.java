@@ -31,15 +31,15 @@ public class Weapon extends Entity {
         forces = new ForcesWeaponHolder(value.get("forces").iterator());
     }
 
-    public Graphic create(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, int powerful) {
+    public Graphic create(int powerful) {
         if(forces.areEnough())
-            return new Graphic(spriteBatch, shapeRenderer, getForce(powerful));
+            return new Graphic(getForce(powerful));
 
         return null;
     }
 
-    public Graphic create(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
-        return create(spriteBatch, shapeRenderer, -1);
+    public Graphic create() {
+        return create(-1);
     }
 
     public ForceWeaponHolder getForce(int powerful) {
@@ -50,36 +50,29 @@ public class Weapon extends Entity {
     }
 
     public class Graphic {
-        private SpriteBatch spriteBatch;
-        private ShapeRenderer shapeRenderer;
-
-        private Vector2 elementPosition;
         private Vector2 position;
 
         private ForceWeaponHolder forceWeaponHolder;
 
         private ArrayList<Bullet.Graphic> bullets;
 
-        public Graphic(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, ForceWeaponHolder forceWeaponHolder) {
-            this.spriteBatch = spriteBatch;
-            this.shapeRenderer = shapeRenderer;
-
+        public Graphic(ForceWeaponHolder forceWeaponHolder) {
             this.position = new Vector2(0, 0);
             this.forceWeaponHolder = forceWeaponHolder;
 
             bullets = new ArrayList<>();
         }
 
-        public void render(float delta) {
+        public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, float delta) {
+            //Debug.log("WEAPON", "render");
+
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(1, 0, 1f, 1);
-            shapeRenderer.rect(position.x - 16, position.y + 16, 20, 20);
-            shapeRenderer.setColor(0, 0, 1f, 1);
-            shapeRenderer.rect(position.x - 16 - 2 * 16, position.y + 16 + 2 * 16, 20, 20);
+            shapeRenderer.rect((position.x * 32) - 64, (position.y * 32) + 64, 32, 32);
             shapeRenderer.end();
 
             for (Bullet.Graphic bullet : bullets) {
-                bullet.render(getSpriteBatch(), shapeRenderer, delta);
+                bullet.render(spriteBatch, shapeRenderer, delta);
 
                 if (bullet.isFinished()) {
                     bullet.dispose();
@@ -88,25 +81,9 @@ public class Weapon extends Entity {
             }
         }
 
-        private SpriteBatch getSpriteBatch() {
-            return spriteBatch;
-        }
-
-        public void setSpriteBatch(SpriteBatch spriteBatch) {
-            this.spriteBatch = spriteBatch;
-        }
-
-        public void setShapeRenderer(ShapeRenderer shapeRenderer) {
-            this.shapeRenderer = shapeRenderer;
-        }
-
-        public void setElementPosition(Vector2 elementPosition) {
-            this.elementPosition = elementPosition;
-        }
-
-        public void setPositions(float x, float y) {
-            this.position.x = x + getForce().getShift().x;
-            this.position.y = y + getForce().getShift().y;
+        public void setPosition(Vector2 position) {
+            this.position.x = position.x + getForce().getShift().x;
+            this.position.y = position.y + getForce().getShift().y;
         }
 
         public ForceWeaponHolder getForce() {
@@ -125,7 +102,7 @@ public class Weapon extends Entity {
         }
 
         public void shoot(Vector2 destination) {
-            shoot(this.elementPosition, destination);
+            shoot(this.position, destination);
         }
     }
 }

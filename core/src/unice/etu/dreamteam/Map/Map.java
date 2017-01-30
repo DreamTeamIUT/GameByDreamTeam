@@ -8,8 +8,9 @@ import com.badlogic.gdx.math.Vector2;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
-import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.MobInstances;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
+import unice.etu.dreamteam.Entities.Items.Item;
+import unice.etu.dreamteam.Entities.Items.Items;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
@@ -133,14 +134,18 @@ public class Map {
 
         p.render(delta);
 
-        for (Mob mob : MobInstances.getInstance())
+        for (Mob mob : GraphicalInstances.getInstance().getMobs())
             mob.render(delta);
+
+        for (Item.ItemInstance itemInstance : GraphicalInstances.getInstance().getItemInstances()) {
+            if(!itemInstance.isDrawn())
+                itemInstance.onThrown(this);
+        }
 
         this.getSpriteBatch().begin();
         for (TiledMapTileLayer l : foregrounds)
             this.getRenderer().renderTileLayer(l);
         this.getSpriteBatch().end();
-
     }
 
     public void dispose() {

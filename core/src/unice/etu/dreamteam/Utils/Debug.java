@@ -9,7 +9,8 @@ import java.util.Iterator;
 public class Debug { //que du statique, raccourci debug.
     private static final Boolean isDebug = true;
 
-    private static final String[] allowedTags = {"ZONE", "SoundEntity", "MobInstances"};
+    //private static final String[] allowedTags = {"ZONE", "SoundEntity", "GraphicalInstances"};
+    private static final String[] allowedTags = {"WEAPON", "BULLET"};
 
     public static void log(String tag, String message) {
         if(isDebug && allowedTag(tag))

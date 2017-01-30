@@ -62,10 +62,14 @@ public class Item extends Entity {
         private final Vector2 itemPos;
         private boolean expired;
 
+        private Boolean drawn;
+
         public ItemInstance(Item i, Vector2 pos){
             this.itemPos = pos;
             this.startTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
             this.item = i;
+
+            this.drawn = false;
         }
 
         public long getRemainingTime(){
@@ -85,6 +89,11 @@ public class Item extends Entity {
         }
 
         public void onThrown(Map map){
+            if(this.isDrawn())
+                return;
+
+            this.drawn = true;
+
             Debug.log("ITEM", "thrown yes -> chest ! ");
 
             TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
@@ -104,6 +113,10 @@ public class Item extends Entity {
 
         public void removeFromMap(Map map) {
             map.getLayerManager().getLayerForTypeAt("ITEM", this.itemPos).setCell((int)this.itemPos.x, (int)this.itemPos.y, null);
+        }
+
+        public Boolean isDrawn() {
+            return drawn;
         }
     }
 
