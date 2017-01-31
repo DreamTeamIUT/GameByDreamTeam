@@ -4,9 +4,11 @@ package unice.etu.dreamteam.Map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
+import unice.etu.dreamteam.Entities.Bullets.Bullet;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.Items.Item;
@@ -134,8 +136,15 @@ public class Map {
 
         p.render(delta);
 
-        for (Mob mob : GraphicalInstances.getInstance().getMobs())
+        for (Mob mob : GraphicalInstances.getInstance().getMobs()) {
             mob.render(delta);
+            for (Bullet.Graphic bullet : p.getWeapon().getBullets()){
+                if (Intersector.overlaps(bullet.getRectangle(), mob.getRectangle())){
+                    //TODO : Retirer des pv au mob / Si pv = 0 alors mob = disparu.
+                }
+            }
+
+        }
 
         for (Item.ItemInstance itemInstance : GraphicalInstances.getInstance().getItemInstances()) {
             if(!itemInstance.isDrawn())

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.Entity;
@@ -110,6 +111,10 @@ public class Bullet extends Entity {
             spriteBatch.begin();
             spriteBatch.draw(bullet.getTexture(), this.position.x, this.position.y);
             spriteBatch.end();
+        }
+
+        public Rectangle getRectangle() {
+            return new Rectangle().set(this.position.x, this.position.y, 32, 32);
         }
 
         public void dispose() {

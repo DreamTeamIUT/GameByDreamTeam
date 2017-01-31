@@ -90,6 +90,10 @@ public class Weapon extends Entity {
             return forceWeaponHolder;
         }
 
+        public ArrayList<Bullet.Graphic> getBullets() {
+            return bullets;
+        }
+
         public void shoot(Character source, Character destination) {
             shoot(source.getCellPos(), destination.getCellPos());
         }
