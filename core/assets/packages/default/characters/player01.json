@@ -2,5 +2,10 @@
   "name": "player01",
   "real-name": "Player 01",
   "model-name": "Demon",
-  "weapons": ["weapon01"]
+  "weapons": ["weapon01"],
+  "speed": 0.07,
+  "speed-run": 0.12,
+  "sounds": {
+    "RUN": "ENTER_ZONE"
+  }
 }

@@ -46,6 +46,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     private List<Integer> keyCodes;
     private Preferences prefs;
 
+    private Boolean shiftPressed;
+    private Boolean shiftPressedUsed;
+
     private Boolean leftClick;
     private Boolean leftClickUsed;
 
@@ -98,6 +101,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         prefs = Gdx.app.getPreferences("GameSettings");
 
         keyCodes = new ArrayList<>();
+
+        shiftPressed = false;
+        shiftPressedUsed = false;
 
         leftClick = false;
         leftClickUsed = false;
@@ -347,6 +353,18 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 }*/
             }
         }
+
+        if(shiftPressed && !shiftPressedUsed) {
+            shiftPressedUsed = true;
+
+            playerList.get(0).run();
+        }
+
+        if(!shiftPressed && shiftPressedUsed) {
+            shiftPressedUsed = false;
+
+            playerList.get(0).stopRun();
+        }
     }
 
     public void getMobsPathToPlayer() {
@@ -381,7 +399,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         if (keyCodes.indexOf(keyCode) < 0)
             keyCodes.add(keyCode);
 
-        Debug.log("KEY DOWN", keyCodes.toString());
+        if(keyCode == 59)
+            shiftPressed = true;
+
+        Debug.log("KEY_DOWN", keyCodes.toString());
 
         return true;
     }
@@ -390,6 +411,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     public boolean keyUp(int keyCode) {
         if (keyCodes.indexOf(keyCode) >= 0)
             keyCodes.remove(keyCodes.indexOf(keyCode));
+
+        if(keyCode == 59)
+            shiftPressed = false;
 
         Debug.log("KEY UP", keyCodes.toString());
 
