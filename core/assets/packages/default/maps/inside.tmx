@@ -962,8 +962,13 @@
   <object id="5" x="1987.33" y="2263.33" width="34.6667" height="32"/>
   <object id="6" x="2254.67" y="2270.67" width="63.3333" height="40.6667"/>
  </objectgroup>
- <objectgroup name="1_G">
-  <object id="2" name="To_Outside" x="2688.3" y="2719.88" width="32" height="32"/>
+ <objectgroup name="1_G" opacity="0.99">
+  <object id="2" name="To_Outside" x="2688.3" y="2719.88" width="32" height="32">
+   <properties>
+    <property name="goto" value="MainTown:Toilet1"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="2_T1" width="150" height="150">
   <data encoding="csv">

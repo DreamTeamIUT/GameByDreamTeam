@@ -2,6 +2,8 @@ package unice.etu.dreamteam.Map;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Intersector;
@@ -11,8 +13,9 @@ import org.xguzm.pathfinding.grid.NavigationGrid;
 import unice.etu.dreamteam.Entities.Bullets.Bullet;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
+import unice.etu.dreamteam.Entities.Gates.Gate;
+import unice.etu.dreamteam.Entities.Gates.Gates;
 import unice.etu.dreamteam.Entities.Items.Item;
-import unice.etu.dreamteam.Entities.Items.Items;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
@@ -45,7 +48,24 @@ public class Map {
     public static Map load(String path, MapHolder mapInfo) {
         Map map = new Map(mapInfo);
         map.setMapData(getMapData(path));
+
+        map.updateGates();
+
         return map;
+    }
+
+    private void updateGates() {
+
+        Gates.getInstance().clear();
+
+        for (MapObject o :layerManager.getCurrentGateLayer().getObjects()){
+            RectangleMapObject rectangleMapObject = (RectangleMapObject) o;
+            if (rectangleMapObject != null && !rectangleMapObject.getName().equals("")){
+               Gates.getInstance().add(new Gate(rectangleMapObject));
+               Debug.log("MAP", "New Gate ");
+            }
+        }
+
     }
 
     public static TiledMap getMapData(String path) {

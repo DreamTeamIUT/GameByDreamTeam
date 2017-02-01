@@ -227,21 +227,96 @@
   <object id="103" x="4580" y="4940"/>
  </objectgroup>
  <objectgroup color="#ff00ff" name="1_G">
-  <object id="14" name="PM8" x="4412" y="4158.5" width="71.5" height="61.5"/>
-  <object id="16" name="PM7" x="4738" y="4413" width="61" height="61"/>
-  <object id="17" name="PM6" x="4673" y="5567" width="70.5" height="65.5"/>
-  <object id="18" name="PM5" x="4460" y="5647" width="63" height="29"/>
-  <object id="19" name="PM4" x="3874.95" y="4893.05" width="93.0968" height="54.9032"/>
-  <object id="20" name="PM3" x="4189.11" y="4844.08" width="79.5" height="37.5" rotation="-0.934671"/>
-  <object id="72" name="Clock1" x="5113.25" y="4691.75" width="33.25" height="31.75"/>
-  <object id="75" name="PM2" x="5021" y="5279.33" width="66.3333" height="30.3333"/>
-  <object id="77" name="Observatory1" x="6816.25" y="5088.55" width="32" height="32"/>
-  <object id="79" name="PM1" x="5911.5" y="4574.5" width="72.5" height="59.5"/>
-  <object id="88" name="Farm4" x="353.75" y="7350.25" width="23" height="40"/>
-  <object id="89" name="Toilet1" x="2468" y="7403.67" width="19" height="20.3333"/>
-  <object id="90" name="Farm3" x="2472" y="7952" width="19" height="33"/>
-  <object id="92" name="Farm2" x="4170.33" y="7419" width="21.6667" height="33"/>
-  <object id="93" name="Farm1" x="3284" y="7228" width="32" height="32"/>
+  <object id="14" name="PM8" x="4412" y="4158.5" width="71.5" height="61.5">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="16" name="PM7" x="4738" y="4413" width="61" height="61">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="17" name="PM6" x="4673" y="5567" width="70.5" height="65.5">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="18" name="PM5" x="4460" y="5647" width="63" height="29">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="19" name="PM4" x="3874.95" y="4893.05" width="93.0968" height="54.9032">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="20" name="PM3" x="4189.11" y="4844.08" width="79.5" height="37.5" rotation="-0.934671">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="72" name="Clock1" x="5113.25" y="4691.75" width="33.25" height="31.75">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="75" name="PM2" x="5021" y="5279.33" width="66.3333" height="30.3333">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="77" name="Observatory1" x="6816.25" y="5088.55" width="32" height="32">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="79" name="PM1" x="5911.5" y="4574.5" width="72.5" height="59.5">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="88" name="Farm4" x="353.75" y="7350.25" width="23" height="40">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="89" name="Toilet1" x="2468" y="7403.67" width="19" height="20.3333">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="90" name="Farm3" x="2472" y="7952" width="19" height="33">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="92" name="Farm2" x="4170.33" y="7419" width="21.6667" height="33">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="93" name="Farm1" x="3284" y="7228" width="32" height="32">
+   <properties>
+    <property name="goto" value="Inside:To_Outside"/>
+    <property name="opened" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="1_T1" width="300" height="300">
   <data encoding="csv">

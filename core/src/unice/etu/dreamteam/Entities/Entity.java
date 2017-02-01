@@ -1,7 +1,6 @@
 package unice.etu.dreamteam.Entities;
 
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Utils.Debug;
 
 
 public abstract class Entity {
@@ -11,6 +10,10 @@ public abstract class Entity {
     public Entity(JsonValue value){
         this.name = value.getString("name", "");
         this.name = (this.name.equals(""))? value.name : this.name;
+    }
+
+    public Entity(String name) {
+        this.name = name;
     }
 
 
