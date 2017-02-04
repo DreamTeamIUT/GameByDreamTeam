@@ -11,19 +11,20 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
-import unice.etu.dreamteam.Map.*;
+import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
-import unice.etu.dreamteam.Ui.UiManager;
-import unice.etu.dreamteam.Utils.ActionContainer;
+import unice.etu.dreamteam.Map.*;
 import unice.etu.dreamteam.Ui.Settings;
-import unice.etu.dreamteam.Utils.*;
+import unice.etu.dreamteam.Utils.ActionContainer;
+import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
+import unice.etu.dreamteam.Utils.IsoTransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,10 +113,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
         orthoCamera = (OrthographicCamera) getCamera();
 
-        TextButton btn = UiManager.getInstance().createCustomButton("test");
-        btn.setPosition(10, 10);
-        addActor(btn);
-
         this.spriteBatch = new SpriteBatch();
         this.entitiesSpriteBatch = new SpriteBatch();
 
@@ -148,12 +145,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        /*
-        Mob mob = (Mob)Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
-        mob.setCellPos(157, 151);
 
-        GraphicalInstances.getInstance().add(mob);
-        */
+        Mob m = (Mob) Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
+        GraphicalInstances.getInstance().getMobs().add(m);
+        m.setCellPos(6,5);
+
 
         story.getItems().clearInstances(map);
 
@@ -162,7 +158,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(157,148));
         i.onThrown(map);
 
+
         playerList.get(0).getAnimationManager().setAnimation("STOPPED");
+
 
         parseActionContainer();
     }
@@ -215,7 +213,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         map.getRenderer().setView(orthoCamera);
-        map.render(delta, playerList.get(0));
+        //map.render(delta, playerList.get(0));
+        map.render_new(delta, playerList.get(0));
 
         collisionsManager.debug(shapeRenderer);
 

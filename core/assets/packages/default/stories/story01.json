@@ -1,7 +1,7 @@
 {
   "name": "Story 01",
   "minimum-level": 10,
-  "default-map" : "MainTown",
+  "default-map" : "map02",
   "maps": [
     "map02.json",
     "map01.json",
