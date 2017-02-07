@@ -3,17 +3,15 @@ package unice.etu.dreamteam.Entities.Characters;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.JsonValue;
-import unice.etu.dreamteam.Entities.Entity;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
-import unice.etu.dreamteam.Utils.Debug;
-
-import java.util.ArrayList;
+import unice.etu.dreamteam.Entities.Entity;
 
 /**
  * Created by Guillaume on 27/12/2016.
  */
 public abstract class CharacterHolder extends Entity {
     private String modelName;
+
 
     private float speed;
     private float speedRun;

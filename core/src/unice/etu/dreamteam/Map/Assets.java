@@ -1,8 +1,7 @@
 package unice.etu.dreamteam.Map;
 
-import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
+import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.ScreenList;
 
 import java.util.ArrayList;
@@ -29,9 +28,13 @@ public class Assets extends AssetManager {
 
     public <E> E getResource(String fileName, Class<E> tClass) {
         if(!isLoaded(fileName)) {
+            Debug.log("ASSETS", fileName+ " not loaded");
             load(fileName, tClass);
             finishLoading();
         }
+
+        Debug.log("ASSETS", fileName+ " already loaded");
+
 
         return get(fileName, tClass);
     }

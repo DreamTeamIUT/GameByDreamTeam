@@ -17,7 +17,7 @@ WebGL enabled browser and iOS.
   * [Read the Wiki](https://github.com/libgdx/libgdx/wiki)
 
 ### Downloads
-As we switched to Gradle, there's no need to download libGDX itself anymore. For those of you who still prefer the old way of doing things, you can get libGDX from the [official download site](http://libgdx.badlogicgames.com/download.html).
+As we switched to Gradle, there'sAtlas no need to download libGDX itself anymore. For those of you who still prefer the old way of doing things, you can get libGDX from the [official download site](http://libgdx.badlogicgames.com/download.html).
 
 ### Documentation
 The [Wiki](https://github.com/libgdx/libgdx/wiki) contains all the information you'll need to write a 

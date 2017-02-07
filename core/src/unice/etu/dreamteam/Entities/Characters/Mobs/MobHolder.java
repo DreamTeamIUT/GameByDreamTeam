@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
+import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Forces.ForceMobHolder;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Forces.ForcesMobHolder;
-import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
 import unice.etu.dreamteam.Entities.Characters.OnCharacterEventListener;
 import unice.etu.dreamteam.Utils.Debug;
@@ -57,7 +57,7 @@ public class MobHolder extends CharacterHolder {
             mob.setBatch(batch);
             mob.setShapeRenderer(shapeRenderer);
             mob.setDebug(GameInformation.getDebugMode());
-            mob.getAnimationManager().setAnimation("STOPPED");
+            mob.getModel().setAnimation("STOPPED");
 
             return mob;
         }

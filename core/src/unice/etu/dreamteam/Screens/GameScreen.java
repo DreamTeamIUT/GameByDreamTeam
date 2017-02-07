@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import javafx.fxml.LoadException;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
-import unice.etu.dreamteam.Entities.Characters.Mobs.Mobs;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 import unice.etu.dreamteam.Entities.Items.Item;
@@ -146,9 +145,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
 
-        Mob m = (Mob) Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
+      /*  Mob m = (Mob) Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
         GraphicalInstances.getInstance().getMobs().add(m);
-        m.setCellPos(6,5);
+        m.setCellPos(6,5);*/
 
 
         story.getItems().clearInstances(map);
@@ -159,7 +158,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         i.onThrown(map);
 
 
-        playerList.get(0).getAnimationManager().setAnimation("STOPPED");
+        playerList.get(0).getModel().setAnimation("STOPPED");
 
 
         parseActionContainer();
@@ -376,7 +375,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         super.resize(width, height);
 
         for (Player p : playerList)
-            p.getModelConverter().resize();
+            p.getModel().resize(width, height);
     }
 
 
