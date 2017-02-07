@@ -13,6 +13,8 @@ import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 
+import java.util.ArrayList;
+
 /**
  * Created by Dylan on 12/01/2017.
  */
@@ -20,6 +22,7 @@ public class Bullet extends Entity {
     private float speed;
     private int range;
     private int damage;
+    private int life;
 
     private Texture texture;
 
@@ -29,6 +32,7 @@ public class Bullet extends Entity {
         speed = value.getFloat("speed", 0);
         range = value.getInt("range", 0);
         damage = value.getInt("damage", 0);
+        life = value.getInt("life", -1);
 
         texture = Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images/bullets") + value.get("tile").getString("src"), Texture.class);
 
@@ -55,8 +59,13 @@ public class Bullet extends Entity {
         return texture;
     }
 
+    public int getLife() {
+        return life;
+    }
+
     public class Graphic {
         private Bullet bullet;
+
         private Vector2 position;
 
         private float coefficient;
@@ -64,11 +73,20 @@ public class Bullet extends Entity {
 
         private TextureRegion textureRegion;
 
+        private int life;
+        private ArrayList<String> characterIds;
+
+        private Boolean touched;
         private Boolean finished;
 
         public Graphic(Bullet bullet, Vector2 source, Vector2 destination) {
             this.bullet = bullet;
-            this.position = new Vector2(source.x * 32, source.y * 32);
+            this.position = new Vector2(source.x, source.y);
+
+            this.life = bullet.getLife();
+            this.characterIds = new ArrayList<>();
+
+            this.touched = false;
             this.finished = false;
 
             textureRegion = new TextureRegion(bullet.getTexture());
@@ -84,7 +102,7 @@ public class Bullet extends Entity {
         }
 
         private void updatePositions() {
-            this.position.x += bullet.getSpeed();
+            this.position.x -= bullet.getSpeed();
             this.position.y = this.coefficient * this.position.x + this.intercept;
         }
 
@@ -99,18 +117,23 @@ public class Bullet extends Entity {
         public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, float delta) {
             Debug.log("Weapon.Graphic", "render");
             Debug.log("Weapon.Graphic", this.position.toString());
-            //updatePositions();
+
+            if (!touched) {
+                updatePositions();
+
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(1, 0, 1f, 1);
+                shapeRenderer.rect(position.x - 50, position.y + 50, 20, 20);
+                shapeRenderer.end();
+            }
+            else
+                dispose();
 
             /*
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(1, 0, 1f, 1);
-            shapeRenderer.rect(position.x - 50, position.y + 50, 20, 20);
-            shapeRenderer.end();
-            */
-
             spriteBatch.begin();
             spriteBatch.draw(bullet.getTexture(), this.position.x, this.position.y);
             spriteBatch.end();
+            */
         }
 
         public Rectangle getRectangle() {
@@ -128,6 +151,26 @@ public class Bullet extends Entity {
         public void setPosition(float x, float y) {
             this.position.x = x;
             this.position.y = y;
+        }
+
+        public Boolean isTouched() {
+            return touched;
+        }
+
+        public void haveCollision(String characterId) {
+            this.characterIds.add(characterId);
+            this.life--;
+
+            if(this.life < 0)
+                this.touched = true;
+        }
+
+        public Boolean alreadyTouched(String characterId) {
+            return this.characterIds.contains(characterId);
+        }
+
+        public int getDamage() {
+            return bullet.getDamage();
         }
     }
 }

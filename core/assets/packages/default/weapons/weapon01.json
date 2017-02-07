@@ -7,8 +7,8 @@
       "default": true,
       "speed-reload": 5,
       "shift": {
-        "x": 0,
-        "y": 0
+        "x": -64,
+        "y": 64
       },
       "bullet-id": "bullet01",
       "tile": "weapon01.png"

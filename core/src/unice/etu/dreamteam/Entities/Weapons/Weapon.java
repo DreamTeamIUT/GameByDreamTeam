@@ -68,7 +68,7 @@ public class Weapon extends Entity {
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(1, 0, 1f, 1);
-            shapeRenderer.rect((position.x * 32) - 64, (position.y * 32) + 64, 32, 32);
+            shapeRenderer.rect(position.x, position.y, 32, 32);
             shapeRenderer.end();
 
             for (Bullet.Graphic bullet : bullets) {
@@ -82,8 +82,8 @@ public class Weapon extends Entity {
         }
 
         public void setPosition(Vector2 position) {
-            this.position.x = position.x + getForce().getShift().x;
-            this.position.y = position.y + getForce().getShift().y;
+            this.position.x = (position.x * 32) + getForce().getShift().x;
+            this.position.y = (position.y * 32) + getForce().getShift().y;
         }
 
         public ForceWeaponHolder getForce() {

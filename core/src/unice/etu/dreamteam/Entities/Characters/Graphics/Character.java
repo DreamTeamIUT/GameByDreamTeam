@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
+import unice.etu.dreamteam.Entities.Characters.CharacterStats;
 import unice.etu.dreamteam.Entities.Sounds.Sounds;
 import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Map.Map;
@@ -26,10 +27,14 @@ import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.IsoTransform;
 import unice.etu.dreamteam.Utils.ModelConverter;
 
+import java.util.UUID;
+
 public class Character implements Disposable {
 
     private ModelConverter modelConverter;
     private ModelAnimationManager animationManager;
+
+    protected String id;
 
     protected Vector2 cellPos;
     protected Vector2 realPos;
@@ -46,11 +51,16 @@ public class Character implements Disposable {
     protected Boolean debug;
     protected ShapeRenderer shapeRenderer;
 
+    private CharacterStats characterStats;
     private Weapon.Graphic weapon;
 
     public Character(CharacterHolder holder) {
         Debug.log("Load character");
         this.characterHolder = holder;
+
+        this.id = UUID.randomUUID().toString();
+
+        this.characterStats = new CharacterStats(100, 100);
 
         speed = holder.getSpeed();
 
@@ -360,5 +370,13 @@ public class Character implements Disposable {
 
     public void setWeapon(Weapon weapon) {
         setWeapon(weapon, -1);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public CharacterStats getStats() {
+        return characterStats;
     }
 }
