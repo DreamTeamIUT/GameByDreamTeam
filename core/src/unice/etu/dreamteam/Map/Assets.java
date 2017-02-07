@@ -31,8 +31,8 @@ public class Assets extends AssetManager {
         if(!isLoaded(fileName)) {
             load(fileName, tClass);
             finishLoading();
-        }
 
+        }
         return get(fileName, tClass);
     }
 

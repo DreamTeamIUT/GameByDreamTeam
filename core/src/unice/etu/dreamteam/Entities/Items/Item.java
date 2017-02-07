@@ -8,6 +8,7 @@ import unice.etu.dreamteam.Entities.Entity;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.MapEvent;
 import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +34,7 @@ public class Item extends Entity {
         super(value);
 
         this.ttl = value.getInt("ttl");
-        this.tileFile = value.getString("tile");
+        this.tileFile = GameInformation.getGamePackage().getPackagePath("images/items") + value.getString("tile");
 
         switch (value.getInt("type")){
             case TYPE_ITEM_SPECIAL:
@@ -54,6 +55,10 @@ public class Item extends Entity {
 
     public ArrayList<ItemInstance> getInstances(){
         return this.instances;
+    }
+
+    public String getTileFile() {
+        return tileFile;
     }
 
     public class ItemInstance{

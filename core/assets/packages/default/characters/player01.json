@@ -2,5 +2,6 @@
   "name": "player01",
   "real-name": "Player 01",
   "model-name": "Demon",
-  "weapons": ["weapon01"]
+  "weapons": ["weapon01"],
+  "health-point": 100
 }

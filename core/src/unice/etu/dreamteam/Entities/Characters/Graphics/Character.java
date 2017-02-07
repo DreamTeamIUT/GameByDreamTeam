@@ -342,4 +342,8 @@ public class Character implements Disposable {
     public void setWeapon(Weapon weapon) {
         setWeapon(weapon, -1);
     }
+
+    public void getCharacterInfo(){
+        return ;
+    }
 }

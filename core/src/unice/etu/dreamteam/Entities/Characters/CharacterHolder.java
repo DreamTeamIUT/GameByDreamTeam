@@ -11,10 +11,12 @@ import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
  */
 public abstract class CharacterHolder extends Entity {
     private String modelName;
+    private int healthPoint;
 
     public CharacterHolder(JsonValue value){
         super(value);
         this.modelName = value.getString("model-name");
+        this.healthPoint = value.getInt("health-point");
     }
 
     public abstract Character create(SpriteBatch batch, ShapeRenderer shapeRenderer);
@@ -22,6 +24,8 @@ public abstract class CharacterHolder extends Entity {
     public String getModelName() {
         return modelName;
     }
+
+    public int getHealthPoint(){ return healthPoint; }
 
     public abstract OnCharacterEventListener triggerEvent();
 }
