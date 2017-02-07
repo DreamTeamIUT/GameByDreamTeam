@@ -1,7 +1,7 @@
 {
   "type" : "2D",
   "name": "Knight",
-  "framerate" : 2,
+  "framerate" : 30,
   "textures": {
     "WALK": {
       "Z" :{

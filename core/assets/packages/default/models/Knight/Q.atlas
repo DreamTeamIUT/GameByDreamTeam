@@ -1,0 +1,229 @@
+
+knight-Q.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+16
+  rotate: false
+  xy: 1, 1647
+  size: 161, 333
+  orig: 161, 333
+  offset: 0, 0
+  index: -1
+15
+  rotate: false
+  xy: 1, 1313
+  size: 161, 332
+  orig: 161, 332
+  offset: 0, 0
+  index: -1
+17
+  rotate: false
+  xy: 164, 1648
+  size: 161, 332
+  orig: 161, 332
+  offset: 0, 0
+  index: -1
+18
+  rotate: false
+  xy: 1, 979
+  size: 161, 332
+  orig: 161, 332
+  offset: 0, 0
+  index: -1
+20
+  rotate: false
+  xy: 164, 1314
+  size: 161, 332
+  orig: 161, 332
+  offset: 0, 0
+  index: -1
+19
+  rotate: false
+  xy: 327, 1649
+  size: 161, 331
+  orig: 161, 331
+  offset: 0, 0
+  index: -1
+21
+  rotate: false
+  xy: 1, 646
+  size: 161, 331
+  orig: 161, 331
+  offset: 0, 0
+  index: -1
+22
+  rotate: false
+  xy: 164, 981
+  size: 161, 331
+  orig: 161, 331
+  offset: 0, 0
+  index: -1
+14
+  rotate: false
+  xy: 327, 1317
+  size: 161, 330
+  orig: 161, 330
+  offset: 0, 0
+  index: -1
+23
+  rotate: false
+  xy: 490, 1651
+  size: 161, 329
+  orig: 161, 329
+  offset: 0, 0
+  index: -1
+13
+  rotate: false
+  xy: 653, 1653
+  size: 162, 327
+  orig: 162, 327
+  offset: 0, 0
+  index: -1
+24
+  rotate: false
+  xy: 817, 1655
+  size: 162, 325
+  orig: 162, 325
+  offset: 0, 0
+  index: -1
+12
+  rotate: false
+  xy: 1, 321
+  size: 162, 323
+  orig: 162, 323
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 1, 1
+  size: 162, 318
+  orig: 162, 318
+  offset: 0, 0
+  index: -1
+25
+  rotate: false
+  xy: 327, 996
+  size: 161, 319
+  orig: 161, 319
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 490, 1333
+  size: 164, 316
+  orig: 164, 316
+  offset: 0, 0
+  index: -1
+32
+  rotate: false
+  xy: 490, 1015
+  size: 165, 316
+  orig: 165, 316
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 164, 664
+  size: 161, 315
+  orig: 161, 315
+  offset: 0, 0
+  index: -1
+31
+  rotate: false
+  xy: 327, 679
+  size: 164, 315
+  orig: 164, 315
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 656, 1337
+  size: 161, 314
+  orig: 161, 314
+  offset: 0, 0
+  index: -1
+26
+  rotate: false
+  xy: 819, 1340
+  size: 161, 313
+  orig: 161, 313
+  offset: 0, 0
+  index: -1
+30
+  rotate: false
+  xy: 657, 1022
+  size: 161, 313
+  orig: 161, 313
+  offset: 0, 0
+  index: -1
+10
+  rotate: false
+  xy: 820, 1026
+  size: 161, 312
+  orig: 161, 312
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 165, 350
+  size: 161, 312
+  orig: 161, 312
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 165, 37
+  size: 161, 311
+  orig: 161, 311
+  offset: 0, 0
+  index: -1
+29
+  rotate: false
+  xy: 328, 367
+  size: 161, 310
+  orig: 161, 310
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 328, 57
+  size: 161, 308
+  orig: 161, 308
+  offset: 0, 0
+  index: -1
+28
+  rotate: false
+  xy: 493, 706
+  size: 162, 307
+  orig: 162, 307
+  offset: 0, 0
+  index: -1
+27
+  rotate: false
+  xy: 657, 714
+  size: 162, 306
+  orig: 162, 306
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 821, 719
+  size: 161, 305
+  orig: 161, 305
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 491, 373
+  size: 161, 304
+  orig: 161, 304
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 491, 71
+  size: 161, 300
+  orig: 161, 300
+  offset: 0, 0
+  index: -1
