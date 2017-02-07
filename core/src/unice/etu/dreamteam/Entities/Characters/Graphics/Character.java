@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import unice.etu.dreamteam.Entities.Characters.CharacterHolder;
+import unice.etu.dreamteam.Entities.Characters.CharacterStats;
+import unice.etu.dreamteam.Entities.Sounds.Sounds;
 import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Entities.Weapons.Weapon;
@@ -25,10 +27,14 @@ import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.IsoTransform;
 import unice.etu.dreamteam.Utils.ModelConverter;
 
+import java.util.UUID;
+
 public class Character implements Disposable {
 
     private ModelConverter modelConverter;
     private ModelAnimationManager animationManager;
+
+    protected String id;
 
     protected Vector2 cellPos;
     protected Vector2 realPos;
@@ -36,26 +42,33 @@ public class Character implements Disposable {
     protected Boolean animating = false;
     protected int currentMove;
     protected int currentView;
-    protected Float speed = 0.07f;
 
-    protected String modelName;
-    protected String name;
+    protected CharacterHolder characterHolder;
+
+    protected float speed;
+
     protected SpriteBatch batch;
     protected Boolean debug;
     protected ShapeRenderer shapeRenderer;
 
+    private CharacterStats characterStats;
     private Weapon.Graphic weapon;
 
     public Character(CharacterHolder holder) {
         Debug.log("Load character");
-        this.name = holder.getName();
-        this.modelName = holder.getModelName();
+        this.characterHolder = holder;
+
+        this.id = UUID.randomUUID().toString();
+
+        this.characterStats = new CharacterStats(100, 100);
+
+        speed = holder.getSpeed();
 
         cellPos = new Vector2(0, 0);
         realPos = new Vector2(0, 0);
         backPos = new Vector2(0, 0);
 
-        animationManager = new ModelAnimationManager(modelName);
+        animationManager = new ModelAnimationManager(this.characterHolder.getModelName());
         modelConverter = new ModelConverter(animationManager);
 
         currentMove = CharacterMove.NONE;
@@ -167,6 +180,22 @@ public class Character implements Disposable {
         zone.x = 32 * cellPos.x;
         zone.y = 32 * cellPos.y;
         return zone;
+    }
+
+    public void run() {
+        if (this.animating) {
+            Debug.log("CHARACTER", "RUN");
+
+            this.speed = this.characterHolder.getSpeedRun();
+
+            Sounds.getInstance().get(this.characterHolder.getSounds().getRun()).play();
+        }
+    }
+
+    public void stopRun() {
+        Debug.log("RUN", "STOP RUN");
+
+        this.speed = this.characterHolder.getSpeed();
     }
 
     public ModelAnimationManager getAnimationManager() {
@@ -343,7 +372,11 @@ public class Character implements Disposable {
         setWeapon(weapon, -1);
     }
 
-    public void getCharacterInfo(){
-        return ;
+    public String getId() {
+        return id;
+    }
+
+    public CharacterStats getStats() {
+        return characterStats;
     }
 }

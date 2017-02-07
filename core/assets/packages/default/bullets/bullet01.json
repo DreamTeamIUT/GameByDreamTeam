@@ -3,6 +3,7 @@
   "speed": 0.2,
   "range": 10,
   "damage": 10,
+  "life": -1,
   "tile": {
     "src": "bullet01.png"
   }

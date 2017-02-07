@@ -3,5 +3,10 @@
   "real-name": "Player 01",
   "model-name": "Demon",
   "weapons": ["weapon01"],
+  "speed": 0.07,
+  "speed-run": 0.12,
+  "sounds": {
+    "RUN": "ENTER_ZONE"
+  },
   "health-point": 100
 }
