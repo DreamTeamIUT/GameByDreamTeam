@@ -1,8 +1,6 @@
 package unice.etu.dreamteam.Map;
 
-import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
 import unice.etu.dreamteam.Utils.ScreenList;
 
 import java.util.ArrayList;
