@@ -430,8 +430,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         super.dispose();
         map.dispose();
         spriteBatch.dispose();
-        entitiesSpriteBatch.dispose();
-        entitiesShapeRender.dispose();
         shapeRenderer.dispose();
         for (Player p : playerList)
             p.dispose();
