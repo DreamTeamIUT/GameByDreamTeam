@@ -7,5 +7,6 @@
   "speed-run": 0.12,
   "sounds": {
     "RUN": "ENTER_ZONE"
-  }
+  },
+  "health-point": 100
 }

@@ -1,6 +1,7 @@
 {
   "name": "mob01",
   "model-name": "Demon",
+  "health-point": 100,
   "forces": [
     {
       "name": "EASY",

@@ -1,16 +1,15 @@
 package unice.etu.dreamteam.Screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import javafx.fxml.LoadException;
+import javafx.scene.text.Text;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
@@ -27,6 +26,12 @@ import unice.etu.dreamteam.Utils.Debug;
 import unice.etu.dreamteam.Utils.GameInformation;
 import unice.etu.dreamteam.Utils.IsoTransform;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +58,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     private Boolean leftClick;
     private Boolean leftClickUsed;
+    private ShapeRenderer entitiesShapeRender;
 
     public GameScreen(String storyFile, int type) {
         super(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -119,6 +125,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         this.entitiesSpriteBatch = new SpriteBatch();
 
         this.shapeRenderer = new ShapeRenderer();
+        this.entitiesShapeRender = new ShapeRenderer();
 
         playerList = new ArrayList<>();
 
@@ -207,6 +214,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         if (Settings.isOpen)
             return;
 
+        if (InventoryScreen.isOpen)
+            return;
+
         center_camera(playerList.get(0));
 
         story.getItems().updateInstances(map);
@@ -245,6 +255,14 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                     if (!Settings.isOpen)
                         addActor(Settings.createWindow(getViewport()));
                 }
+
+                else if(keyCodes.get(i) == Input.Keys.I){
+                    System.out.println(keyCodes.get(i) + " = " + Input.Keys.I);
+                    if(!InventoryScreen.isOpen)
+                        System.out.println("dedans ! ");
+                        addActor(InventoryScreen.createWindow(getViewport(), p));
+                }
+
                 else if (keyCodes.get(i) == keyRight){
                     Debug.log("D");
                     p.setView(CharacterMove.RIGHT);
@@ -346,6 +364,32 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                 }*/
             }
         }
+        drawUi();
+
+    }
+
+    public void drawUi(){
+        Texture t =Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "board.png", Texture.class);
+        Texture healthBar =Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "empty_bar.png", Texture.class);
+        Texture ManaBar =Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "empty_bar.png", Texture.class);
+        Texture start_rouge = Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "start_rouge.png", Texture.class);
+        Texture start_bleu = Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "start_bleu.png", Texture.class);
+
+        entitiesSpriteBatch.begin();
+        entitiesSpriteBatch.draw(t, 0, 0, (float) (t.getWidth() / 1.2), (float) (t.getHeight() / 1.2));
+        entitiesSpriteBatch.draw(healthBar, 325, -14, (float) (healthBar.getWidth() / 1.3), (float) (healthBar.getHeight() / 1.3));
+        entitiesSpriteBatch.draw(ManaBar, 325, 14, (float) (ManaBar.getWidth() / 1.3), (float) (ManaBar.getHeight() / 1.3));
+        entitiesSpriteBatch.draw(start_rouge, 335, 26, (float) (start_rouge.getWidth() / 1.3), (float) (start_rouge.getHeight() / 1.3));
+        entitiesSpriteBatch.draw(start_bleu, 335, -2, (float) (start_bleu.getWidth() / 1.3), (float) (start_bleu.getHeight() / 1.3));
+        entitiesSpriteBatch.end();
+
+        entitiesShapeRender.begin(ShapeRenderer.ShapeType.Filled);
+        entitiesShapeRender.setColor(1,0,0,1);
+        entitiesShapeRender.rect(350,32, getWidth() / 3 + 65, 18);
+        entitiesShapeRender.setColor(1,0,0,0);
+        entitiesShapeRender.rect(350,4, getWidth() / 3 + 65, 18);
+        entitiesShapeRender.end();
+
 
         if(shiftPressed && !shiftPressedUsed) {
             shiftPressedUsed = true;

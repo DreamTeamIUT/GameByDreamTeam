@@ -28,7 +28,7 @@ public class Settings {
     public static final String KEY_DOWN = "down";
     public static final String KEY_LEFT = "left";
     public static final String KEY_UP = "up";
-    public static final java.lang.String KEY_GRAB = "grab";
+    public static final String KEY_GRAB = "grab";
 
 
     public static int COLSPANPARAMETER = 4;

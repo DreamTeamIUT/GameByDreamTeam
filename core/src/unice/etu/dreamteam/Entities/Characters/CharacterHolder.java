@@ -11,6 +11,7 @@ import unice.etu.dreamteam.Entities.Entity;
  */
 public abstract class CharacterHolder extends Entity {
     private String modelName;
+    private int healthPoint;
 
 
     private float speed;
@@ -22,6 +23,7 @@ public abstract class CharacterHolder extends Entity {
         super(value);
 
         this.modelName = value.getString("model-name");
+        this.healthPoint = value.getInt("health-point");
 
         this.speed = value.getFloat("speed", 0.07f);
         this.speedRun = value.getFloat("speed-run", 0.09f);
@@ -37,6 +39,8 @@ public abstract class CharacterHolder extends Entity {
     public String getModelName() {
         return modelName;
     }
+
+    public int getHealthPoint(){ return healthPoint; }
 
     public float getSpeed() {
         return speed;

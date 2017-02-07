@@ -157,14 +157,29 @@ public class Map {
 
         p.render(delta);
 
+        for (Bullet.Graphic bullet : p.getWeapon().getBullets()) {
+            if (Intersector.overlaps(bullet.getRectangle(), p.getRectangle()) && !bullet.isTouched() && !bullet.alreadyTouched(p.getId())) {
+                Debug.log("MAP", "Collision player");
+
+                bullet.haveCollision(p.getId());
+                p.getStats().injuries(bullet.getDamage());
+            }
+        }
+
         for (Mob mob : GraphicalInstances.getInstance().getMobs()) {
             mob.render(delta);
             for (Bullet.Graphic bullet : p.getWeapon().getBullets()){
                 if (Intersector.overlaps(bullet.getRectangle(), mob.getRectangle())){
                     //TODO : Retirer des pv au mob / Si pv = 0 alors mob = disparu.
+                    Debug.log("MAP", "Collision mob");
                 }
             }
 
+            for(Bullet.Graphic bullet : mob.getWeapon().getBullets()) {
+                if (Intersector.overlaps(bullet.getRectangle(), p.getRectangle())) {
+                    Debug.log("MAP", "Collision player");
+                }
+            }
         }
 
         for (Item.ItemInstance itemInstance : GraphicalInstances.getInstance().getItemInstances()) {
