@@ -13,19 +13,15 @@ public class TwoDimensionalData implements Disposable {
     private TextureAtlas qAtlas;
     private TextureAtlas dAtlas;
 
-    private float frameRate = 1/2;
+    private float frameRate = 1 / 2;
 
-    private Animation animationZ;
-    private Animation animationS;
-    private Animation animationQ;
-    private Animation animationD;
+    private Animation<TextureAtlas.AtlasRegion> animationZ;
+    private Animation<TextureAtlas.AtlasRegion> animationS;
+    private Animation<TextureAtlas.AtlasRegion> animationQ;
+    private Animation<TextureAtlas.AtlasRegion> animationD;
 
     @Override
     public void dispose() {
-        this.zAtlas.dispose();
-        this.sAtlas.dispose();
-        this.qAtlas.dispose();
-        this.dAtlas.dispose();
     }
 
     public TextureAtlas getzAtlas() {
@@ -46,25 +42,25 @@ public class TwoDimensionalData implements Disposable {
 
     public void setzAtlas(TextureAtlas zAtlas) {
         this.zAtlas = zAtlas;
-        animationZ = new Animation(this.frameRate, this.zAtlas.getRegions());
+        animationZ = new Animation<>(this.frameRate, this.zAtlas.getRegions());
 
     }
 
     public void setdAtlas(TextureAtlas dAtlas) {
         this.dAtlas = dAtlas;
-        animationD = new Animation(this.frameRate, this.dAtlas.getRegions());
+        animationD = new Animation<>(this.frameRate, this.dAtlas.getRegions());
 
     }
 
     public void setqAtlas(TextureAtlas qAtlas) {
         this.qAtlas = qAtlas;
-        animationQ = new Animation(this.frameRate, this.qAtlas.getRegions());
+        animationQ = new Animation<>(this.frameRate, this.qAtlas.getRegions());
 
     }
 
     public void setsAtlas(TextureAtlas sAtlas) {
         this.sAtlas = sAtlas;
-        animationS = new Animation(this.frameRate, this.sAtlas.getRegions());
+        animationS = new Animation<>(this.frameRate, this.sAtlas.getRegions());
 
     }
 

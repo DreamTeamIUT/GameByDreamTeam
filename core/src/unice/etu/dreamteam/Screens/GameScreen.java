@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -18,7 +17,10 @@ import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
-import unice.etu.dreamteam.Map.*;
+import unice.etu.dreamteam.Map.CollisionsManager;
+import unice.etu.dreamteam.Map.GraphicalInstances;
+import unice.etu.dreamteam.Map.Map;
+import unice.etu.dreamteam.Map.Story;
 import unice.etu.dreamteam.Ui.Settings;
 import unice.etu.dreamteam.Utils.ActionContainer;
 import unice.etu.dreamteam.Utils.Debug;
@@ -98,6 +100,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public void buildStage() {
+        ready = false;
         prefs = Gdx.app.getPreferences("GameSettings");
 
         keyCodes = new ArrayList<>();
@@ -162,6 +165,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
 
         parseActionContainer();
+        ready = true;
     }
 
     private void parseActionContainer() {
@@ -194,6 +198,12 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     public void render(float delta) {
         super.render(delta);
 
+        if (!ready){
+            Debug.log("READY ! ", "NOT READY !");
+            return;
+        }
+
+
         if (Settings.isOpen)
             return;
 
@@ -216,21 +226,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         map.render_new(delta, playerList.get(0));
 
         collisionsManager.debug(shapeRenderer);
-
-        entitiesSpriteBatch.begin();
-        entitiesSpriteBatch.draw(Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images/bullets") + "bullet01.png", Texture.class), 50, 50);
-        entitiesSpriteBatch.end();
-
-      //  map.getRenderer().render(map.getLayerManager().getBeforeLayers());
-
-
-      /*  for (Player p : playerList)
-            p.render(delta, map);
-
-        for (Mob m : mobList)
-            m.render(delta, map);*/
-
-      //  map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
         if(leftClick && !leftClickUsed) {
             leftClickUsed = true;
@@ -382,14 +377,24 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     @Override
     public void dispose() {
         super.dispose();
-        map.dispose();
-        spriteBatch.dispose();
-        shapeRenderer.dispose();
         for (Player p : playerList)
             p.dispose();
+        Debug.log("MODEL_2D", "EmptyPLayer");
+
 
         for (Mob m : GraphicalInstances.getInstance().getMobs())
             m.dispose();
+        Debug.log("MODEL_2D", "Empty Mob");
+
+
+        map.dispose();
+        Debug.log("MODEL_2D", "Empty map");
+        spriteBatch.dispose();
+        Debug.log("MODEL_2D", "Empty SPrite");
+
+        shapeRenderer.dispose();
+        Debug.log("MODEL_2D", "Empty shape");
+
     }
 
     @Override
