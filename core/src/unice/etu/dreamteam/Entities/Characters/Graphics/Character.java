@@ -45,7 +45,7 @@ public class Character implements Disposable {
 
         this.id = UUID.randomUUID().toString();
 
-        this.characterStats = new CharacterStats(100, 100);
+        this.characterStats = new CharacterStats(holder.getHealthPoint(), 0);
 
         speed = holder.getSpeed();
 
@@ -343,6 +343,10 @@ public class Character implements Disposable {
 
     public Weapon.Graphic getWeapon() {
         return weapon;
+    }
+
+    public Boolean haveWeapon() {
+        return weapon != null;
     }
 
     public void setWeapon(Weapon weapon, int powerful) {

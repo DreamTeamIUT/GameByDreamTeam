@@ -378,9 +378,19 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         entitiesSpriteBatch.draw(start_bleu, 335, -2, (float) (start_bleu.getWidth() / 1.3), (float) (start_bleu.getHeight() / 1.3));
         entitiesSpriteBatch.end();
 
+        float maxWidth = getWidth() / 3 + 65;
+
+        float percentHealth = (float)playerList.get(0).getStats().getHealth() / (float)playerList.get(0).getStats().getMaxHealth();
+        float healthWidth = 0;
+
+        if(percentHealth > 0)
+            healthWidth  = maxWidth * ((float)playerList.get(0).getStats().getHealth() / (float)playerList.get(0).getStats().getMaxHealth());
+
+        //Debug.log("GameScreen", "maxWidth : " + maxWidth + ", healthWidth : " + healthWidth + " " + ((float)playerList.get(0).getStats().getHealth() / (float)playerList.get(0).getStats().getMaxHealth()));
+
         entitiesShapeRender.begin(ShapeRenderer.ShapeType.Filled);
         entitiesShapeRender.setColor(1,0,0,1);
-        entitiesShapeRender.rect(350,32, getWidth() / 3 + 65, 18);
+        entitiesShapeRender.rect(350,32, healthWidth, 18);
         entitiesShapeRender.setColor(1,0,0,0);
         entitiesShapeRender.rect(350,4, getWidth() / 3 + 65, 18);
         entitiesShapeRender.end();
@@ -390,6 +400,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
             shiftPressedUsed = true;
 
             playerList.get(0).run();
+
+            playerList.get(0).getStats().injuries(50);
         }
 
         if(!shiftPressed && shiftPressedUsed) {

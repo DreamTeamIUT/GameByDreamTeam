@@ -58,6 +58,7 @@ public class MobHolder extends CharacterHolder {
             mob.setShapeRenderer(shapeRenderer);
             mob.setDebug(GameInformation.getDebugMode());
             mob.getModel().setAnimation("STOPPED");
+            mob.setWeapon("weapon01");
 
             return mob;
         }

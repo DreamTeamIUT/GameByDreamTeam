@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.NavigationGrid;
 import unice.etu.dreamteam.Entities.Characters.Mobs.MobHolder;
+import unice.etu.dreamteam.Entities.Weapons.Weapon;
+import unice.etu.dreamteam.Entities.Weapons.Weapons;
 import unice.etu.dreamteam.Map.Map;
 import unice.etu.dreamteam.Map.PathFinder;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
@@ -91,6 +93,11 @@ public class Mob extends Character {
             Debug.log(Debug.iteratorToString(gridCells.iterator()));
         else
             Debug.log("No path found");
+    }
+
+    public void setWeapon(String name) {
+        if(Weapons.getInstance().exist(name))
+            setWeapon(Weapons.getInstance().get(name));
     }
 
     @Override

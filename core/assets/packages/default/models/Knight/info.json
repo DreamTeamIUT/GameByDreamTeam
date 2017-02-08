@@ -1,37 +1,20 @@
 {
-  "type" : "2D",
+  "type" : "3D",
   "name": "Knight",
-  "framerate" : 30,
   "textures": {
-    "WALK": {
-      "Z" :{
-        "atlas": "Z.atlas"
-      },
-      "S" :{
-        "atlas": "S.atlas"
-      },
-      "Q":{
-        "atlas": "Q.atlas"
-      },
-      "D": {
-        "atlas": "D.atlas"
-
-      },
+    "RUN": {
+      "name": "Take 001",
+      "file": "Run",
       "load": true
     },
     "STOPPED": {
-      "Z" :{
-        "atlas": "Z.atlas"
-      },
-      "S" :{
-        "atlas": "S.atlas"
-      },
-      "Q":{
-        "atlas": "Q.atlas"
-      },
-      "D": {
-        "atlas": "D.atlas"
-      },
+      "name": "Take 001",
+      "file": "Idle",
+      "load": true
+    },
+    "WALK": {
+      "name": "Take 001",
+      "file": "Walk",
       "load": true
     }
   }
