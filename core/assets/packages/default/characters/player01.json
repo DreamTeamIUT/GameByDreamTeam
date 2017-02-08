@@ -1,7 +1,7 @@
 {
   "name": "player01",
   "real-name": "Player 01",
-  "model-name": "Demon",
+  "model-name": "Knight",
   "weapons": ["weapon01"],
   "speed": 0.07,
   "speed-run": 0.12,

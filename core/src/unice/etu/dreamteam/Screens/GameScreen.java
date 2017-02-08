@@ -1,35 +1,30 @@
 package unice.etu.dreamteam.Screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import javafx.fxml.LoadException;
-import javafx.scene.text.Text;
 import unice.etu.dreamteam.Entities.Characters.Graphics.CharacterMove;
 import unice.etu.dreamteam.Entities.Characters.Mobs.Graphics.Mob;
-import unice.etu.dreamteam.Map.*;
 import unice.etu.dreamteam.Entities.Characters.Players.Graphics.Player;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackage;
 import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Maps.MapHolder;
-import unice.etu.dreamteam.Ui.UiManager;
-import unice.etu.dreamteam.Utils.ActionContainer;
+import unice.etu.dreamteam.Map.*;
 import unice.etu.dreamteam.Ui.Settings;
-import unice.etu.dreamteam.Utils.*;
+import unice.etu.dreamteam.Utils.ActionContainer;
+import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
+import unice.etu.dreamteam.Utils.IsoTransform;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +99,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
 
     @Override
     public void buildStage() {
+        ready = false;
         prefs = Gdx.app.getPreferences("GameSettings");
 
         keyCodes = new ArrayList<>();
@@ -117,10 +113,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         orthoCamera = (OrthographicCamera) getCamera();
-
-        TextButton btn = UiManager.getInstance().createCustomButton("test");
-        btn.setPosition(10, 10);
-        addActor(btn);
 
         this.spriteBatch = new SpriteBatch();
         this.entitiesSpriteBatch = new SpriteBatch();
@@ -155,12 +147,11 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Debug.vector(map.getMapInfo().getStartPoint());
         playerList.get(0).setPos(map.getMapInfo().getStartPoint());
 
-        /*
-        Mob mob = (Mob)Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
-        mob.setCellPos(157, 151);
 
-        GraphicalInstances.getInstance().add(mob);
-        */
+      /*  Mob m = (Mob) Mobs.getInstance().get("mob01").create(spriteBatch, shapeRenderer);
+        GraphicalInstances.getInstance().getMobs().add(m);
+        m.setCellPos(6,5);*/
+
 
         story.getItems().clearInstances(map);
 
@@ -169,9 +160,12 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         Item.ItemInstance i = story.getItems().get("chest").addInstance(new Vector2(157,148));
         i.onThrown(map);
 
-        playerList.get(0).getAnimationManager().setAnimation("STOPPED");
+
+        playerList.get(0).getModel().setAnimation("STOPPED");
+
 
         parseActionContainer();
+        ready = true;
     }
 
     private void parseActionContainer() {
@@ -204,12 +198,19 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     public void render(float delta) {
         super.render(delta);
 
+        if (!ready){
+            Debug.log("READY ! ", "NOT READY !");
+            return;
+        }
+
+
         if (Settings.isOpen)
             return;
 
-        if (InventoryScreen.isOpen)
+        //TODO : ASK ROMAIN FOR INVENTORY SCREEN
+     /*   if (InventoryScreen.isOpen)
             return;
-
+*/
         center_camera(playerList.get(0));
 
         story.getItems().updateInstances(map);
@@ -225,24 +226,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         shapeRenderer.setTransformMatrix(IsoTransform.getIsoTransform());
 
         map.getRenderer().setView(orthoCamera);
-        map.render(delta, playerList.get(0));
+        //map.render(delta, playerList.get(0));
+        map.render_new(delta, playerList.get(0));
 
         collisionsManager.debug(shapeRenderer);
-
-        entitiesSpriteBatch.begin();
-        entitiesSpriteBatch.draw(Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images/bullets") + "bullet01.png", Texture.class), 50, 50);
-        entitiesSpriteBatch.end();
-
-      //  map.getRenderer().render(map.getLayerManager().getBeforeLayers());
-
-
-      /*  for (Player p : playerList)
-            p.render(delta, map);
-
-        for (Mob m : mobList)
-            m.render(delta, map);*/
-
-      //  map.getRenderer().render(map.getLayerManager().getAfterLayers());
 
         if(leftClick && !leftClickUsed) {
             leftClickUsed = true;
@@ -263,12 +250,13 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
                         addActor(Settings.createWindow(getViewport()));
                 }
 
-                else if(keyCodes.get(i) == Input.Keys.I){
+                //TODO : ASK ROMAIN FOR INVENTORY SCREEN !!!
+               /* else if(keyCodes.get(i) == Input.Keys.I){
                     System.out.println(keyCodes.get(i) + " = " + Input.Keys.I);
                     if(!InventoryScreen.isOpen)
                         System.out.println("dedans ! ");
                         addActor(InventoryScreen.createWindow(getViewport(), p));
-                }
+                }*/
 
                 else if (keyCodes.get(i) == keyRight){
                     Debug.log("D");
@@ -376,7 +364,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
     }
 
     public void drawUi(){
-        Texture t =Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "board.png", Texture.class);
+        Texture t = Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "board.png", Texture.class);
         Texture healthBar =Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "empty_bar.png", Texture.class);
         Texture ManaBar =Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "empty_bar.png", Texture.class);
         Texture start_rouge = Assets.getInstance().getResource(GameInformation.getGamePackage().getPackagePath("images") + "start_rouge.png", Texture.class);
@@ -421,21 +409,31 @@ public class GameScreen extends AbstractScreen implements InputProcessor {
         super.resize(width, height);
 
         for (Player p : playerList)
-            p.getModelConverter().resize();
+            p.getModel().resize(width, height);
     }
 
 
     @Override
     public void dispose() {
         super.dispose();
-        map.dispose();
-        spriteBatch.dispose();
-        shapeRenderer.dispose();
         for (Player p : playerList)
             p.dispose();
+        Debug.log("MODEL_2D", "EmptyPLayer");
+
 
         for (Mob m : GraphicalInstances.getInstance().getMobs())
             m.dispose();
+        Debug.log("MODEL_2D", "Empty Mob");
+
+
+        map.dispose();
+        Debug.log("MODEL_2D", "Empty map");
+        spriteBatch.dispose();
+        Debug.log("MODEL_2D", "Empty SPrite");
+
+        shapeRenderer.dispose();
+        Debug.log("MODEL_2D", "Empty shape");
+
     }
 
     @Override

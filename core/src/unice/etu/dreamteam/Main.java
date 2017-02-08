@@ -3,11 +3,15 @@ package unice.etu.dreamteam;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import unice.etu.dreamteam.Entities.Sounds.Manager.AudioManager;
 import unice.etu.dreamteam.Entities.GamesPackages.GamePackages;
+import unice.etu.dreamteam.Entities.Sounds.Manager.AudioManager;
+import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Screens.GameScreen;
 import unice.etu.dreamteam.Ui.UiManager;
-import unice.etu.dreamteam.Utils.*;
+import unice.etu.dreamteam.Utils.Debug;
+import unice.etu.dreamteam.Utils.GameInformation;
+import unice.etu.dreamteam.Utils.ScreenList;
+import unice.etu.dreamteam.Utils.ScreenManager;
 
 public class Main extends Game {
     private static long SPLASH_SCREEN_DURATION = 2000L;
@@ -69,6 +73,7 @@ public class Main extends Game {
         getScreen().dispose();
         UiManager.getInstance().dispose();
         AudioManager.getInstance().dispose();
+        Assets.getInstance().dispose();
         Gdx.app.exit();
 
     }

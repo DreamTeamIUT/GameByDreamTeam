@@ -1,12 +1,11 @@
 package unice.etu.dreamteam.Utils;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import unice.etu.dreamteam.Screens.AbstractScreen;
 
 
 public class ScreenManager { //S'autocrée, se garde en mémore toute seule : variable de classe de ce type avec l'instance screen manager
-        //Variable de classe déjà statique => permet de récupérer l'instance déjà donné.
+    //Variable de classe déjà statique => permet de récupérer l'instance déjà donné.
 
     private static ScreenManager instance;
     private Game game;
@@ -28,7 +27,9 @@ public class ScreenManager { //S'autocrée, se garde en mémore toute seule : va
 
     public void showScreen(ScreenList screenList, Object... params) { //afficher un autre screen, infinité de paramètre, object : classe la plus basse possible
 
-        Screen currentScreen = game.getScreen(); //récupère le screen actuel,
+        AbstractScreen currentScreen = (AbstractScreen) game.getScreen(); //récupère le screen actuel,
+        if (currentScreen != null)
+            currentScreen.ready = false;
 
         AbstractScreen newScreen = screenList.getScreen(params); //création d'un screen temporaire.
 

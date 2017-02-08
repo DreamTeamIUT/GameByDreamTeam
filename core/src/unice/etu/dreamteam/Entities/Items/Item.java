@@ -117,7 +117,10 @@ public class Item extends Entity {
         }
 
         public void removeFromMap(Map map) {
-            map.getLayerManager().getLayerForTypeAt("ITEM", this.itemPos).setCell((int)this.itemPos.x, (int)this.itemPos.y, null);
+            Debug.log("MODEL_2D", map.toString());
+            TiledMapTileLayer l = map.getLayerManager().getLayerForTypeAt("ITEM", this.itemPos);
+            if (l != null)
+                l.setCell((int)this.itemPos.x, (int)this.itemPos.y, null);
         }
 
         public Boolean isDrawn() {

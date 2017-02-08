@@ -2,7 +2,6 @@ package unice.etu.dreamteam.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,16 +11,14 @@ import unice.etu.dreamteam.Utils.GameInformation;
 
 public abstract class AbstractScreen extends Stage implements Screen {
 
-    protected AssetManager assetManager;
+    public Boolean ready = false;
 
     protected AbstractScreen() {
         super(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()))); //Création de "l'écran".
-        assetManager = new AssetManager();
     }
 
     protected AbstractScreen(Camera camera) {
         super(new ScreenViewport(camera));
-        assetManager = new AssetManager();
     }
 
     public abstract void buildStage(); //appelé au moment où le screen est chargé.
@@ -31,6 +28,7 @@ public abstract class AbstractScreen extends Stage implements Screen {
         clearScreen();
         super.act(delta);
         super.draw();
+
     }
 
     protected void clearScreen(){
@@ -73,8 +71,6 @@ public abstract class AbstractScreen extends Stage implements Screen {
     @Override
     public void dispose(){ //vidage de mémoire
         super.dispose();
-        assetManager.clear();
-        assetManager.dispose();
     }
 
 }

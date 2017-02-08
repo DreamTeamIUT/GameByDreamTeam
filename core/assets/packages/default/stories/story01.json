@@ -60,35 +60,6 @@
     }
   },
   "gates": {
-    "PM1": {
-      "goto": "Inside:To_Outside",
-      "max-enter": 2,
-      "opened" : true
-    },
-    "PM2": {
-      "goto": "Inside:To_Outside",
-      "opened" : true
-    },
-    "Observatory1": {
-      "goto": "Inside:To_Outside",
-      "opened" : true
-    },
-    "Clock1": {
-      "goto": "Inside:To_Outside",
-      "opened" : true
-    },
-    "PM3": {
-      "goto": "Inside:To_Outside",
-      "opened" : true
-    },
-    "PM4": {
-      "goto": "Inside:To_Outside",
-      "opened" : true
-    },
 
-    "To_Outside":{
-      "goto" : "MainTown:Toilet1",
-      "opened" : true
-    }
   }
 }

@@ -1,5 +1,6 @@
 package unice.etu.dreamteam.Entities.Gates;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
@@ -36,6 +37,13 @@ public class Gate extends Entity {
         opened = value.getBoolean("opened");
     }
 
+    public Gate(MapObject obj) {
+        super(obj.getName());
+        maxEnter = obj.getProperties().get("maxEnter", -1, Integer.class);
+        opened = obj.getProperties().get("opened", false, Boolean.class);
+        setGoto(obj.getProperties().get("goto", String.class));
+    }
+
     public void onEnter(MapEvent event) {
         countEnter++;
 
@@ -64,10 +72,28 @@ public class Gate extends Entity {
     }
 
     private void setGoto(String gotoValue) {
-        String[] tmp = gotoValue.split(":");
+        if (gotoValue != null && gotoValue.contains(":"))
+        {
 
-        nextGate = tmp[1];
-        nextMap = tmp[0];
+            String[] tmp = gotoValue.split(":");
+
+            nextGate = tmp[1];
+            nextMap = tmp[0];
+
+            return;
+        }
+
+        try {
+            throw new Exception("Gate destination not Valid !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
     }
 
     public Boolean isOpened() {

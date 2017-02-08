@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import unice.etu.dreamteam.Exceptions.ParameterException;
 import unice.etu.dreamteam.Map.Assets;
 import unice.etu.dreamteam.Utils.Debug;
@@ -126,16 +128,6 @@ public class ModelAnimationManager implements Disposable {
     }
 
     public void setRotation(float angle) {
-        //if (angle == 0)
-            //angle = 360;
-
-        //float oldAngle = this.angle;
-        //this.angle = (360 - (oldAngle - angle)) + angle;
-        //this.angle = angle - this.angle;
-
-        //Debug.log("Angle", String.valueOf(angle));
-        //Debug.log("Angle", String.valueOf(this.angle));
-
         for (ModelInstance instance : instances)
             instance.transform.rotate(Vector3.Y, angle - this.angle);
 
@@ -144,7 +136,6 @@ public class ModelAnimationManager implements Disposable {
 
     @Override
     public void dispose() {
-
     }
 
     private void clearArray(ArrayList<Integer> arrayList) {

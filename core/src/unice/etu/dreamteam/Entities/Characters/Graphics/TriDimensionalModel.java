@@ -1,4 +1,4 @@
-package unice.etu.dreamteam.Utils;
+package unice.etu.dreamteam.Entities.Characters.Graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -9,14 +9,15 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import unice.etu.dreamteam.Entities.Characters.Graphics.ModelAnimationManager;
+import com.badlogic.gdx.utils.Disposable;
+import unice.etu.dreamteam.Utils.GameInformation;
 
 /**
- * Created by Guillaume on 01/11/2016.
+ * Created by Guillaume on 07/02/2017.
  */
-public class ModelConverter {
+public class TriDimensionalModel implements Model, Disposable {
+
     private final Environment environment;
     private final PerspectiveCamera camera;
     private final ModelAnimationManager modelAnimationManager;
@@ -25,8 +26,9 @@ public class ModelConverter {
     private Texture texture;
     private Vector3 vector3;
 
-    public ModelConverter(ModelAnimationManager modelAnimationManager) {
-        this.modelAnimationManager = modelAnimationManager;
+
+    public TriDimensionalModel(String modelName){
+        this.modelAnimationManager = new ModelAnimationManager(modelName);
 
         camera = new PerspectiveCamera(67, GameInformation.getViewportWidth(), GameInformation.getViewportHeight());
         environment = new Environment();
@@ -48,24 +50,30 @@ public class ModelConverter {
         vector3 = new Vector3();
     }
 
-    public void resize() {
+    @Override
+    public void setAnimation(String name) {
+        this.modelAnimationManager.setAnimation(name);
+    }
+
+    @Override
+    public void resize(float width, float height) {
         camera.viewportHeight = GameInformation.getViewportHeight();
         camera.viewportWidth = GameInformation.getViewportWidth();
         camera.update();
     }
 
+    @Override
     public void update(float delta) {
         camera.update();
         modelAnimationManager.getAnimationController().update(delta);
+
         if (frameBuffer != null)
             frameBuffer.dispose();
         if (texture != null)
             texture.dispose();
 
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-    }
 
-    public void render() {
         frameBuffer.begin();
 
         modelBatch.begin(camera);
@@ -78,7 +86,13 @@ public class ModelConverter {
 
     }
 
-    public TextureRegion getCurrentTexture() {
+    @Override
+    public void setRotation(float angle) {
+        this.modelAnimationManager.setRotation(angle);
+    }
+
+    @Override
+    public TextureRegion getFrame() {
         if (texture != null) {
 
             TextureRegion textureRegion = new TextureRegion(texture, frameBuffer.getWidth() / 2 - 80, frameBuffer.getHeight() / 2 - 15, frameBuffer.getWidth() / 2 - 160, frameBuffer.getHeight() / 2 - 140);
@@ -88,12 +102,7 @@ public class ModelConverter {
         return null;
     }
 
-    public Vector3 getPos(Vector2 pos) {
-        vector3.set(pos.x * 32, pos.y * 32, 0);
-
-        return vector3.mul(IsoTransform.getIsoTransform());
-    }
-
+    @Override
     public void dispose() {
         if (texture != null)
             texture.dispose();

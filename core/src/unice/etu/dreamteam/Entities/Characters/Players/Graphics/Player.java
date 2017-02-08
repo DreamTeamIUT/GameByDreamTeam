@@ -1,9 +1,8 @@
 package unice.etu.dreamteam.Entities.Characters.Players.Graphics;
 
-import unice.etu.dreamteam.Entities.Characters.Players.PlayerHolder;
 import unice.etu.dreamteam.Entities.Characters.Graphics.Character;
+import unice.etu.dreamteam.Entities.Characters.Players.PlayerHolder;
 import unice.etu.dreamteam.Entities.Inventory;
-import unice.etu.dreamteam.Entities.Items.Item;
 import unice.etu.dreamteam.Entities.Items.Items;
 import unice.etu.dreamteam.Entities.Weapons.Weapon;
 import unice.etu.dreamteam.Utils.Debug;

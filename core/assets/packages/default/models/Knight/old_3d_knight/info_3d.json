@@ -1,12 +1,7 @@
 {
   "type" : "3D",
-  "name": "Demon",
+  "name": "Knight",
   "textures": {
-    "WALK": {
-      "name": "Take 001",
-      "file": "Walk",
-      "load": true
-    },
     "RUN": {
       "name": "Take 001",
       "file": "Run",
@@ -14,7 +9,12 @@
     },
     "STOPPED": {
       "name": "Take 001",
-      "file": "idle",
+      "file": "Idle",
+      "load": true
+    },
+    "WALK": {
+      "name": "Take 001",
+      "file": "Walk",
       "load": true
     }
   }
