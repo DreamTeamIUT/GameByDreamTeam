@@ -14,7 +14,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <Pane id="contain1" fx:id="contain1" layoutX="4.0" layoutY="30.0" prefHeight="492.0" prefWidth="700.0" visible="false">
+      <Pane id="contain1" fx:id="contain1" layoutX="4.0" layoutY="30.0" prefHeight="492.0" prefWidth="700.0">
          <children>
             <Text fontSmoothingType="LCD" layoutX="153.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur PackageCreator, logiciel de création de packages, vous pouvez créer vos propres packages pour Fallen Land." textAlignment="JUSTIFY" wrappingWidth="379.6630859375">
                <font>
@@ -33,7 +33,7 @@
             </Text>
          </children>
       </Pane>
-      <Pane id="contain2" fx:id="contain2" layoutY="32.0" prefHeight="569.0" prefWidth="700.0">
+      <Pane id="contain2" fx:id="contain2" layoutY="32.0" prefHeight="569.0" prefWidth="700.0" visible="false">
          <children>
             <Accordion prefHeight="569.0" prefWidth="202.0">
               <panes>
@@ -116,7 +116,7 @@
                   </TitledPane>
               </panes>
             </Accordion>
-            <Button id="buttonStory" fx:id="buttonStory" layoutX="597.0" layoutY="535.0" mnemonicParsing="false" onAction="#onActionMenuCreateStory" prefHeight="32.0" prefWidth="103.0" text="Create Story" />
+            <Button id="buttonStory" fx:id="buttonStory" disable="true" layoutX="597.0" layoutY="535.0" mnemonicParsing="false" onAction="#onActionMenuCreateStory" prefHeight="32.0" prefWidth="103.0" text="Create Story" />
          </children>
       </Pane>
       <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="700.0">
@@ -166,14 +166,14 @@
             </Menu>
             <Menu id="menuModels" fx:id="menuModels" disable="true" mnemonicParsing="false" text="Models">
                <items>
-                  <MenuItem id="addModels" fx:id="addModels" mnemonicParsing="false" text="Add new model" />
-                  <MenuItem id="selectModels" fx:id="selectModels" mnemonicParsing="false" text="Add model" />
+                  <MenuItem id="addModels" fx:id="addModels" mnemonicParsing="false" onAction="#onActionMenuAddModels" text="Add new model" />
+                  <MenuItem id="selectModels" fx:id="selectModels" mnemonicParsing="false" onAction="#onActionMenuSelectModels" text="Add model" />
                </items>
             </Menu>
             <Menu id="menuBullets" fx:id="menuBullets" disable="true" mnemonicParsing="false" text="Bullets">
                <items>
-                  <MenuItem id="addBullets" fx:id="addBullets" mnemonicParsing="false" text="Add new bullet" />
-                  <MenuItem id="selectBullets" fx:id="selectBullets" mnemonicParsing="false" text="Add bullet" />
+                  <MenuItem id="addBullets" fx:id="addBullets" mnemonicParsing="false" onAction="#onActionMenuAddBullets" text="Add new bullet" />
+                  <MenuItem id="selectBullets" fx:id="selectBullets" mnemonicParsing="false" onAction="#onActionMenuSelectBullets" text="Add bullet" />
                </items>
             </Menu>
         </menus>

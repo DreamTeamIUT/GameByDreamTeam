@@ -298,7 +298,7 @@ public class Controller implements Initializable {
         String[] arrayData = new String[array_data.size()];
         arrayData = array_data.toArray(arrayData);
 
-        if (!isEmpty(result.get())) {
+        if (result.isPresent() && !isEmpty(result.get())) {
             /*if (!compareArray(arrayData, array)) {
                 Alert else_dialog = new Alert(Alert.AlertType.ERROR);
                 else_dialog.setTitle("Error");
@@ -424,8 +424,8 @@ public class Controller implements Initializable {
 
                 FileWriter file_info = new FileWriter("Packages/" + primaryStage.getTitle() + "/" + "info.json");
                 file_info.write(info.toJSONString());
-                file.flush();
-                file.close();
+                file_info.flush();
+                file_info.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -459,12 +459,12 @@ public class Controller implements Initializable {
             if (!result.get().equals("")) {
                 try {
                     addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/");
-                    String image = list.get(result.get()).getName().replace(".tmx", ".json");
+                    String image = list.get(result.get()).getName();
                     File source = new File("Packages/DEFAULT/" + menuMap.getText().toLowerCase() + "/" + image);
                     File dest = new File("Packages/" + primaryStage.getTitle() + "/" + menuMap.getText().toLowerCase() + "/" + image);
 
                     Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    this.list_items.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
+                    this.list_map.getItems().add(result.get().replace(".tmx", "").replace(".json", ""));
                     canCreateStory();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -509,7 +509,7 @@ public class Controller implements Initializable {
 
     public void onActionMenuSelectItems() {
         HashMap<String, File> list = new HashMap<>();
-        readDir("Packages/DEFAULT/items/", list);
+        readDir("Packages/DEFAULT/images/items/", list);
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("", list.keySet());
         dialog.setTitle("Add Items");
@@ -526,7 +526,7 @@ public class Controller implements Initializable {
                     addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuItems.getText().toLowerCase() + "/");
                     FileReader file;
 
-                    String image = list.get(result.get()).getName().replace(".json", ".png");
+                    String image = list.get(result.get()).getName();
                     File source = new File("Packages/DEFAULT/images/" + menuItems.getText().toLowerCase() + "/" + image);
                     File dest = new File("Packages/" + primaryStage.getTitle() + "/images/" + menuItems.getText().toLowerCase() + "/" + image);
 
@@ -588,7 +588,7 @@ public class Controller implements Initializable {
             System.out.println("Your choice: " + result.get());
             if (!result.get().equals("")) {
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
-                File file = new File("Packages/DEFAULT/" + menuWeapons.getText().toLowerCase() + "/" + list.get(result.get()).getName().replace(".json", ".png"));
+                File file = new File("Packages/DEFAULT/" + menuWeapons.getText().toLowerCase() + "/" + list.get(result.get()).getName());
                 System.out.println("file : " + file);
                 System.out.println("fileName : " + file.getName());
                 addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuWeapons.getText().toLowerCase() + "/");
@@ -620,7 +620,7 @@ public class Controller implements Initializable {
             if (!result.get().equals("")) {
                 System.out.println();
                 addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
-                File file = new File("Packages/DEFAULT/" + menuMobs.getText().toLowerCase() + "/" + list.get(result.get()).getName().replace(".json", ".png"));
+                File file = new File("Packages/DEFAULT/" + menuMobs.getText().toLowerCase() + "/" + list.get(result.get()).getName());
                 System.out.println("file : " + file);
                 System.out.println("fileName : " + file.getName());
                 addFiles(file, "Packages/" + primaryStage.getTitle() + "/" + menuMobs.getText().toLowerCase() + "/");
@@ -692,7 +692,7 @@ public class Controller implements Initializable {
 
     public void onActionMenuSelectBullets() {
         HashMap<String, File> list = new HashMap<>();
-        readDir("Packages/DEFAULT/bullets/", list);
+        readDir("Packages/DEFAULT/images/bullets/", list);
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("", list.keySet());
         dialog.setTitle("Add Models");
@@ -708,7 +708,7 @@ public class Controller implements Initializable {
                     addFiles(list.get(result.get()), "Packages/" + primaryStage.getTitle() + "/" + menuBullets.getText().toLowerCase() + "/");
                     FileReader file;
 
-                    String image = list.get(result.get()).getName().replace(".json", ".png");
+                    String image = list.get(result.get()).getName();
                     File source = new File("Packages/DEFAULT/images/" + menuBullets.getText().toLowerCase() + "/" + image);
                     File dest = new File("Packages/" + primaryStage.getTitle() + "/images/" + menuBullets.getText().toLowerCase() + "/" + image);
 
@@ -729,6 +729,7 @@ public class Controller implements Initializable {
     }
 
     public void onActionMenuAddMap() {
+
 
         FileChooser fileChooser = new FileChooser();
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1081,6 +1082,12 @@ public class Controller implements Initializable {
             this.menuMobs.setDisable(false);
             this.menuSound.setDisable(false);
             this.menuWeapons.setDisable(false);
+            this.menuModels.setDisable(false);
+            this.menuBullets.setDisable(false);
+            this.buttonStory.setVisible(true);
+            this.buttonStory.setLayoutX(550);
+            this.buttonStory.setLayoutY(480);
+            this.buttonStory.toFront();
             this.buttonStory.setDisable(true);
         } else {
             System.out.println("not in if");
